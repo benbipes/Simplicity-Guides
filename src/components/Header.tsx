@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-sky-200">
-                Automated Client-Facing Branding for the 12 Financial Guides
+                Brand up to 12 guides with your business logo, contact information, and disclosures.
               </p>
             </div>
           </div>
