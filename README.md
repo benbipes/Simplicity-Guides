@@ -31,7 +31,22 @@ A specialized co-branding platform built for **Simplicity Group** independent fi
    - Powered by `pdfjs-dist` rendering actual PDF pages directly on an HTML5 canvas.
    - Navigate page by page (Cover, Content, Contact Page, Standard Disclosure, Custom Disclosure) with zoom controls.
 
-6. **100% Client-Side Privacy & Instant Export**:
+6. **100% Authentic Simplicity Master Guides**:
+   - Zero AI-generated dummy guides. All 12 offerings are official Simplicity Group master PDFs:
+     1. **Important Birthdays Over 50** (13 pages)
+     2. **A Short Introduction to Long-Term Care** (20 pages)
+     3. **Legacy & Estate Planning: Understanding the Basics** (15 pages)
+     4. **How to Exit Your Business and Enter Retirement** (17 pages)
+     5. **Age 5 to 55: What Your Kids Need to Know About Finances** (16 pages)
+     6. **The Ultimate 401(k) Guide** (14 pages)
+     7. **Optimizing Your Social Security in Today’s World** (22 pages)
+     8. **The Tax Planning Guide** (23 pages)
+     9. **Navigating Medicare & Medigap Insurance** (18 pages)
+     10. **5 Keys to Retirement Planning Today** (25 pages)
+     11. **The Women’s Guide to Retirement Planning** (19 pages)
+     12. **Your Guide to Roth IRAs** (16 pages)
+
+7. **100% Client-Side Privacy & Instant Export**:
    - Powered by `pdf-lib` running locally in the browser — no sensitive advisor details or client guides ever leave the device.
    - Download individual branded guides immediately or click **"Download Guides (ZIP)"** to export all selected guides in a single organized zip archive.
 
