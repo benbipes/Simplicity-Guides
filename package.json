@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "generate-guides": "node scripts/generate_sample_guides.js"
+    "verify-guides": "node scripts/verify_all_12_real_guides.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",

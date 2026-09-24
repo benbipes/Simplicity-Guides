@@ -98,121 +98,121 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
   },
   {
     id: '06-ultimate-401k-guide',
-    filename: '10-business-owner-retirement-solutions.pdf',
+    filename: 'ultimate-401k-guide.pdf',
     title: 'The Ultimate 401(k) Guide',
-    subtitle: 'Contribution Limits, Safe Harbor Plans, Catch-Ups & Rollover Rules',
+    subtitle: 'How to Take Control of Your 401(k) Before and After Retirement',
     category: 'Retirement Plans',
     pages: 14,
     contactPageNumber: 12,
     disclosurePageNumber: 14,
     themeColor: '#0f766e',
     topics: [
-      '2026 Contribution Limits: $24,500 Standard + $8,000 Catch-Up',
-      'Roth 401(k) vs. Traditional Pre-Tax 401(k) Comparisons',
-      'Auto-Enrollment & Safe Harbor Match Formulas',
-      'Rollover Strategies: Rolling an Old 401(k) to an IRA Penalty-Free'
+      '401(k) Contribution Limits & Catch-Up Opportunities',
+      'Traditional vs. Roth 401(k) Options Explained',
+      'Investment Allocation Strategies & Fee Awareness',
+      'Rollover Rules and Options When Leaving an Employer'
     ]
   },
   {
-    id: '07-social-security-maximization',
-    filename: '02-social-security-maximization.pdf',
-    title: 'Maximizing Social Security Benefits',
-    subtitle: 'Strategic Claiming, Spousal Benefits & Provisional Tax Rules',
+    id: '07-optimizing-social-security',
+    filename: 'optimizing-social-security.pdf',
+    title: 'Optimizing Your Social Security in Today’s World',
+    subtitle: 'Constructing a Cohesive Strategy & Strategic Benefit Claiming Timelines',
     category: 'Social Security',
-    pages: 14,
-    contactPageNumber: 12,
-    disclosurePageNumber: 14,
+    pages: 22,
+    contactPageNumber: 20,
+    disclosurePageNumber: 22,
     themeColor: '#166534',
     topics: [
-      'Claiming at Age 62 vs. Full Retirement Age (FRA) vs. Age 70',
-      '8% Annual Guaranteed Benefit Increase for Delaying Past FRA',
-      'Spousal & Survivor Benefit Coordination Rules',
-      'Provisional Income Calculation & Minimizing Social Security Taxes'
+      'Full Retirement Age (FRA) vs. Early & Delayed Claiming',
+      'Maximizing Lifetime Cumulative Benefits',
+      'Spousal and Survivor Benefit Optimization Rules',
+      'Taxation of Social Security Benefits & Provisional Income'
     ]
   },
   {
-    id: '08-tax-efficient-wealth',
-    filename: '03-tax-efficient-wealth-strategies.pdf',
-    title: 'Tax-Efficient Wealth & Distribution Strategies',
-    subtitle: 'Minimizing Lifetime Taxes across Taxable, Tax-Deferred & Tax-Free Buckets',
+    id: '08-tax-planning-guide',
+    filename: 'tax-planning-guide.pdf',
+    title: 'The Tax Planning Guide',
+    subtitle: 'Your Roadmap to Reduced Taxes This Year and in the Future',
     category: 'Tax Planning',
-    pages: 15,
-    contactPageNumber: 13,
-    disclosurePageNumber: 15,
+    pages: 23,
+    contactPageNumber: 21,
+    disclosurePageNumber: 23,
     themeColor: '#881337',
     topics: [
-      'The Three Tax Buckets: Taxable, Tax-Deferred, Tax-Free',
-      'Roth Conversions: Optimal Timing and Bracket Bumping',
-      'Managing Required Minimum Distributions (RMDs)',
-      'Asset Location: Placing the Right Assets in the Right Accounts'
+      'Tax Deductions vs. Tax Credits Optimization',
+      'Strategic Timing of Income and Capital Gains',
+      'Managing Marginal Tax Brackets in Retirement',
+      'Long-Term Tax Diversification Across Account Types'
     ]
   },
   {
-    id: '09-modern-annuity-guide',
-    filename: '04-the-modern-annuity-guide.pdf',
-    title: 'The Modern Annuity Guide',
-    subtitle: 'Fixed, Indexed & Variable Solutions for Market Protection and Lifetime Income',
-    category: 'Income & Protection',
-    pages: 16,
-    contactPageNumber: 14,
-    disclosurePageNumber: 16,
-    themeColor: '#075985',
-    topics: [
-      'Fixed Index Annuities (FIAs): 0% Floors & Cap Rates',
-      'Multi-Year Guaranteed Annuities (MYGA) as CD Alternatives',
-      'Lifetime Income Benefit Riders (LIBR): Predictable Cash Flow',
-      'Debunking Common Annuity Myths and Understanding Fee Structures'
-    ]
-  },
-  {
-    id: '10-medicare-healthcare',
-    filename: '09-medicare-and-healthcare-in-retirement.pdf',
-    title: 'Medicare & Healthcare Costs in Retirement',
-    subtitle: 'Coverage Choices, Medigap vs. Medicare Advantage & Out-of-Pocket Caps',
+    id: '09-medicare-and-medigap',
+    filename: 'medicare-and-medigap.pdf',
+    title: 'Navigating Medicare & Medigap Insurance',
+    subtitle: 'Managing Healthcare Costs, Coverage Gaps & Medigap Supplements in Retirement',
     category: 'Healthcare & Care',
-    pages: 15,
-    contactPageNumber: 13,
-    disclosurePageNumber: 15,
+    pages: 18,
+    contactPageNumber: 16,
+    disclosurePageNumber: 18,
     themeColor: '#1e3a8a',
     topics: [
-      'Medicare Part A, B, C (Advantage), and D (Prescriptions)',
-      'Medigap Supplement Plans vs. Medicare Advantage Pros & Cons',
-      'Understanding IRMAA Surcharges for Higher Incomes',
-      'The 7-Month Initial Enrollment Window and Late Penalties'
+      'Medicare Parts A, B, C (Advantage), and D (Drugs)',
+      'Understanding Out-of-Pocket Coverage Gaps & Deductibles',
+      'Standardized Medigap Supplemental Policy Options',
+      'Enrollment Deadlines & Avoiding Lifetime Late Penalties'
     ]
   },
   {
-    id: '11-high-net-worth-wealth',
-    filename: '11-high-net-worth-wealth-preservation.pdf',
-    title: 'High-Net-Worth Wealth Preservation',
-    subtitle: 'Multi-Generational Wealth, Dynasty Trusts & Tax Gifting',
-    category: 'Estate Planning',
+    id: '10-5-keys-retirement-planning',
+    filename: '5-keys-to-retirement-planning.pdf',
+    title: '5 Keys to Retirement Planning Today',
+    subtitle: 'Essential Strategies for Modern Retirement Income, Investments & Longevity',
+    category: 'Retirement Planning',
+    pages: 25,
+    contactPageNumber: 23,
+    disclosurePageNumber: 25,
+    themeColor: '#075985',
+    topics: [
+      'Constructing Reliable Guaranteed Lifetime Income Streams',
+      'Balancing Risk Tolerance with Inflation Protection',
+      'Tax-Efficient Withdrawal Sequencing in Distribution',
+      'Healthcare and Long-Term Care Cost Preparation'
+    ]
+  },
+  {
+    id: '11-womens-guide-to-retirement',
+    filename: 'womens-guide-to-retirement.pdf',
+    title: 'The Women’s Guide to Retirement Planning',
+    subtitle: 'Navigating Unique Longevity, Caregiving & Wealth Considerations for Women',
+    category: 'Retirement Planning',
+    pages: 19,
+    contactPageNumber: 17,
+    disclosurePageNumber: 19,
+    themeColor: '#581c87',
+    topics: [
+      'Addressing the Longevity Gap & Longer Retirement Horizons',
+      'Overcoming the Impact of Caregiving Breaks on Savings',
+      'Maximizing Social Security as a Single, Married, or Widowed Woman',
+      'Building Independent Financial Confidence and Wealth Security'
+    ]
+  },
+  {
+    id: '12-your-guide-to-roth-iras',
+    filename: 'your-guide-to-roth-iras.pdf',
+    title: 'Your Guide to Roth IRAs',
+    subtitle: 'Conversions, Contribution Rules & Advanced Tax-Free Wealth Planning',
+    category: 'Tax Planning',
     pages: 16,
     contactPageNumber: 14,
     disclosurePageNumber: 16,
-    themeColor: '#581c87',
-    topics: [
-      'Unified Lifetime Gift & Estate Tax Exemptions',
-      'Irrevocable Life Insurance Trusts (ILIT) for Estate Liquidity',
-      'Charitable Remainder Trusts (CRT) & Family Foundations',
-      'Valuation Discounts and Family Limited Partnerships'
-    ]
-  },
-  {
-    id: '12-college-funding-529',
-    filename: '12-college-funding-and-529-plans.pdf',
-    title: 'College Funding Strategies & 529 Plans',
-    subtitle: '529 Savings Plans, Financial Aid Nuances & SECURE 2.0 Roth Rollovers',
-    category: 'Family Wealth',
-    pages: 14,
-    contactPageNumber: 12,
-    disclosurePageNumber: 14,
     themeColor: '#0e7490',
     topics: [
-      '529 College Savings Plans: Growth, Distributions & State Deductions',
-      'SECURE Act 2.0: Rolling Unused 529 Funds into a Roth IRA',
-      'FAFSA Asset Formula: Student vs. Parent vs. Grandparent Assets',
-      'Balancing Retirement Goals with Child Education Funding'
+      'Roth IRA Contribution Limits and Phaseout Income Rules',
+      'Roth Conversion Strategies & Bracket Bumping Analysis',
+      'The 5-Year Rule for Tax-Free and Penalty-Free Withdrawals',
+      'Exemption from Required Minimum Distributions (RMDs)'
     ]
   }
 ];
