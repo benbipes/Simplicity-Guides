@@ -3,7 +3,6 @@ import {
   Upload,
   Image as ImageIcon,
   Trash2,
-  Sparkles,
   CheckCircle,
   Building2,
   User,
@@ -24,7 +23,6 @@ import {
   FileCheck
 } from 'lucide-react';
 import { AgentProfile, BrandingOptions } from '../types';
-import { generateSampleLogoDataUrl, getSampleLogos } from '../utils/helpers';
 
 interface AgentProfileFormProps {
   profile: AgentProfile;
@@ -146,16 +144,6 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
     }
   };
 
-  const handleGenerateSampleLogo = () => {
-    const sample = getSampleLogos();
-    onChange({
-      ...profile,
-      company: profile.company || 'Custom Insurance Branding',
-      logoDataUrl: sample.color,
-      logoWhiteDataUrl: sample.white,
-    });
-  };
-
   const handleRemoveColorLogo = () => {
     handleFieldChange('logoDataUrl', null);
     if (colorLogoInputRef.current) {
@@ -212,27 +200,15 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
         {/* TAB 1: LOGO & CONTACT INFO */}
         {activeTab === 'profile' && (
           <div className="space-y-5">
-            {/* Logo Upload Box */}
             {/* Logo Upload Box - Dual Logo Support (Color + White) */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Agent / Agency Logos
-                  </label>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    Upload color and white versions so your logo looks crisp on both dark covers and white pages.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleGenerateSampleLogo}
-                  className="inline-flex items-center justify-center px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-50 border border-[#0076BD]/30 text-[#0076BD] hover:bg-[#0076BD]/15 transition-colors shrink-0"
-                  title="Load Custom Insurance Branding mock sample logos"
-                >
-                  <Sparkles className="w-3.5 h-3.5 mr-1" />
-                  Load Sample Logos
-                </button>
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  Agent / Agency Logos
+                </label>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Upload color and white versions so your logo looks crisp on both dark covers and white pages.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
