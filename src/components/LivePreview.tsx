@@ -48,6 +48,25 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [renderCounter, setRenderCounter] = useState<number>(0);
 
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+  // Monitor container size so preview automatically fits the full page
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const updateSize = () => {
+      if (containerRef.current) {
+        setContainerSize({
+          width: containerRef.current.clientWidth,
+          height: containerRef.current.clientHeight,
+        });
+      }
+    };
+    updateSize();
+    const ro = new ResizeObserver(updateSize);
+    ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   // When guide changes, default to Cover Page (Page 1)
   useEffect(() => {
     setCurrentPage(1);
@@ -112,13 +131,18 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
         const context = canvas.getContext('2d');
         if (!context) return;
 
-        // Auto-scale to fit container width nicely (approx 480-540px width)
+        // Auto-scale to fit both container width AND height to display the FULL page without scrolling
         const baseViewport = page.getViewport({ scale: 1.0 });
-        const containerWidth = containerRef.current ? containerRef.current.clientWidth - 48 : 500;
-        const targetWidth = Math.min(containerWidth, 540);
-        const autoScale = (targetWidth / baseViewport.width) * scale;
+        const containerWidth = containerRef.current ? Math.max(280, containerRef.current.clientWidth - 40) : 500;
+        const containerHeight = containerRef.current ? Math.max(380, containerRef.current.clientHeight - 40) : 650;
 
-        const viewport = page.getViewport({ scale: Math.max(0.6, autoScale) });
+        const scaleW = containerWidth / baseViewport.width;
+        const scaleH = containerHeight / baseViewport.height;
+        // fitScale fits both dimensions so the complete page is shown
+        const fitScale = Math.min(scaleW, scaleH);
+        const autoScale = fitScale * scale;
+
+        const viewport = page.getViewport({ scale: Math.max(0.35, autoScale) });
 
         // High-DPI crisp rendering
         const dpr = window.devicePixelRatio || 1;
@@ -152,7 +176,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
         renderTask.cancel();
       }
     };
-  }, [pdfDoc, currentPage, scale, renderCounter]);
+  }, [pdfDoc, currentPage, scale, renderCounter, containerSize]);
 
   // Jump handlers
   const contactPageNum = Math.max(1, totalPages - 2); // N-2 (e.g. 13 - 2 = 11)

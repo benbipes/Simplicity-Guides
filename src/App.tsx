@@ -315,7 +315,7 @@ export const App: React.FC = () => {
         {/* Studio Workspace: Profile Form (Left) & Real-time Live Preview (Right) */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Left: Branding Form */}
-          <div className="lg:col-span-6 xl:col-span-5 h-[650px] sm:h-[720px]">
+          <div className="lg:col-span-5 h-[840px] sm:h-[880px] lg:h-[900px]">
             <AgentProfileForm
               profile={profile}
               onChange={setProfile}
@@ -328,7 +328,7 @@ export const App: React.FC = () => {
           </div>
 
           {/* Right: Live Interactive PDF Preview */}
-          <div className="lg:col-span-6 xl:col-span-7 h-[650px] sm:h-[720px]">
+          <div className="lg:col-span-7 h-[840px] sm:h-[880px] lg:h-[900px]">
             <LivePreview
               guide={activePreviewGuide}
               profile={profile}

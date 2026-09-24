@@ -245,8 +245,8 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
               </p>
             </div>
 
-            {/* Advisor Details Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Advisor Details - All Fields Full Width */}
+            <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Advisor Name
@@ -355,7 +355,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Office Address (Replaces 000 Meeting Street...) *
                 </label>
