@@ -15,7 +15,8 @@ export interface AgentProfile {
     dataUrl?: string;
     pdfBytes?: Uint8Array;
   } | null;
-  logoDataUrl: string | null;
+  logoDataUrl: string | null; // Color version (for white/light contact page)
+  logoWhiteDataUrl?: string | null; // White/reversed version (for dark covers)
   brandColor: string;
   socialLinks: {
     linkedin: string;

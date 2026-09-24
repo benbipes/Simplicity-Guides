@@ -23,7 +23,8 @@ import {
   saveOptionsToStorage,
   downloadSingleGuide,
   downloadGuidesZip,
-  generateSampleLogoDataUrl
+  generateSampleLogoDataUrl,
+  getSampleLogos
 } from './utils/helpers';
 import {
   BookOpen,
@@ -45,8 +46,18 @@ export const App: React.FC = () => {
   // 1. Advisor Profile State
   const [profile, setProfile] = useState<AgentProfile>(() => {
     const loaded = loadProfileFromStorage(DEMO_PROFILE as AgentProfile);
-    if (!loaded.logoDataUrl) {
-      loaded.logoDataUrl = generateSampleLogoDataUrl(loaded.company, loaded.brandColor);
+    const sample = getSampleLogos();
+    // If no logo or if old demo profile was stored, migrate to new mock logo
+    if (
+      !loaded.logoDataUrl ||
+      loaded.company === 'Apex Wealth Partners' ||
+      loaded.company === 'Apex Retirement Advisors'
+    ) {
+      loaded.company = 'Custom Insurance Branding';
+      loaded.logoDataUrl = sample.color;
+      loaded.logoWhiteDataUrl = sample.white;
+    } else if (!loaded.logoWhiteDataUrl && loaded.company === 'Custom Insurance Branding') {
+      loaded.logoWhiteDataUrl = sample.white;
     }
     return loaded;
   });
@@ -126,6 +137,7 @@ export const App: React.FC = () => {
         disclaimer: 'Investment advisory services offered through an independent registered entity. Insurance products offered through licensed agencies. Not intended as specific tax or legal counsel.',
         uploadedDisclosure: null,
         logoDataUrl: null,
+        logoWhiteDataUrl: null,
         brandColor: '#0076BD', // Simplicity Royal Blue
         socialLinks: {
           linkedin: '',
@@ -141,8 +153,13 @@ export const App: React.FC = () => {
   };
 
   const handleLoadDemo = () => {
-    const demo = { ...DEMO_PROFILE } as AgentProfile;
-    demo.logoDataUrl = generateSampleLogoDataUrl(demo.company, demo.brandColor);
+    const sample = getSampleLogos();
+    const demo = {
+      ...DEMO_PROFILE,
+      company: 'Custom Insurance Branding',
+      logoDataUrl: sample.color,
+      logoWhiteDataUrl: sample.white,
+    } as AgentProfile;
     setProfile(demo);
     saveProfileToStorage(demo);
     setSaveStatus('Demo Profile Loaded');

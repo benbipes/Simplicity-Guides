@@ -46,65 +46,18 @@ export function loadOptionsFromStorage(defaultOptions: BrandingOptions): Brandin
   return defaultOptions;
 }
 
-// Generate a sample high-resolution logo as PNG dataURL
-export function generateSampleLogoDataUrl(companyName: string, brandColor: string): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = 400;
-  canvas.height = 140;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
+import { SAMPLE_LOGO_COLOR, SAMPLE_LOGO_WHITE } from '../data/sampleLogos';
 
-  // Clear background (transparent)
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Return sample logos (both color and white versions)
+export function getSampleLogos() {
+  return {
+    color: SAMPLE_LOGO_COLOR,
+    white: SAMPLE_LOGO_WHITE,
+  };
+}
 
-  // Draw modern geometric wealth crest icon
-  ctx.fillStyle = brandColor || '#0c4a6e';
-  
-  // Outer shield / diamond
-  ctx.beginPath();
-  ctx.moveTo(40, 20);
-  ctx.lineTo(85, 35);
-  ctx.lineTo(85, 80);
-  ctx.quadraticCurveTo(85, 110, 40, 125);
-  ctx.quadraticCurveTo(-5, 110, -5, 80);
-  ctx.lineTo(-5, 35);
-  ctx.closePath();
-  ctx.save();
-  ctx.translate(25, 0);
-  ctx.fill();
-
-  // Inner accent line
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.arc(40, 65, 16, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = brandColor || '#0c4a6e';
-  ctx.font = 'bold 18px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('S', 40, 66);
-  ctx.restore();
-
-  // Company Name
-  ctx.fillStyle = '#0f172a';
-  ctx.font = 'bold 26px "Playfair Display", Georgia, serif';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'alphabetic';
-  const nameParts = (companyName || 'STERLING CREST').split(' ');
-  ctx.fillText(nameParts.slice(0, 2).join(' ').toUpperCase(), 130, 58);
-
-  ctx.fillStyle = brandColor || '#0c4a6e';
-  ctx.font = '600 13px "Plus Jakarta Sans", sans-serif';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('FINANCIAL PARTNERS', 132, 85);
-
-  ctx.fillStyle = '#64748b';
-  ctx.font = '500 11px "Plus Jakarta Sans", sans-serif';
-  ctx.letterSpacing = '1px';
-  ctx.fillText('WEALTH & RETIREMENT ADVISORY', 132, 106);
-
-  return canvas.toDataURL('image/png');
+export function generateSampleLogoDataUrl(companyName?: string, brandColor?: string): string {
+  return SAMPLE_LOGO_COLOR;
 }
 
 // Download single branded PDF

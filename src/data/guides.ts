@@ -1,4 +1,5 @@
 import { FinancialGuide } from '../types';
+import { SAMPLE_LOGO_COLOR, SAMPLE_LOGO_WHITE } from './sampleLogos';
 
 export const INITIAL_GUIDES: FinancialGuide[] = [
   {
@@ -120,22 +121,23 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
 export const DEMO_PROFILE = {
   name: 'Marcus Sterling, CFP®, ChFC®',
   title: 'Managing Principal & Wealth Advisor',
-  company: 'Sterling Crest Financial Partners',
+  company: 'Custom Insurance Branding',
   phone: '(555) 782-4190',
-  email: 'msterling@sterlingcrestfp.com',
-  website: 'https://www.sterlingcrestfp.com',
-  bookingUrl: 'https://www.sterlingcrestfp.com/schedule-review',
+  email: 'msterling@custominsurancebranding.com',
+  website: 'https://www.custominsurancebranding.com',
+  bookingUrl: 'https://www.custominsurancebranding.com/schedule-review',
   license: 'CRD #4928104 / NPN #19827361',
   address: '400 North Michigan Avenue, Suite 1800, Chicago, IL 60611',
-  disclaimer: 'Investment advisory services offered through Sterling Crest Capital Management LLC, an SEC Registered Investment Adviser. Insurance products offered through Sterling Crest Insurance Agency. Past performance does not guarantee future results. Not intended as specific tax or legal counsel.',
+  disclaimer: 'Investment advisory services offered through Custom Insurance Branding LLC, an SEC Registered Investment Adviser. Insurance products offered through licensed agencies. Past performance does not guarantee future results. Not intended as specific tax or legal counsel.',
   uploadedDisclosure: null,
-  logoDataUrl: null,
+  logoDataUrl: SAMPLE_LOGO_COLOR,
+  logoWhiteDataUrl: SAMPLE_LOGO_WHITE,
   brandColor: '#0076BD', // Simplicity Royal Blue
   socialLinks: {
-    linkedin: 'https://www.linkedin.com/in/marcus-sterling-wealth',
-    facebook: 'https://www.facebook.com/SterlingCrestFinancial',
-    twitter: 'https://x.com/SterlingWealth',
-    youtube: 'https://youtube.com/@SterlingCrestFinancial',
-    instagram: 'https://instagram.com/sterlingcrestfp'
+    linkedin: 'https://www.linkedin.com/company/custom-insurance-branding',
+    facebook: 'https://www.facebook.com/custominsurancebranding',
+    twitter: 'https://x.com/custominsbrand',
+    youtube: 'https://youtube.com/@custominsurancebranding',
+    instagram: 'https://instagram.com/custominsurancebranding'
   }
 };

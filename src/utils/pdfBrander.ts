@@ -52,7 +52,7 @@ export function dataUrlToUint8Array(dataUrl: string): Uint8Array {
   return bytes;
 }
 
-async function embedLogo(doc: PDFDocument, logoDataUrl: string | null): Promise<PDFImage | null> {
+async function embedLogo(doc: PDFDocument, logoDataUrl: string | null | undefined): Promise<PDFImage | null> {
   if (!logoDataUrl) return null;
   try {
     const bytes = dataUrlToUint8Array(logoDataUrl);
@@ -108,21 +108,28 @@ export async function brandFinancialGuidePdf(
   const pdfNavyColor = rgb(0.0, 0.282, 0.486); // Exact #00487C used for website, phone, email
   const pdfGrayColor = rgb(0.2, 0.2, 0.2);     // Exact dark gray used for address
 
-  const embeddedLogo = await embedLogo(doc, profile.logoDataUrl);
+  const embeddedColorLogo = await embedLogo(doc, profile.logoDataUrl);
+  const embeddedWhiteLogo = await embedLogo(doc, profile.logoWhiteDataUrl);
+
+  // Cover Page: Placed on dark color background in lower-left corner -> Prefer White Logo, fallback to Color
+  const coverLogo = embeddedWhiteLogo || embeddedColorLogo;
+
+  // Contact Page & Disclosure Page: Placed on white background -> Prefer Color Logo, fallback to White
+  const lightBgLogo = embeddedColorLogo || embeddedWhiteLogo;
 
   // ============================================================
   // 1. COVER PAGE: LOWER LEFT CORNER AGENT LOGO
   // ============================================================
-  if (embeddedLogo && totalPages > 0) {
+  if (coverLogo && totalPages > 0) {
     const page1 = doc.getPage(0);
     const res1 = page1.node.Resources();
     const xObj1 = res1 ? (res1.lookup(PDFName.of('XObject')) as any) : null;
 
     // In the PDF design, Im0 is the logo in the lower left corner (x: 54, y: 28.898, width: 123.3, height: 36.0)
     if (xObj1 && typeof xObj1.set === 'function') {
-      xObj1.set(PDFName.of('Im0'), embeddedLogo.ref);
+      xObj1.set(PDFName.of('Im0'), coverLogo.ref);
     } else {
-      page1.drawImage(embeddedLogo, {
+      page1.drawImage(coverLogo, {
         x: 54,
         y: 28.9,
         width: 123.3,
@@ -146,9 +153,9 @@ export async function brandFinancialGuidePdf(
     const xObjContact = resContact ? (resContact.lookup(PDFName.of('XObject')) as any) : null;
 
     // A. Logo (Center, Y ≈ 255.5): Replace Im5 if present
-    if (embeddedLogo && xObjContact && typeof xObjContact.set === 'function') {
-      xObjContact.set(PDFName.of('Im5'), embeddedLogo.ref);
-    } else if (embeddedLogo) {
+    if (lightBgLogo && xObjContact && typeof xObjContact.set === 'function') {
+      xObjContact.set(PDFName.of('Im5'), lightBgLogo.ref);
+    } else if (lightBgLogo) {
       contactPage.drawRectangle({
         x: 200,
         y: 250,
@@ -158,10 +165,10 @@ export async function brandFinancialGuidePdf(
       });
       const maxW = 188;
       const maxH = 55;
-      const scale = Math.min(maxW / embeddedLogo.width, maxH / embeddedLogo.height, 1);
-      const imgW = embeddedLogo.width * scale;
-      const imgH = embeddedLogo.height * scale;
-      contactPage.drawImage(embeddedLogo, {
+      const scale = Math.min(maxW / lightBgLogo.width, maxH / lightBgLogo.height, 1);
+      const imgW = lightBgLogo.width * scale;
+      const imgH = lightBgLogo.height * scale;
+      contactPage.drawImage(lightBgLogo, {
         x: (width - imgW) / 2,
         y: 255 + (maxH - imgH) / 2,
         width: imgW,
@@ -317,7 +324,7 @@ export async function brandFinancialGuidePdf(
       }
     } else {
       const customText = profile.disclaimer?.trim();
-      const hasLogo = !!embeddedLogo;
+      const hasLogo = !!lightBgLogo;
 
       if (customText || hasLogo) {
         const discPage = doc.getPage(disclosurePageIndex);
@@ -336,14 +343,14 @@ export async function brandFinancialGuidePdf(
         let curY = startY - 20;
 
         // Draw Agent Logo on Disclosure Page if present
-        if (embeddedLogo) {
+        if (lightBgLogo) {
           const maxLogoW = 120;
           const maxLogoH = 34;
-          const scale = Math.min(maxLogoW / embeddedLogo.width, maxLogoH / embeddedLogo.height, 1);
-          const lw = embeddedLogo.width * scale;
-          const lh = embeddedLogo.height * scale;
+          const scale = Math.min(maxLogoW / lightBgLogo.width, maxLogoH / lightBgLogo.height, 1);
+          const lw = lightBgLogo.width * scale;
+          const lh = lightBgLogo.height * scale;
 
-          discPage.drawImage(embeddedLogo, {
+          discPage.drawImage(lightBgLogo, {
             x: 54,
             y: curY - lh,
             width: lw,

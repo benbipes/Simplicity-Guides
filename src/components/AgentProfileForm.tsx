@@ -24,7 +24,7 @@ import {
   FileCheck
 } from 'lucide-react';
 import { AgentProfile, BrandingOptions } from '../types';
-import { generateSampleLogoDataUrl } from '../utils/helpers';
+import { generateSampleLogoDataUrl, getSampleLogos } from '../utils/helpers';
 
 interface AgentProfileFormProps {
   profile: AgentProfile;
@@ -45,7 +45,8 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
   onReset,
   saveStatus,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const colorLogoInputRef = useRef<HTMLInputElement>(null);
+  const whiteLogoInputRef = useRef<HTMLInputElement>(null);
   const disclosureInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<'profile' | 'social' | 'disclosure'>('profile');
 
@@ -79,6 +80,23 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
       handleFieldChange('logoDataUrl', dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleWhiteLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file (PNG, JPG, or SVG)');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      handleFieldChange('logoWhiteDataUrl', dataUrl);
     };
     reader.readAsDataURL(file);
   };
@@ -129,14 +147,26 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
   };
 
   const handleGenerateSampleLogo = () => {
-    const sample = generateSampleLogoDataUrl(profile.company || 'Sterling Crest', '#0076BD');
-    handleFieldChange('logoDataUrl', sample);
+    const sample = getSampleLogos();
+    onChange({
+      ...profile,
+      company: profile.company || 'Custom Insurance Branding',
+      logoDataUrl: sample.color,
+      logoWhiteDataUrl: sample.white,
+    });
   };
 
-  const handleRemoveLogo = () => {
+  const handleRemoveColorLogo = () => {
     handleFieldChange('logoDataUrl', null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+    if (colorLogoInputRef.current) {
+      colorLogoInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveWhiteLogo = () => {
+    handleFieldChange('logoWhiteDataUrl', null);
+    if (whiteLogoInputRef.current) {
+      whiteLogoInputRef.current.value = '';
     }
   };
 
@@ -183,65 +213,140 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
         {activeTab === 'profile' && (
           <div className="space-y-5">
             {/* Logo Upload Box */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                  Agent / Agency Logo *
-                </label>
-                <span className="text-[11px] text-[#0076BD] font-semibold">
-                  Placed in 3 spots automatically
-                </span>
+            {/* Logo Upload Box - Dual Logo Support (Color + White) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
+                    Agent / Agency Logos
+                  </label>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Upload color and white versions so your logo looks crisp on both dark covers and white pages.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleGenerateSampleLogo}
+                  className="inline-flex items-center justify-center px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-50 border border-[#0076BD]/30 text-[#0076BD] hover:bg-[#0076BD]/15 transition-colors shrink-0"
+                  title="Load Custom Insurance Branding mock sample logos"
+                >
+                  <Sparkles className="w-3.5 h-3.5 mr-1" />
+                  Load Sample Logos
+                </button>
               </div>
-              <div className="p-3.5 bg-[#E6E6E6]/40 border border-dashed border-slate-300 rounded-xl flex items-center space-x-4">
-                {profile.logoDataUrl ? (
-                  <div className="relative group w-32 h-16 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-1 overflow-hidden shadow-xs">
-                    <img
-                      src={profile.logoDataUrl}
-                      alt="Uploaded Logo"
-                      className="max-h-full max-w-full object-contain"
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 1. Color Logo (For Light Backgrounds: Contact & Disclosure Pages) */}
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between space-y-3">
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#0076BD]"></span>
+                      Color Logo
+                    </span>
+                    <p className="text-[10px] text-slate-500">Contact & Disclosure Pages (White BG)</p>
+                  </div>
+
+                  <div className="relative group w-full h-20 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-2 overflow-hidden shadow-xs">
+                    {profile.logoDataUrl ? (
+                      <>
+                        <img
+                          src={profile.logoDataUrl}
+                          alt="Color Logo"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveColorLogo}
+                          title="Remove color logo"
+                          className="absolute top-1.5 right-1.5 p-1 bg-red-600 text-white rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-slate-400">
+                        <ImageIcon className="w-5 h-5 mb-0.5 text-slate-400" />
+                        <span className="text-[10px]">No Color Logo</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <input
+                      ref={colorLogoInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/svg+xml"
+                      onChange={handleLogoUpload}
+                      className="hidden"
                     />
                     <button
-                      onClick={handleRemoveLogo}
-                      title="Remove logo"
-                      className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      type="button"
+                      onClick={() => colorLogoInputRef.current?.click()}
+                      className="w-full inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors shadow-xs"
                     >
-                      <Trash2 className="w-3 h-3" />
+                      <Upload className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
+                      {profile.logoDataUrl ? 'Replace Color Logo' : 'Upload Color Logo'}
                     </button>
                   </div>
-                ) : (
-                  <div className="w-24 h-16 bg-slate-200/80 rounded-lg flex flex-col items-center justify-center text-slate-400">
-                    <ImageIcon className="w-6 h-6 mb-1 text-slate-400" />
-                    <span className="text-[10px]">No Logo</span>
-                  </div>
-                )}
+                </div>
 
-                <div className="flex-1 flex flex-col sm:flex-row gap-2">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/png,image/jpeg,image/svg+xml"
-                    onChange={handleLogoUpload}
-                    className="hidden"
-                  />
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors shadow-xs"
-                  >
-                    <Upload className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
-                    {profile.logoDataUrl ? 'Replace Logo' : 'Upload PNG / JPG'}
-                  </button>
-                  
-                  <button
-                    onClick={handleGenerateSampleLogo}
-                    className="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-[#0076BD]/30 text-[#0076BD] hover:bg-[#0076BD]/10 transition-colors"
-                  >
-                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-                    Sample Logo
-                  </button>
+                {/* 2. White Logo (For Dark Backgrounds: Cover Page Lower-Left) */}
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between space-y-3">
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-slate-800"></span>
+                      White / Knockout Logo
+                    </span>
+                    <p className="text-[10px] text-slate-500">Cover Page Lower-Left (Dark BG)</p>
+                  </div>
+
+                  <div className="relative group w-full h-20 bg-[#004372] rounded-lg border border-slate-700/30 flex items-center justify-center p-2 overflow-hidden shadow-xs">
+                    {profile.logoWhiteDataUrl ? (
+                      <>
+                        <img
+                          src={profile.logoWhiteDataUrl}
+                          alt="White Knockout Logo"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveWhiteLogo}
+                          title="Remove white logo"
+                          className="absolute top-1.5 right-1.5 p-1 bg-red-600 text-white rounded-md opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-blue-200/60">
+                        <ImageIcon className="w-5 h-5 mb-0.5 text-blue-200/60" />
+                        <span className="text-[10px]">No White Logo</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div>
+                    <input
+                      ref={whiteLogoInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/svg+xml"
+                      onChange={handleWhiteLogoUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => whiteLogoInputRef.current?.click()}
+                      className="w-full inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors shadow-xs"
+                    >
+                      <Upload className="w-3.5 h-3.5 mr-1.5 text-slate-500" />
+                      {profile.logoWhiteDataUrl ? 'Replace White Logo' : 'Upload White Logo'}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1.5">
-                Stamps into: <strong>1. Cover lower-left corner</strong>, <strong>2. Contact page center</strong>, and <strong>3. Disclosure page</strong>.
+
+              <p className="text-[11px] text-slate-500 bg-blue-50/50 rounded-lg p-2 border border-blue-100">
+                <strong>Placement:</strong> White logo automatically placed on the dark cover page (lower-left). Color logo placed on the white Contact and Disclosure pages. If only one logo is uploaded, it will automatically adapt to all pages.
               </p>
             </div>
 
