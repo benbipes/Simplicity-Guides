@@ -100,7 +100,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
               ) : (
                 <>
                   <CheckSquare className="w-3.5 h-3.5 mr-1.5 text-[#0076BD]" />
-                  Select All 12
+                  Select All ({guides.length})
                 </>
               )}
             </button>

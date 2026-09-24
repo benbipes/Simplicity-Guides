@@ -352,13 +352,13 @@ export const App: React.FC = () => {
             <div>
               <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-[#0076BD] mb-1">
                 <BookOpen className="w-4 h-4" />
-                <span>The 12 Financial Guides Catalog</span>
+                <span>The 6 Financial Guides Catalog</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                 Choose Guides to Brand & Download
               </h2>
               <p className="text-xs text-slate-500">
-                Select specific guides or all 12. Only the contact page and compliance disclosure are customized.
+                Select specific guides or all 6. Only the contact page and compliance disclosure are customized.
               </p>
             </div>
 

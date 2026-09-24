@@ -29,7 +29,7 @@ export const MasterGuideUploader: React.FC<MasterGuideUploaderProps> = ({
               Master Guide PDF Manager
             </h3>
             <p className="text-xs text-slate-500">
-              Replace any of the 12 built-in financial guides with your own company master PDFs
+              Replace any of the 6 built-in financial guides with your own company master PDFs
             </p>
           </div>
           <button

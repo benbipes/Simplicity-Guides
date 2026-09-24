@@ -40,45 +40,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     ]
   },
   {
-    id: '03-legacy-estate-planning',
-    filename: 'legacy-and-estate-planning.pdf',
-    title: 'Legacy & Estate Planning: Understanding the Basics',
-    subtitle: 'Wills, Revocable vs. Irrevocable Trusts, Estate Taxes & Generational Wealth Transfer',
-    category: 'Estate Planning',
-    pages: 15,
-    contactPageNumber: 13,
-    disclosurePageNumber: 15,
-    themeColor: '#6d28d9',
-    topics: [
-      'The $124 Trillion Generational Wealth Transfer to Gen X & Millennials',
-      'Federal Estate Tax Exemption ($15M Individual / $30M Married) in 2026',
-      'Wills vs. Revocable Living Trusts: Avoiding Costly Probate Delays',
-      'Irrevocable Trusts: Asset Protection & State Tax Nuances',
-      'Healthcare Proxies, Living Wills & Durable Financial Power of Attorney',
-      'Annual $19,000 Gift Tax Exclusions & Charitable Remainder Trusts'
-    ]
-  },
-  {
-    id: '04-exit-business-retirement',
-    filename: 'exit-your-business-enter-retirement.pdf',
-    title: 'How to Exit Your Business and Enter Retirement',
-    subtitle: 'Your Guide to Planning Both Life-Changing Events: Valuation, Taxes, and Succession',
-    category: 'Business & Succession',
-    pages: 17,
-    contactPageNumber: 15,
-    disclosurePageNumber: 17,
-    themeColor: '#78350f',
-    topics: [
-      'Business Succession Planning: Identifying Successors & Roles',
-      'Business Valuation vs. Inventory and Asset Liquidation',
-      'Structuring Installment Sales & Capital Gains Tax Optimization',
-      'Passing on a Family Business & Step-Up in Basis Rules',
-      'SECURE Act 2.0 Changes: Starter 401(k)s, Auto-Enrollment & Tax Credits',
-      'Transitioning from Business Cash Flow to Guaranteed Retirement Income'
-    ]
-  },
-  {
-    id: '05-age-5-to-55-finances',
+    id: '03-age-5-to-55-finances',
     filename: 'age-5-to-55-kids-finances.pdf',
     title: 'Age 5 to 55: What Your Kids Need to Know About Finances',
     subtitle: 'Teaching Children & Young Adults Wealth-Building, 529 College Plans & Roth IRAs',
@@ -97,122 +59,60 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     ]
   },
   {
-    id: '06-ultimate-401k-guide',
-    filename: 'ultimate-401k-guide.pdf',
-    title: 'The Ultimate 401(k) Guide',
-    subtitle: 'How to Take Control of Your 401(k) Before and After Retirement',
-    category: 'Retirement Plans',
-    pages: 14,
-    contactPageNumber: 12,
-    disclosurePageNumber: 14,
+    id: '04-legacy-estate-planning',
+    filename: 'legacy-and-estate-planning.pdf',
+    title: 'Legacy & Estate Planning: Understanding the Basics',
+    subtitle: 'Wills, Revocable vs. Irrevocable Trusts, Estate Taxes & Generational Wealth Transfer',
+    category: 'Estate Planning',
+    pages: 15,
+    contactPageNumber: 13,
+    disclosurePageNumber: 15,
+    themeColor: '#6d28d9',
+    topics: [
+      'The $124 Trillion Generational Wealth Transfer to Gen X & Millennials',
+      'Federal Estate Tax Exemption ($15M Individual / $30M Married) in 2026',
+      'Wills vs. Revocable Living Trusts: Avoiding Costly Probate Delays',
+      'Irrevocable Trusts: Asset Protection & State Tax Nuances',
+      'Healthcare Proxies, Living Wills & Durable Financial Power of Attorney',
+      'Annual $19,000 Gift Tax Exclusions & Charitable Remainder Trusts'
+    ]
+  },
+  {
+    id: '05-pensions-buyouts-retirement',
+    filename: 'pensions-buyouts-retirement-income.pdf',
+    title: 'Pensions, Buyouts, & Retirement Income',
+    subtitle: 'Defined-Benefit vs. Defined-Contribution, Buyout Evaluation & Lifetime Income Options',
+    category: 'Retirement Income',
+    pages: 17,
+    contactPageNumber: 15,
+    disclosurePageNumber: 17,
     themeColor: '#0f766e',
     topics: [
-      '401(k) Contribution Limits & Catch-Up Opportunities',
-      'Traditional vs. Roth 401(k) Options Explained',
-      'Investment Allocation Strategies & Fee Awareness',
-      'Rollover Rules and Options When Leaving an Employer'
+      'Recent History of Pensions & Defined-Benefit vs. 401(k) Differences',
+      'Evaluating Pension Buyouts: Lump Sum vs. Monthly Lifetime Payments',
+      'Longevity Risk Management & Spousal Benefit Protection Options',
+      'Rolling Lump Sums to IRAs & Strategic Roth Conversions',
+      'Transforming Savings into Guaranteed Lifetime Income via Annuities',
+      'Inflation Protection Strategies to Preserve Purchasing Power'
     ]
   },
   {
-    id: '07-optimizing-social-security',
-    filename: 'optimizing-social-security.pdf',
-    title: 'Optimizing Your Social Security in Today’s World',
-    subtitle: 'Constructing a Cohesive Strategy & Strategic Benefit Claiming Timelines',
-    category: 'Social Security',
-    pages: 22,
-    contactPageNumber: 20,
-    disclosurePageNumber: 22,
-    themeColor: '#166534',
+    id: '06-exit-business-retirement',
+    filename: 'exit-your-business-enter-retirement.pdf',
+    title: 'How to Exit Your Business and Enter Retirement',
+    subtitle: 'Your Guide to Planning Both Life-Changing Events: Valuation, Taxes, and Succession',
+    category: 'Business & Succession',
+    pages: 17,
+    contactPageNumber: 15,
+    disclosurePageNumber: 17,
+    themeColor: '#78350f',
     topics: [
-      'Full Retirement Age (FRA) vs. Early & Delayed Claiming',
-      'Maximizing Lifetime Cumulative Benefits',
-      'Spousal and Survivor Benefit Optimization Rules',
-      'Taxation of Social Security Benefits & Provisional Income'
-    ]
-  },
-  {
-    id: '08-tax-planning-guide',
-    filename: 'tax-planning-guide.pdf',
-    title: 'The Tax Planning Guide',
-    subtitle: 'Your Roadmap to Reduced Taxes This Year and in the Future',
-    category: 'Tax Planning',
-    pages: 23,
-    contactPageNumber: 21,
-    disclosurePageNumber: 23,
-    themeColor: '#881337',
-    topics: [
-      'Tax Deductions vs. Tax Credits Optimization',
-      'Strategic Timing of Income and Capital Gains',
-      'Managing Marginal Tax Brackets in Retirement',
-      'Long-Term Tax Diversification Across Account Types'
-    ]
-  },
-  {
-    id: '09-medicare-and-medigap',
-    filename: 'medicare-and-medigap.pdf',
-    title: 'Navigating Medicare & Medigap Insurance',
-    subtitle: 'Managing Healthcare Costs, Coverage Gaps & Medigap Supplements in Retirement',
-    category: 'Healthcare & Care',
-    pages: 18,
-    contactPageNumber: 16,
-    disclosurePageNumber: 18,
-    themeColor: '#1e3a8a',
-    topics: [
-      'Medicare Parts A, B, C (Advantage), and D (Drugs)',
-      'Understanding Out-of-Pocket Coverage Gaps & Deductibles',
-      'Standardized Medigap Supplemental Policy Options',
-      'Enrollment Deadlines & Avoiding Lifetime Late Penalties'
-    ]
-  },
-  {
-    id: '10-5-keys-retirement-planning',
-    filename: '5-keys-to-retirement-planning.pdf',
-    title: '5 Keys to Retirement Planning Today',
-    subtitle: 'Essential Strategies for Modern Retirement Income, Investments & Longevity',
-    category: 'Retirement Planning',
-    pages: 25,
-    contactPageNumber: 23,
-    disclosurePageNumber: 25,
-    themeColor: '#075985',
-    topics: [
-      'Constructing Reliable Guaranteed Lifetime Income Streams',
-      'Balancing Risk Tolerance with Inflation Protection',
-      'Tax-Efficient Withdrawal Sequencing in Distribution',
-      'Healthcare and Long-Term Care Cost Preparation'
-    ]
-  },
-  {
-    id: '11-womens-guide-to-retirement',
-    filename: 'womens-guide-to-retirement.pdf',
-    title: 'The Women’s Guide to Retirement Planning',
-    subtitle: 'Navigating Unique Longevity, Caregiving & Wealth Considerations for Women',
-    category: 'Retirement Planning',
-    pages: 19,
-    contactPageNumber: 17,
-    disclosurePageNumber: 19,
-    themeColor: '#581c87',
-    topics: [
-      'Addressing the Longevity Gap & Longer Retirement Horizons',
-      'Overcoming the Impact of Caregiving Breaks on Savings',
-      'Maximizing Social Security as a Single, Married, or Widowed Woman',
-      'Building Independent Financial Confidence and Wealth Security'
-    ]
-  },
-  {
-    id: '12-your-guide-to-roth-iras',
-    filename: 'your-guide-to-roth-iras.pdf',
-    title: 'Your Guide to Roth IRAs',
-    subtitle: 'Conversions, Contribution Rules & Advanced Tax-Free Wealth Planning',
-    category: 'Tax Planning',
-    pages: 16,
-    contactPageNumber: 14,
-    disclosurePageNumber: 16,
-    themeColor: '#0e7490',
-    topics: [
-      'Roth IRA Contribution Limits and Phaseout Income Rules',
-      'Roth Conversion Strategies & Bracket Bumping Analysis',
-      'The 5-Year Rule for Tax-Free and Penalty-Free Withdrawals',
-      'Exemption from Required Minimum Distributions (RMDs)'
+      'Business Succession Planning: Identifying Successors & Roles',
+      'Business Valuation vs. Inventory and Asset Liquidation',
+      'Structuring Installment Sales & Capital Gains Tax Optimization',
+      'Passing on a Family Business & Step-Up in Basis Rules',
+      'SECURE Act 2.0 Changes: Starter 401(k)s, Auto-Enrollment & Tax Credits',
+      'Transitioning from Business Cash Flow to Guaranteed Retirement Income'
     ]
   }
 ];
