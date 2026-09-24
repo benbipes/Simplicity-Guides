@@ -142,63 +142,38 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col h-full">
-      {/* Header with Tab Navigation */}
-      <div className="border-b border-slate-200 bg-[#E6E6E6]/30 p-4 sm:px-6">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <h2 className="text-base sm:text-lg font-bold text-[#004372]">Agent Branding Profile</h2>
-            <p className="text-xs text-slate-500">Logo applied to Cover (lower left), Contact Page, and Disclosure Page</p>
-          </div>
-          <div className="flex items-center space-x-2">
-            {saveStatus && (
-              <span className="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                <CheckCircle className="w-3 h-3 mr-1" />
-                {saveStatus}
-              </span>
-            )}
-            <button
-              onClick={onSave}
-              className="inline-flex items-center px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#0076BD] hover:bg-[#00629e] text-white shadow-sm transition-colors"
-            >
-              <Save className="w-3.5 h-3.5 mr-1.5" />
-              Save
-            </button>
-          </div>
-        </div>
-
-        {/* Tab Buttons (No color offerings per user instruction) */}
-        <div className="flex space-x-1 border-b border-slate-200 -mb-4">
-          <button
-            onClick={() => setActiveTab('profile')}
-            className={`py-2 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
-              activeTab === 'profile'
-                ? 'border-[#0076BD] text-[#0076BD] bg-white rounded-t-lg'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            1. Logo & Contact Info
-          </button>
-          <button
-            onClick={() => setActiveTab('social')}
-            className={`py-2 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
-              activeTab === 'social'
-                ? 'border-[#0076BD] text-[#0076BD] bg-white rounded-t-lg'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            2. Social Media Links
-          </button>
-          <button
-            onClick={() => setActiveTab('disclosure')}
-            className={`py-2 px-3 text-xs font-bold border-b-2 whitespace-nowrap transition-all ${
-              activeTab === 'disclosure'
-                ? 'border-[#0076BD] text-[#0076BD] bg-white rounded-t-lg'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            3. Upload Disclosure
-          </button>
-        </div>
+      {/* Top Tab Navigation */}
+      <div className="border-b border-slate-200 px-4 sm:px-6 pt-3 flex space-x-2 sm:space-x-6">
+        <button
+          onClick={() => setActiveTab('profile')}
+          className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
+            activeTab === 'profile'
+              ? 'border-[#0076BD] text-[#0076BD]'
+              : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'
+          }`}
+        >
+          1. Logo & Contact Info
+        </button>
+        <button
+          onClick={() => setActiveTab('social')}
+          className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
+            activeTab === 'social'
+              ? 'border-[#0076BD] text-[#0076BD]'
+              : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'
+          }`}
+        >
+          2. Social Media Links
+        </button>
+        <button
+          onClick={() => setActiveTab('disclosure')}
+          className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
+            activeTab === 'disclosure'
+              ? 'border-[#0076BD] text-[#0076BD]'
+              : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'
+          }`}
+        >
+          3. Upload Disclosure
+        </button>
       </div>
 
       {/* Tab Contents */}
@@ -592,21 +567,13 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
       </div>
 
       {/* Footer Controls */}
-      <div className="border-t border-slate-200 p-4 bg-[#E6E6E6]/30 flex items-center justify-between">
+      <div className="border-t border-slate-100 p-4 bg-white flex items-center">
         <button
           onClick={onReset}
-          className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-800"
+          className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
         >
-          <RotateCcw className="w-3.5 h-3.5 mr-1" />
+          <RotateCcw className="w-3.5 h-3.5 mr-1.5 text-slate-400" />
           Reset Form
-        </button>
-
-        <button
-          onClick={onSave}
-          className="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-bold rounded-lg bg-[#0076BD] hover:bg-[#00629e] text-white shadow-sm transition-colors"
-        >
-          <Save className="w-4 h-4 mr-1.5" />
-          Save Profile
         </button>
       </div>
     </div>

@@ -161,24 +161,25 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col h-full">
       {/* Top Bar with Guide Selector & Direct Jump Controls */}
-      <div className="border-b border-slate-200 bg-[#E6E6E6]/30 p-3 sm:px-6 flex flex-wrap items-center justify-between gap-3">
+      <div className="border-b border-slate-200 bg-white p-3.5 sm:px-6 space-y-3">
+        {/* Row 1: Title & Page Badge */}
         <div className="flex items-center space-x-2">
           <Eye className="w-4 h-4 text-[#0076BD]" />
-          <span className="text-sm font-bold text-[#004372]">Actual PDF Guide Preview</span>
-          <span className="text-xs bg-[#0076BD]/10 text-[#0076BD] px-2 py-0.5 rounded-full font-bold hidden sm:inline-block">
+          <span className="text-sm font-bold text-slate-900">Guide Preview</span>
+          <span className="text-xs bg-sky-100 text-[#0076BD] px-2.5 py-0.5 rounded-full font-bold">
             Page {currentPage} of {totalPages}
           </span>
         </div>
 
-        {/* Guide Selector Dropdown */}
-        <div className="flex items-center space-x-2">
+        {/* Row 2: Guide Dropdown & Page Jump Buttons */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <select
             value={guide.id}
             onChange={(e) => {
               const selected = allGuides.find((g) => g.id === e.target.value);
               if (selected) onSelectGuide(selected);
             }}
-            className="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold text-slate-700 outline-none max-w-[170px] sm:max-w-xs truncate"
+            className="text-xs sm:text-sm bg-white border border-slate-300 rounded-lg px-3 py-1.5 font-medium text-slate-800 outline-none flex-1 max-w-sm shadow-xs"
           >
             {allGuides.map((g, idx) => (
               <option key={g.id} value={g.id}>
@@ -187,40 +188,40 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
             ))}
           </select>
 
-          {/* Jump to Critical Pages */}
-          <div className="flex bg-[#E6E6E6] p-0.5 rounded-lg text-xs font-semibold">
+          {/* Jump to Critical Pages: Cover, Contact, Disclosure */}
+          <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-semibold border border-slate-200/60 self-start sm:self-auto">
             <button
               onClick={() => setCurrentPage(1)}
-              title="View actual cover page with lower-left agent logo"
-              className={`px-2.5 py-1 rounded-md transition-all ${
+              title="View cover page"
+              className={`px-3 py-1 rounded-md transition-all ${
                 currentPage === 1
-                  ? 'bg-white text-[#004372] shadow-xs font-bold'
+                  ? 'bg-white text-slate-900 shadow-xs font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Cover (Pg 1)
+              Cover
             </button>
             <button
               onClick={() => setCurrentPage(contactPageNum)}
-              title={`View actual contact page (Page ${contactPageNum})`}
-              className={`px-2.5 py-1 rounded-md transition-all ${
+              title="View contact page"
+              className={`px-3 py-1 rounded-md transition-all ${
                 currentPage === contactPageNum
-                  ? 'bg-white text-[#004372] shadow-xs font-bold'
+                  ? 'bg-white text-slate-900 shadow-xs font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Contact (Pg {contactPageNum})
+              Contact
             </button>
             <button
               onClick={() => setCurrentPage(disclosurePageNum)}
-              title={`View disclosure page with appended agent disclosure (Page ${disclosurePageNum})`}
-              className={`px-2.5 py-1 rounded-md transition-all ${
+              title="View disclosure page"
+              className={`px-3 py-1 rounded-md transition-all ${
                 currentPage === disclosurePageNum
-                  ? 'bg-white text-[#004372] shadow-xs font-bold'
+                  ? 'bg-white text-slate-900 shadow-xs font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Disclosure (Pg {disclosurePageNum})
+              Disclosure
             </button>
           </div>
         </div>
@@ -229,7 +230,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
       {/* Main Canvas Area: Renders the EXACT Real PDF Document */}
       <div
         ref={containerRef}
-        className="flex-1 bg-slate-200/80 p-4 sm:p-6 overflow-y-auto flex flex-col items-center justify-center relative min-h-[500px]"
+        className="flex-1 bg-slate-100/90 p-4 sm:p-6 overflow-y-auto flex flex-col items-center justify-center relative min-h-[500px]"
       >
         {isLoading && (
           <div className="absolute inset-0 bg-slate-100/80 backdrop-blur-xs flex flex-col items-center justify-center z-10">
@@ -252,7 +253,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
       </div>
 
       {/* Interactive Bottom Control Bar */}
-      <div className="border-t border-slate-200 p-3 sm:px-6 bg-[#E6E6E6]/30 flex flex-wrap items-center justify-between gap-3">
+      <div className="border-t border-slate-100 p-3 sm:px-6 bg-white flex flex-wrap items-center justify-between gap-3">
         {/* Pagination Controls */}
         <div className="flex items-center space-x-2">
           <button

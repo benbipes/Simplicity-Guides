@@ -45,14 +45,9 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="hidden sm:block h-7 w-px bg-white/20" />
 
             <div className="hidden sm:block">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm font-semibold tracking-wide text-white uppercase">
-                  Guide Co-Branding Studio
-                </span>
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#0076BD] text-white">
-                  Independent Advisor Platform
-                </span>
-              </div>
+              <h1 className="text-sm font-bold tracking-wide text-white uppercase">
+                Guide Co-Branding Studio
+              </h1>
               <p className="text-[11px] text-sky-200">
                 Brand up to 6 guides with your business logo, contact information, and disclosures.
               </p>
@@ -100,10 +95,10 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 onClick={onOpenAdminLogin}
                 title="Admin Sign In"
-                className="inline-flex items-center p-2 rounded-lg text-sky-200/80 hover:text-white hover:bg-white/10 transition-colors text-xs"
+                className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-sky-200/90 hover:text-white hover:bg-white/10 transition-colors text-xs font-medium cursor-pointer"
               >
                 <Lock className="w-3.5 h-3.5 mr-1 text-sky-300" />
-                <span className="hidden sm:inline">Admin</span>
+                <span>Admin</span>
               </button>
             )}
 

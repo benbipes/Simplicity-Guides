@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { AgentProfileForm } from './components/AgentProfileForm';
 import { LivePreview } from './components/LivePreview';
@@ -93,6 +93,15 @@ export const App: React.FC = () => {
     totalSteps: 0,
     currentGuideTitle: '',
   });
+
+  // Auto-save profile and options to browser storage
+  useEffect(() => {
+    saveProfileToStorage(profile);
+  }, [profile]);
+
+  useEffect(() => {
+    saveOptionsToStorage(options);
+  }, [options]);
 
   // Save profile to storage
   const handleSaveProfile = () => {
@@ -259,61 +268,46 @@ export const App: React.FC = () => {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
         
         {/* Simplicity Group Branded Hero Banner */}
-        <section className="bg-gradient-to-r from-[#004372] via-[#00558f] to-[#0076BD] rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/15 text-white border border-white/20 text-xs font-bold mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>Simplicity Group Independent Advisor Platform</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white mb-2 leading-tight">
-                Automated Financial Guide Co-Branding Studio
-              </h1>
-              <p className="text-sky-100 text-xs sm:text-sm leading-relaxed mb-6">
-                Upload your agency logo, advisor contact details, and social media handles to brand the <strong>Contact Page</strong> of your chosen guides. Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong>directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
-              </p>
+        <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
+          <div className="relative z-10 space-y-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
+              Welcome to the Complimentary Financial Guides Co-Branding Studio
+            </h1>
+            <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
+              Upload your business logo, contact details, and social media handles to brand the <strong className="text-white font-bold">Contact Page</strong> of your chosen guide(s). Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong className="text-white font-bold">directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
+            </p>
 
-              {/* 3 Pillars */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="bg-white/10 backdrop-blur-xs rounded-xl p-3 border border-white/15 flex items-center space-x-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#0076BD] flex items-center justify-center font-bold text-xs">1</div>
-                  <div className="text-xs">
-                    <div className="font-bold text-white">Contact Page Update</div>
-                    <div className="text-[11px] text-sky-100">Logo, links & socials</div>
-                  </div>
+            {/* 3 Steps - Full width grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
+                <div className="w-8 h-8 rounded-lg bg-[#0076BD] border border-white/20 flex items-center justify-center font-bold text-xs text-white shrink-0">
+                  1
                 </div>
-
-                <div className="bg-white/10 backdrop-blur-xs rounded-xl p-3 border border-white/15 flex items-center space-x-3">
-                  <div className="w-7 h-7 rounded-lg bg-[#004372] flex items-center justify-center font-bold text-xs border border-white/20">2</div>
-                  <div className="text-xs">
-                    <div className="font-bold text-white">Upload Disclosure</div>
-                    <div className="text-[11px] text-sky-100">Appended after standard</div>
-                  </div>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-xs rounded-xl p-3 border border-white/15 flex items-center space-x-3">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-xs">3</div>
-                  <div className="text-xs">
-                    <div className="font-bold text-white">Export & Deliver</div>
-                    <div className="text-[11px] text-sky-100">Clickable PDFs / ZIP</div>
-                  </div>
+                <div>
+                  <div className="font-bold text-white text-xs sm:text-sm">Contact Page Update</div>
+                  <div className="text-[11px] text-sky-200">Logo, links & socials</div>
                 </div>
               </div>
-            </div>
 
-            {/* Simplicity Group Logo Emblem Badge */}
-            <div className="hidden lg:flex flex-col items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-inner w-64 text-center">
-              <img
-                src={`${import.meta.env.BASE_URL}images/simplicity-logo-white.png`}
-                alt="Simplicity Group"
-                className="h-12 w-auto object-contain mb-3"
-              />
-              <span className="text-xs font-bold text-white uppercase tracking-wider">
-                Client Education Series
-              </span>
-              <span className="text-[11px] text-sky-200 mt-1">
-                2026 Edition Catalog
-              </span>
+              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
+                <div className="w-8 h-8 rounded-lg bg-[#00355a] border border-white/20 flex items-center justify-center font-bold text-xs text-white shrink-0">
+                  2
+                </div>
+                <div>
+                  <div className="font-bold text-white text-xs sm:text-sm">Upload Disclosure</div>
+                  <div className="text-[11px] text-sky-200">Appended after standard</div>
+                </div>
+              </div>
+
+              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-xs text-white shrink-0">
+                  3
+                </div>
+                <div>
+                  <div className="font-bold text-white text-xs sm:text-sm">Export & Deliver</div>
+                  <div className="text-[11px] text-sky-200">Clickable PDFs / ZIP</div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
