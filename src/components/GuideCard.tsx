@@ -21,6 +21,7 @@ interface GuideCardProps {
   onDownload: (guide: FinancialGuide) => void;
   onUploadCustomPdf: (guideId: string, file: File) => void;
   brandColor: string;
+  isAdmin?: boolean;
 }
 
 export const GuideCard: React.FC<GuideCardProps> = ({
@@ -33,6 +34,7 @@ export const GuideCard: React.FC<GuideCardProps> = ({
   onDownload,
   onUploadCustomPdf,
   brandColor,
+  isAdmin = false,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -82,17 +84,9 @@ export const GuideCard: React.FC<GuideCardProps> = ({
                 <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
                   Custom PDF
                 </span>
-              ) : guide.filename.startsWith('important-') ||
-                guide.filename.startsWith('short-') ||
-                guide.filename.startsWith('legacy-') ||
-                guide.filename.startsWith('exit-') ||
-                guide.filename.startsWith('age-5-') ? (
-                <span className="text-[10px] font-bold bg-[#004372]/10 text-[#004372] border border-[#004372]/20 px-2 py-0.5 rounded-full">
-                  Official PDF
-                </span>
               ) : (
-                <span className="text-[10px] font-medium bg-[#E6E6E6] text-slate-700 px-2 py-0.5 rounded-full">
-                  Template
+                <span className="text-[10px] font-bold bg-[#004372]/10 text-[#004372] border border-[#004372]/20 px-2 py-0.5 rounded-full">
+                  Official Guide
                 </span>
               )}
               <span
@@ -159,20 +153,24 @@ export const GuideCard: React.FC<GuideCardProps> = ({
             Preview
           </button>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            title="Replace master PDF with your own file"
-            className="inline-flex items-center p-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
-          >
-            <Upload className="w-3.5 h-3.5" />
-          </button>
+          {isAdmin && (
+            <>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                title="Replace master PDF with your own file (Admin)"
+                className="inline-flex items-center p-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              >
+                <Upload className="w-3.5 h-3.5 text-slate-500" />
+              </button>
+            </>
+          )}
         </div>
 
         <button

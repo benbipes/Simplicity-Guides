@@ -24,6 +24,7 @@ interface GuideCatalogProps {
   onBatchDownload: () => void;
   brandColor: string;
   isGenerating: boolean;
+  isAdmin?: boolean;
 }
 
 export const GuideCatalog: React.FC<GuideCatalogProps> = ({
@@ -39,6 +40,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
   onBatchDownload,
   brandColor,
   isGenerating,
+  isAdmin = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -167,6 +169,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
               onDownload={onDownload}
               onUploadCustomPdf={onUploadCustomPdf}
               brandColor={brandColor}
+              isAdmin={isAdmin}
             />
           ))}
         </div>

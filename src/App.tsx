@@ -5,6 +5,7 @@ import { LivePreview } from './components/LivePreview';
 import { GuideCatalog } from './components/GuideCatalog';
 import { MasterGuideUploader } from './components/MasterGuideUploader';
 import { BatchDownloadModal } from './components/BatchDownloadModal';
+import { AdminLoginModal } from './components/AdminLoginModal';
 import {
   AgentProfile,
   FinancialGuide,
@@ -67,6 +68,23 @@ export const App: React.FC = () => {
   // 5. UI Modals and Status
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
+
+  // Admin authentication state
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    return sessionStorage.getItem('simplicity_is_admin') === 'true';
+  });
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+
+  const handleAdminLoginSuccess = () => {
+    setIsAdmin(true);
+    sessionStorage.setItem('simplicity_is_admin', 'true');
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+    sessionStorage.removeItem('simplicity_is_admin');
+    setIsUploaderOpen(false);
+  };
 
   // 6. Batch Generation Progress
   const [batchProgress, setBatchProgress] = useState<BatchProgress>({
@@ -228,8 +246,13 @@ export const App: React.FC = () => {
         totalCount={guides.length}
         onBatchDownload={handleBatchDownload}
         onLoadDemo={handleLoadDemo}
-        onOpenUploader={() => setIsUploaderOpen(true)}
+        onOpenUploader={() => {
+          if (isAdmin) setIsUploaderOpen(true);
+        }}
         isGenerating={batchProgress.isGenerating}
+        isAdmin={isAdmin}
+        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
+        onAdminLogout={handleAdminLogout}
       />
 
       {/* Main Workspace */}
@@ -360,6 +383,7 @@ export const App: React.FC = () => {
             onBatchDownload={handleBatchDownload}
             brandColor={profile.brandColor}
             isGenerating={batchProgress.isGenerating}
+            isAdmin={isAdmin}
           />
         </section>
       </main>
@@ -376,19 +400,44 @@ export const App: React.FC = () => {
             <span className="text-slate-400">|</span>
             <span className="font-semibold text-slate-700">Financial Guide Co-Branding Studio</span>
           </div>
-          <div className="text-slate-500 text-[11px]">
-            100% Client-Side PDF Generation • Simplicity Group Brand Standards Applied
+          <div className="flex items-center space-x-3 text-slate-500 text-[11px]">
+            <span>100% Client-Side PDF Generation • Simplicity Group Brand Standards Applied</span>
+            <span className="text-slate-300">•</span>
+            {isAdmin ? (
+              <button
+                onClick={handleAdminLogout}
+                className="text-emerald-700 hover:text-emerald-900 font-semibold underline cursor-pointer"
+              >
+                Admin (Log Out)
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsAdminLoginOpen(true)}
+                className="text-slate-400 hover:text-slate-600 underline cursor-pointer"
+              >
+                Admin Sign In
+              </button>
+            )}
           </div>
         </div>
       </footer>
 
-      {/* Custom Master PDFs Manager Modal */}
-      <MasterGuideUploader
-        isOpen={isUploaderOpen}
-        onClose={() => setIsUploaderOpen(false)}
-        guides={guides}
-        onUploadCustomPdf={handleUploadCustomPdf}
-        onResetToDefaults={handleResetToDefaultGuides}
+      {/* Custom Master PDFs Manager Modal (Admin Only) */}
+      {isAdmin && (
+        <MasterGuideUploader
+          isOpen={isUploaderOpen}
+          onClose={() => setIsUploaderOpen(false)}
+          guides={guides}
+          onUploadCustomPdf={handleUploadCustomPdf}
+          onResetToDefaults={handleResetToDefaultGuides}
+        />
+      )}
+
+      {/* Admin Authentication Modal */}
+      <AdminLoginModal
+        isOpen={isAdminLoginOpen}
+        onClose={() => setIsAdminLoginOpen(false)}
+        onLoginSuccess={handleAdminLoginSuccess}
       />
 
       {/* Batch Generation & Download Progress Modal */}
