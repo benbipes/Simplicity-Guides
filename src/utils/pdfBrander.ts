@@ -355,24 +355,7 @@ export async function brandFinancialGuidePdf(
             addClickableLink(doc, discPage, 54, curY - lh, lw, lh, profile.website);
           }
 
-          discPage.drawText('ADVISOR & FIRM DISCLOSURE', {
-            x: 54 + lw + 18,
-            y: curY - 18,
-            size: 9,
-            font: fontBold,
-            color: pdfNavyColor,
-          });
-
           curY -= (lh + 16);
-        } else {
-          discPage.drawText('ADVISOR & FIRM DISCLOSURE', {
-            x: 54,
-            y: curY,
-            size: 9,
-            font: fontBold,
-            color: pdfNavyColor,
-          });
-          curY -= 18;
         }
 
         // Render custom disclosure text if provided
@@ -410,15 +393,7 @@ export async function brandFinancialGuidePdf(
             const contPage = doc.addPage([612, 792]);
             const { height: contH } = contPage.getSize();
 
-            contPage.drawText('ADVISOR & FIRM DISCLOSURE (CONTINUED)', {
-              x: 54,
-              y: contH - 60,
-              size: 9,
-              font: fontBold,
-              color: pdfNavyColor,
-            });
-
-            let contY = contH - 85;
+            let contY = contH - 60;
             while (lineIdx < lines.length && contY >= 60) {
               contPage.drawText(lines[lineIdx], {
                 x: 54,
