@@ -463,159 +463,159 @@ export const App: React.FC = () => {
           onToggleMobileNav={() => setIsMobileNavOpen((prev) => !prev)}
         />
 
-        {/* Main Workspace */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
-          {activeStudioTab === 'guides' && (
-            <>
-              {/* Simplicity Group Branded Hero Banner */}
-            <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
-          <div className="relative z-10 space-y-4">
-            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
-              Welcome to the Complimentary Financial Guides Co-Branding Studio
-            </h1>
-            <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
-              Upload your business logo, contact details, and social media handles to brand the <strong className="text-white font-bold">Contact Page</strong> of your chosen guide(s). Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong className="text-white font-bold">directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
-            </p>
+        {/* Main Workspaces by Tab */}
+        {activeStudioTab === 'guides' && (
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* Simplicity Group Branded Hero Banner - Full Width Background */}
+            <section className="w-full bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-4 relative z-10">
+                <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
+                  Welcome to the Complimentary Financial Guides Co-Branding Studio
+                </h1>
+                <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
+                  Upload your business logo, contact details, and social media handles to brand the <strong className="text-white font-bold">Contact Page</strong> of your chosen guide(s). Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong className="text-white font-bold">directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
+                </p>
 
-            {/* 3 Steps - Full width grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
-                <div className="w-8 h-8 rounded-lg bg-[#0076BD] border border-white/20 flex items-center justify-center font-bold text-xs text-white shrink-0">
-                  1
-                </div>
-                <div>
-                  <div className="font-bold text-white text-xs sm:text-sm">Contact Page Update</div>
-                  <div className="text-[11px] text-sky-200">Logo, links & socials</div>
+                {/* 3 Steps - Full width grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#0076BD] flex items-center justify-center font-bold text-xs text-white shrink-0">
+                      1
+                    </div>
+                    <div>
+                      <div className="font-bold text-white text-xs sm:text-sm">Contact Page Update</div>
+                      <div className="text-[11px] text-sky-200">Logo, links & socials</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#00355a] flex items-center justify-center font-bold text-xs text-white shrink-0">
+                      2
+                    </div>
+                    <div>
+                      <div className="font-bold text-white text-xs sm:text-sm">Upload Disclosure</div>
+                      <div className="text-[11px] text-sky-200">Appended after standard</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-xs text-white shrink-0">
+                      3
+                    </div>
+                    <div>
+                      <div className="font-bold text-white text-xs sm:text-sm">Export & Deliver</div>
+                      <div className="text-[11px] text-sky-200">Clickable PDFs / ZIP</div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </section>
 
-              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
-                <div className="w-8 h-8 rounded-lg bg-[#00355a] border border-white/20 flex items-center justify-center font-bold text-xs text-white shrink-0">
-                  2
+            {/* Studio Workspace: Profile Form (Left) & Real-time Live Preview (Right) */}
+            <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+              <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                {/* Left: Branding Form */}
+                <div className="lg:col-span-5 h-[840px] sm:h-[880px] lg:h-[900px]">
+                  <AgentProfileForm
+                    profile={profile}
+                    onChange={setProfile}
+                    options={options}
+                    onOptionsChange={setOptions}
+                    onSave={handleSaveProfile}
+                    onReset={handleResetProfile}
+                    saveStatus={saveStatus}
+                  />
                 </div>
-                <div>
-                  <div className="font-bold text-white text-xs sm:text-sm">Upload Disclosure</div>
-                  <div className="text-[11px] text-sky-200">Appended after standard</div>
+
+                {/* Right: Live Interactive PDF Preview */}
+                <div className="lg:col-span-7 h-[840px] sm:h-[880px] lg:h-[900px]">
+                  <LivePreview
+                    guide={activePreviewGuide}
+                    profile={profile}
+                    options={options}
+                    allGuides={guides}
+                    onSelectGuide={setActivePreviewGuide}
+                    onDownloadCurrent={() => handleDownloadSingle(activePreviewGuide)}
+                  />
                 </div>
-              </div>
+              </section>
 
-              <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 border border-white/15 flex items-center space-x-3.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-xs text-white shrink-0">
-                  3
+              {/* Section 2: Guide Catalog */}
+              <section className="pt-4">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
+                  <div>
+                    <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-[#0076BD] mb-1">
+                      <BookOpen className="w-4 h-4" />
+                      <span>The 6 Financial Guides Catalog</span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                      Choose Guides to Brand & Download
+                    </h2>
+                    <p className="text-xs text-slate-500">
+                      Select specific guides or all 6. Only the contact page and compliance disclosure are customized.
+                    </p>
+                  </div>
+
+                  <div className="text-xs text-slate-500">
+                    Selected: <strong className="text-slate-800">{selectedGuideIds.length}</strong> of {guides.length}
+                  </div>
                 </div>
-                <div>
-                  <div className="font-bold text-white text-xs sm:text-sm">Export & Deliver</div>
-                  <div className="text-[11px] text-sky-200">Clickable PDFs / ZIP</div>
-                </div>
-              </div>
-            </div>
+
+                <GuideCatalog
+                  guides={guides}
+                  selectedGuideIds={selectedGuideIds}
+                  activePreviewGuideId={activePreviewGuide.id}
+                  onToggleSelect={handleToggleSelect}
+                  onSelectAll={handleSelectAll}
+                  onDeselectAll={handleDeselectAll}
+                  onPreview={(g) => {
+                    setActivePreviewGuide(g);
+                    window.scrollTo({ top: 380, behavior: 'smooth' });
+                  }}
+                  onDownload={handleDownloadSingle}
+                  onUploadCustomPdf={handleUploadCustomPdf}
+                  onBatchDownload={handleBatchDownload}
+                  brandColor={profile.brandColor}
+                  isGenerating={batchProgress.isGenerating}
+                  isAdmin={isAdmin}
+                />
+              </section>
+            </main>
           </div>
-        </section>
+        )}
 
-        {/* Studio Workspace: Profile Form (Left) & Real-time Live Preview (Right) */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left: Branding Form */}
-          <div className="lg:col-span-5 h-[840px] sm:h-[880px] lg:h-[900px]">
-            <AgentProfileForm
-              profile={profile}
-              onChange={setProfile}
-              options={options}
-              onOptionsChange={setOptions}
-              onSave={handleSaveProfile}
-              onReset={handleResetProfile}
-              saveStatus={saveStatus}
-            />
-          </div>
-
-          {/* Right: Live Interactive PDF Preview */}
-          <div className="lg:col-span-7 h-[840px] sm:h-[880px] lg:h-[900px]">
-            <LivePreview
-              guide={activePreviewGuide}
-              profile={profile}
-              options={options}
-              allGuides={guides}
-              onSelectGuide={setActivePreviewGuide}
-              onDownloadCurrent={() => handleDownloadSingle(activePreviewGuide)}
-            />
-          </div>
-        </section>
-
-        {/* Section 2: Guide Catalog */}
-        <section className="pt-4">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
-            <div>
-              <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-[#0076BD] mb-1">
-                <BookOpen className="w-4 h-4" />
-                <span>The 6 Financial Guides Catalog</span>
-              </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-                Choose Guides to Brand & Download
-              </h2>
-              <p className="text-xs text-slate-500">
-                Select specific guides or all 6. Only the contact page and compliance disclosure are customized.
-              </p>
-            </div>
-
-            <div className="text-xs text-slate-500">
-              Selected: <strong className="text-slate-800">{selectedGuideIds.length}</strong> of {guides.length}
-            </div>
-          </div>
-
-          <GuideCatalog
-            guides={guides}
-            selectedGuideIds={selectedGuideIds}
-            activePreviewGuideId={activePreviewGuide.id}
-            onToggleSelect={handleToggleSelect}
-            onSelectAll={handleSelectAll}
-            onDeselectAll={handleDeselectAll}
-            onPreview={(g) => {
-              setActivePreviewGuide(g);
-              window.scrollTo({ top: 380, behavior: 'smooth' });
+        {activeStudioTab === 'social' && (
+          <SocialMediaStudio
+            profile={profile}
+            onUpdateProfile={(updated) => {
+              setProfile(updated);
+              saveProfileToStorage(updated);
             }}
-            onDownload={handleDownloadSingle}
-            onUploadCustomPdf={handleUploadCustomPdf}
-            onBatchDownload={handleBatchDownload}
             brandColor={profile.brandColor}
-            isGenerating={batchProgress.isGenerating}
-            isAdmin={isAdmin}
+            posts={socialPosts}
           />
-        </section>
-      </>
-    )}
+        )}
 
-    {activeStudioTab === 'social' && (
-      <SocialMediaStudio
-        profile={profile}
-        onUpdateProfile={(updated) => {
-          setProfile(updated);
-          saveProfileToStorage(updated);
-        }}
-        brandColor={profile.brandColor}
-        posts={socialPosts}
-      />
-    )}
+        {activeStudioTab === 'wealth' && (
+          <WealthStudio
+            profile={profile}
+            onUpdateProfile={(updated) => {
+              setProfile(updated);
+              saveProfileToStorage(updated);
+            }}
+            onSaveProfile={handleSaveProfile}
+            onResetProfile={handleResetProfile}
+            saveStatus={saveStatus}
+            options={options}
+            onOptionsChange={setOptions}
+            onBatchDownloadAll={handleWealthBatchDownload}
+            isBatchGenerating={batchProgress.isGenerating}
+            materials={wealthMaterials}
+          />
+        )}
 
-    {activeStudioTab === 'wealth' && (
-      <WealthStudio
-        profile={profile}
-        onUpdateProfile={(updated) => {
-          setProfile(updated);
-          saveProfileToStorage(updated);
-        }}
-        onSaveProfile={handleSaveProfile}
-        onResetProfile={handleResetProfile}
-        saveStatus={saveStatus}
-        options={options}
-        onOptionsChange={setOptions}
-        onBatchDownloadAll={handleWealthBatchDownload}
-        isBatchGenerating={batchProgress.isGenerating}
-        materials={wealthMaterials}
-      />
-    )}
-  </main>
-
-      {/* Footer with Simplicity Group Branding & 10% black background accent */}
-      <footer className="mt-16 border-t border-[#E6E6E6] bg-[#E6E6E6]/40 py-8 text-xs text-slate-600">
+      {/* Footer with Simplicity Group Branding */}
+      <footer className="mt-16 bg-[#E6E6E6]/40 py-8 text-xs text-slate-600">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <img

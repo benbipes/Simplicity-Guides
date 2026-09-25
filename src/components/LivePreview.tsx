@@ -183,9 +183,9 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   const disclosurePageNum = totalPages;               // N   (e.g. 13)
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col h-full">
+    <div className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
       {/* Top Bar with Guide Selector & Direct Jump Controls */}
-      <div className="border-b border-slate-200 bg-white p-3.5 sm:px-6 space-y-3">
+      <div className="bg-white p-3.5 sm:px-6 space-y-3">
         {/* Row 1: Title & Page Badge */}
         <div className="flex items-center space-x-2">
           <Eye className="w-4 h-4 text-[#0076BD]" />
@@ -213,7 +213,7 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
           </select>
 
           {/* Jump to Critical Pages: Cover, Contact, Disclosure */}
-          <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-semibold border border-slate-200/60 self-start sm:self-auto">
+          <div className="flex bg-slate-100 p-0.5 rounded-lg text-xs font-semibold self-start sm:self-auto">
             <button
               onClick={() => setCurrentPage(1)}
               title="View cover page"
@@ -270,14 +270,14 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
             <p className="text-xs text-slate-500 mt-1">{error}</p>
           </div>
         ) : (
-          <div className="shadow-2xl rounded-lg overflow-hidden border border-slate-300 bg-white">
+          <div className="shadow-2xl rounded-lg overflow-hidden bg-white">
             <canvas ref={canvasRef} className="block mx-auto" />
           </div>
         )}
       </div>
 
       {/* Interactive Bottom Control Bar */}
-      <div className="border-t border-slate-100 p-3 sm:px-6 bg-white flex flex-wrap items-center justify-between gap-3">
+      <div className="p-3 sm:px-6 bg-white flex flex-wrap items-center justify-between gap-3">
         {/* Pagination Controls */}
         <div className="flex items-center space-x-2">
           <button

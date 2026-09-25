@@ -101,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Crisp White Divider Line */}
-        <hr className="border-t border-white/40 mt-5 mb-1" />
+        <div className="h-px bg-white/20 mt-5 mb-1" />
       </div>
 
       {/* Scrollable Navigation Body */}
@@ -147,7 +147,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
 
         {/* Divider Line before Admin */}
-        <hr className="border-t border-white/25 my-5" />
+        <div className="h-px bg-white/20 my-5" />
 
         {/* Section 2: Differentiated Admin Menu */}
         <div className="space-y-2.5">
@@ -157,10 +157,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {isAdmin ? (
             /* Logged In Admin Section */
-            <div className="bg-[#002e4d] rounded-2xl p-4 border border-emerald-400/40 shadow-sm space-y-3 text-white">
+            <div className="bg-[#002e4d] rounded-2xl p-4 shadow-sm space-y-3 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2.5 min-w-0">
-                  <div className="p-1.5 bg-emerald-500/20 rounded-lg text-emerald-300 border border-emerald-400/30 shrink-0">
+                  <div className="p-1.5 bg-emerald-500/20 rounded-lg text-emerald-300 shrink-0">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -189,7 +189,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => onOpenUploader('guides')}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
                     <FolderUp className="w-4 h-4 text-emerald-300" />
@@ -201,7 +201,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => onOpenUploader('social')}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
                     <ThumbsUp className="w-4 h-4 text-sky-300" />
@@ -213,7 +213,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => onOpenUploader('wealth')}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
                     <CandlestickChart className="w-4 h-4 text-indigo-300" />
@@ -226,7 +226,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <button
                     type="button"
                     onClick={onOpenAdminUsers}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-purple-500/20 hover:bg-purple-600/40 text-purple-100 border border-purple-400/30 transition-all text-left cursor-pointer group"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-purple-500/20 hover:bg-purple-600/40 text-purple-100 transition-all text-left cursor-pointer group"
                   >
                     <div className="flex items-center space-x-2">
                       <Users className="w-4 h-4 text-purple-300" />
@@ -241,11 +241,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </button>
                 )}
 
-                <div className="pt-1 border-t border-white/10 mt-1">
+                <div className="pt-1 mt-1">
                   <button
                     type="button"
                     onClick={onLoadDemo}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
                   >
                     <div className="flex items-center space-x-2">
                       <Sparkles className="w-4 h-4 text-amber-300" />
@@ -258,8 +258,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           ) : (
             /* Logged Out Admin Card */
-            <div className="bg-[#002e4d] rounded-2xl p-4 border border-white/15 text-center space-y-2.5">
-              <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center mx-auto text-sky-200">
+            <div className="bg-[#002e4d] rounded-2xl p-4 text-center space-y-2.5">
+              <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center mx-auto text-sky-200">
                 <Lock className="w-4 h-4" />
               </div>
               <div>
@@ -284,7 +284,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Sidebar Footer */}
-      <div className="p-4 px-6 border-t border-[#00355a] bg-[#00385c] text-[10px] text-sky-200/70 flex items-center justify-between">
+      <div className="p-4 px-6 bg-[#00385c] text-[10px] text-sky-200/70 flex items-center justify-between">
         <span>Simplicity Group Brand Standards</span>
         <span className="text-[9px] bg-white/15 px-1.5 py-0.5 rounded text-white font-semibold">v2.0</span>
       </div>
@@ -294,7 +294,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* Desktop Persistent Sidebar (w-80) */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-80 lg:shrink-0 bg-[#004372] border-r border-[#00355a] text-white min-h-screen sticky top-0 h-screen z-30 shadow-lg">
+      <aside className="hidden lg:flex lg:flex-col lg:w-80 lg:shrink-0 bg-[#004372] text-white min-h-screen sticky top-0 h-screen z-30 shadow-lg">
         {sidebarContent}
       </aside>
 

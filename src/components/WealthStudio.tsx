@@ -242,11 +242,11 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
   });
 
   return (
-    <div className="space-y-8">
-      {/* Studio Header Banner */}
-      <section className="bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200 border border-white/15">
+    <div className="flex-1 flex flex-col min-w-0">
+      {/* Studio Header Banner - Full Width Background */}
+      <section className="w-full bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-3 relative z-10">
+          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200">
             <Briefcase className="w-3.5 h-3.5 text-sky-300" />
             <span>Simplicity Wealth Institutional Advisor Suite</span>
           </div>
@@ -260,15 +260,15 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg border border-white/10">
+            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
               14 Institutional Wealth Assets
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg border border-white/10">
+            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
               <Users className="w-3.5 h-3.5 text-emerald-400" />
               Advisor Photos & Bios Customization
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg border border-white/10">
+            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
               1-Click Batch ZIP Export
             </span>
@@ -276,28 +276,30 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
         </div>
       </section>
 
-      {/* Main Studio Two-Column Workspace */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
-        {/* Left Column: Advisor Profile & Team Bios Form (5 cols) */}
-        <div className="lg:col-span-5 h-[840px] sm:h-[880px] lg:h-[900px]">
-          <AgentProfileForm
-            profile={profile}
-            onChange={onUpdateProfile}
-            options={options}
-            onOptionsChange={onOptionsChange}
-            onSave={onSaveProfile}
-            onReset={onResetProfile}
-            saveStatus={saveStatus}
-            initialTab="team"
-          />
-        </div>
-
-        {/* Right Column: Live Interactive Preview Pane (7 cols) */}
-        <div className="lg:col-span-7 h-[840px] sm:h-[880px] lg:h-[900px] flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Main Studio Body - Constrained Site Width */}
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+        {/* Main Studio Two-Column Workspace */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           
-          {/* Top Info Bar */}
-          <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
+          {/* Left Column: Advisor Profile & Team Bios Form (5 cols) */}
+          <div className="lg:col-span-5 h-[840px] sm:h-[880px] lg:h-[900px]">
+            <AgentProfileForm
+              profile={profile}
+              onChange={onUpdateProfile}
+              options={options}
+              onOptionsChange={onOptionsChange}
+              onSave={onSaveProfile}
+              onReset={onResetProfile}
+              saveStatus={saveStatus}
+              initialTab="team"
+            />
+          </div>
+
+          {/* Right Column: Live Interactive Preview Pane (7 cols) */}
+          <div className="lg:col-span-7 h-[840px] sm:h-[880px] lg:h-[900px] flex flex-col bg-white rounded-2xl shadow-sm overflow-hidden">
+            
+            {/* Top Info Bar */}
+            <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/70">
             <div className="space-y-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-[#0076BD]/10 text-[#0076BD]">
@@ -338,7 +340,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
 
           {/* Quick Page Jump Navigation (For Multi-Page Brochures & Flyers) */}
           {activeMaterial.format === 'pdf' && (
-            <div className="px-4 py-2 border-b border-slate-100 bg-white flex items-center justify-between gap-2 text-xs flex-wrap">
+            <div className="px-4 py-2 bg-white flex items-center justify-between gap-2 text-xs flex-wrap">
               <div className="flex items-center gap-1.5">
                 <span className="text-[11px] font-semibold text-slate-500 mr-1">Quick Jump:</span>
                 
@@ -363,7 +365,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                     className={`px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1 transition-all ${
                       currentPage === 5
                         ? 'bg-emerald-600 text-white shadow-2xs'
-                        : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
+                        : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
                     }`}
                   >
                     <Users className="w-3 h-3" />
@@ -468,13 +470,13 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                 ) : (
                   <canvas
                     ref={canvasRef}
-                    className="shadow-md rounded-md bg-white border border-slate-300 transition-all duration-150"
+                    className="shadow-md rounded-md bg-white transition-all duration-150"
                   />
                 )}
               </>
             ) : (
               /* PowerPoint Presentation Deck Interactive Card */
-              <div className="w-full max-w-lg p-6 bg-white rounded-2xl border border-slate-200 shadow-md text-center space-y-5">
+              <div className="w-full max-w-lg p-6 bg-white rounded-2xl shadow-md text-center space-y-5">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center mx-auto shadow-md">
                   <Presentation className="w-8 h-8" />
                 </div>
@@ -491,7 +493,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                   </p>
                 </div>
 
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 text-left space-y-2.5 text-xs text-slate-700">
+                <div className="bg-slate-50 rounded-xl p-4 text-left space-y-2.5 text-xs text-slate-700">
                   <div className="font-bold text-slate-900 flex items-center gap-1.5">
                     <Sparkles className="w-4 h-4 text-[#0076BD]" />
                     <span>Presentation Highlights & Structure:</span>
@@ -519,7 +521,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
           </div>
 
           {/* Footer Bar inside preview pane */}
-          <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+          <div className="px-4 py-2.5 bg-slate-50 text-[11px] text-slate-500 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-600" />
               Changes in profile form update preview automatically
@@ -532,7 +534,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
       </section>
 
       {/* Section 2: Catalog of all 14 Simplicity Wealth Materials */}
-      <section className="space-y-4 pt-4 border-t border-slate-200">
+      <section className="space-y-4 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-[#0076BD] mb-1">
@@ -569,7 +571,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === cat.id
                   ? 'bg-[#004372] text-white shadow-xs font-bold'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >
               {cat.label}
@@ -590,14 +592,14 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                   setActiveMaterial(mat);
                   window.scrollTo({ top: 400, behavior: 'smooth' });
                 }}
-                className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden flex flex-col cursor-pointer group hover:shadow-md ${
+                className={`bg-white rounded-2xl transition-all duration-200 overflow-hidden flex flex-col cursor-pointer group shadow-xs hover:shadow-md ${
                   isSelected
-                    ? 'border-[#0076BD] ring-2 ring-[#0076BD]/20 shadow-sm'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'ring-2 ring-[#0076BD]'
+                    : ''
                 }`}
               >
                 {/* Thumbnail Preview Banner */}
-                <div className="relative aspect-4/3 w-full bg-slate-100 overflow-hidden border-b border-slate-100 flex items-center justify-center">
+                <div className="relative aspect-4/3 w-full bg-slate-100 overflow-hidden flex items-center justify-center">
                   {mat.format === 'pptx' ? (
                     <div className="w-full h-full bg-gradient-to-tr from-[#003152] via-[#004372] to-[#0076BD] flex flex-col items-center justify-center p-4 text-white text-center">
                       <Presentation className="w-12 h-12 text-amber-300 mb-2" />
@@ -639,7 +641,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                         {mat.categoryLabel}
                       </span>
                       {mat.hasTeamSection && (
-                        <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded shrink-0">
+                        <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded shrink-0">
                           Bio & Photo
                         </span>
                       )}
@@ -655,7 +657,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
                   </div>
 
                   {/* Card Actions */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <div className="pt-2 flex items-center justify-between gap-2">
                     <button
                       type="button"
                       onClick={(e) => {
@@ -688,6 +690,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
           })}
         </div>
       </section>
+      </div>
     </div>
   );
 };

@@ -233,9 +233,9 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col h-full">
+    <div className="bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
       {/* Top Tab Navigation */}
-      <div className="border-b border-slate-200 px-4 sm:px-6 pt-3 flex space-x-2 sm:space-x-5 overflow-x-auto scrollbar-thin">
+      <div className="px-4 sm:px-6 pt-3 flex space-x-2 sm:space-x-5 overflow-x-auto scrollbar-thin">
         <button
           onClick={() => setActiveTab('profile')}
           className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
@@ -297,7 +297,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* 1. Color Logo (For Light Backgrounds: Contact & Disclosure Pages) */}
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between space-y-3">
+                <div className="p-3.5 bg-slate-50 rounded-xl flex flex-col justify-between space-y-3">
                   <div>
                     <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-[#0076BD]"></span>
@@ -306,7 +306,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                     <p className="text-[10px] text-slate-500">Contact & Disclosure Pages (White BG)</p>
                   </div>
 
-                  <div className="relative group w-full h-20 bg-white rounded-lg border border-slate-200 flex items-center justify-center p-2 overflow-hidden shadow-xs">
+                  <div className="relative group w-full h-20 bg-white rounded-lg flex items-center justify-center p-2 overflow-hidden shadow-xs">
                     {profile.logoDataUrl ? (
                       <>
                         <img
@@ -351,7 +351,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                 </div>
 
                 {/* 2. White Logo (For Dark Backgrounds: Cover Page Lower-Left) */}
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex flex-col justify-between space-y-3">
+                <div className="p-3.5 bg-slate-50 rounded-xl flex flex-col justify-between space-y-3">
                   <div>
                     <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-slate-800"></span>
@@ -360,7 +360,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                     <p className="text-[10px] text-slate-500">Cover Page Lower-Left (Dark BG)</p>
                   </div>
 
-                  <div className="relative group w-full h-20 bg-[#004372] rounded-lg border border-slate-700/30 flex items-center justify-center p-2 overflow-hidden shadow-xs">
+                  <div className="relative group w-full h-20 bg-[#004372] rounded-lg flex items-center justify-center p-2 overflow-hidden shadow-xs">
                     {profile.logoWhiteDataUrl ? (
                       <>
                         <img
@@ -405,7 +405,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                 </div>
               </div>
 
-              <p className="text-[11px] text-slate-500 bg-blue-50/50 rounded-lg p-2 border border-blue-100">
+              <p className="text-[11px] text-slate-500 bg-blue-50/50 rounded-lg p-2.5">
                 <strong>Placement:</strong> White logo automatically placed on the dark cover page (lower-left). Color logo placed on the white Contact and Disclosure pages. If only one logo is uploaded, it will automatically adapt to all pages.
               </p>
             </div>
@@ -540,11 +540,10 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
             </div>
           </div>
         )}
-
         {/* TAB 2: SOCIAL MEDIA & CHANNELS */}
         {activeTab === 'social' && (
           <div className="space-y-4">
-            <div className="bg-[#004372]/5 border border-[#004372]/15 rounded-xl p-3.5 text-xs text-[#004372]">
+            <div className="bg-[#004372]/5 rounded-xl p-3.5 text-xs text-[#004372]">
               <strong>Exact PDF Social Icons:</strong> The 5 circular icons at the bottom of the contact page (YouTube, Instagram, Facebook, LinkedIn, X) will be wired directly to your URLs.
             </div>
 
@@ -633,7 +632,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                   value={profile.socialLinks.twitter}
                   onChange={(e) => handleSocialChange('twitter', e.target.value)}
                   placeholder="https://x.com/yourhandle"
-                  className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] focus:border-[#0076BD] outline-none"
+                  className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
                 />
               </div>
             </div>
@@ -643,7 +642,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
         {/* TAB 3: UPLOAD DISCLOSURE (KEY USER REQUIREMENT) */}
         {activeTab === 'disclosure' && (
           <div className="space-y-5">
-            <div className="bg-[#004372]/5 border border-[#004372]/15 rounded-xl p-3.5 text-xs text-[#004372] flex items-start space-x-2">
+            <div className="bg-[#004372]/5 rounded-xl p-3.5 text-xs text-[#004372] flex items-start space-x-2">
               <AlertCircle className="w-4 h-4 text-[#0076BD] shrink-0 mt-0.5" />
               <div>
                 <strong>Compliance Disclosure Placement:</strong> Your uploaded disclosure file or custom text will be placed <strong>directly after the standard guide disclosure</strong> at the end of each guide, along with your logo.
@@ -655,9 +654,9 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
               <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">
                 Option A: Upload Compliance Disclosure Document
               </label>
-              <div className="p-4 bg-[#E6E6E6]/40 border-2 border-dashed border-slate-300 rounded-xl">
+              <div className="p-4 bg-[#E6E6E6]/40 rounded-xl">
                 {profile.uploadedDisclosure ? (
-                  <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-slate-200 shadow-xs">
+                  <div className="flex items-center justify-between bg-white p-3 rounded-lg shadow-xs">
                     <div className="flex items-center space-x-3">
                       <div className="w-9 h-9 rounded-lg bg-[#0076BD]/10 text-[#0076BD] flex items-center justify-center font-bold text-xs">
                         <FileCheck className="w-5 h-5" />
@@ -683,7 +682,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                   <div className="text-center py-4">
                     <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
                     <p className="text-xs font-bold text-slate-800 mb-1">
-                      Upload Broker-Dealer / RIA Compliance Disclosure
+                       Upload Broker-Dealer / RIA Compliance Disclosure
                     </p>
                     <p className="text-[11px] text-slate-500 mb-3">
                       Accepts PDF files (multi-page/single-page), images, or text files
@@ -732,7 +731,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
         {/* TAB 4: WEALTH TEAM & BIOS */}
         {activeTab === 'team' && (
           <div className="space-y-6">
-            <div className="bg-[#004372]/5 border border-[#004372]/15 rounded-xl p-3.5 text-xs text-[#004372] flex items-start space-x-2">
+            <div className="bg-[#004372]/5 rounded-xl p-3.5 text-xs text-[#004372] flex items-start space-x-2">
               <Users className="w-4 h-4 text-[#0076BD] shrink-0 mt-0.5" />
               <div>
                 <strong>Simplicity Wealth Co-Branded Materials:</strong> Custom headshot(s) and biography text will be stamped directly on <strong>Page 5 (&quot;Wealth Manager&quot;)</strong> of the <em>Our Team Prestige Brochure</em>, replacing the placeholder photos and Latin text.
@@ -740,7 +739,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
             </div>
 
             {/* ADVISOR 1 (PRIMARY) */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+            <div className="bg-slate-50 rounded-xl p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                   <User className="w-3.5 h-3.5 text-[#0076BD]" />
@@ -753,7 +752,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
 
               {/* Headshot Upload Tile */}
               <div className="flex items-center gap-4">
-                <div className="relative w-20 h-20 rounded-xl border border-slate-300 bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+                <div className="relative w-20 h-20 rounded-xl bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
                   {teamMembers[0]?.headshotDataUrl ? (
                     <img
                       src={teamMembers[0].headshotDataUrl}
@@ -873,7 +872,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
 
             {/* ADVISOR 2 (OPTIONAL) */}
             {teamMembers.length > 1 ? (
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+              <div className="bg-slate-50 rounded-xl p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
                     <User className="w-3.5 h-3.5 text-[#0076BD]" />
@@ -891,7 +890,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
 
                 {/* Headshot Upload Tile */}
                 <div className="flex items-center gap-4">
-                  <div className="relative w-20 h-20 rounded-xl border border-slate-300 bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+                  <div className="relative w-20 h-20 rounded-xl bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
                     {teamMembers[1]?.headshotDataUrl ? (
                       <img
                         src={teamMembers[1].headshotDataUrl}
@@ -1012,7 +1011,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
               <button
                 type="button"
                 onClick={handleAddSecondAdvisor}
-                className="w-full py-3.5 border-2 border-dashed border-slate-300 hover:border-[#0076BD] rounded-xl text-xs font-bold text-[#0076BD] hover:bg-sky-50/50 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full py-3.5 rounded-xl text-xs font-bold text-[#0076BD] bg-sky-50/60 hover:bg-sky-50 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <UserPlus className="w-4 h-4" />
                 <span>+ Add Second Advisor / Team Member to Page 5</span>
@@ -1024,7 +1023,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
       </div>
 
       {/* Footer Controls */}
-      <div className="border-t border-slate-100 p-4 bg-white flex items-center">
+      <div className="p-4 bg-white flex items-center">
         <button
           onClick={onReset}
           className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"

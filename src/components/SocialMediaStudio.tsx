@@ -190,15 +190,15 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Studio Header Banner */}
-      <section className="bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200 border border-white/15">
+    <div className="flex-1 flex flex-col min-w-0">
+      {/* Studio Header Banner - Full Width Background */}
+      <section className="w-full bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-3 relative z-10">
+          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200">
             <Share2 className="w-3.5 h-3.5 text-sky-300" />
             <span>Client-Facing Social Media Graphics Studio</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
             Brand Social Media Posts with Your Logo
           </h1>
           <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-4xl">
@@ -222,11 +222,13 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
         </div>
       </section>
 
-      {/* Main Studio Two-Column Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
-        {/* LEFT COLUMN: Controls & Logo Panel (5 cols) */}
-        <div className="lg:col-span-5 space-y-5 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+      {/* Main Studio Body - Constrained Site Width */}
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+        {/* Main Studio Two-Column Workspace */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          {/* LEFT COLUMN: Controls & Logo Panel (5 cols) */}
+          <div className="lg:col-span-5 space-y-5 bg-white p-5 sm:p-6 rounded-2xl shadow-sm">
           
           {/* Logo Section */}
           <div className="space-y-3">
@@ -269,10 +271,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
             {/* Logo Preview Tile */}
             <div
-              className={`relative group w-full h-24 rounded-xl border flex items-center justify-center p-3 transition-colors ${
+              className={`relative group w-full h-24 rounded-xl flex items-center justify-center p-3 transition-colors ${
                 logoVariant === 'white'
-                  ? 'bg-[#004372] border-slate-700/30'
-                  : 'bg-white border-slate-200'
+                  ? 'bg-[#004372]'
+                  : 'bg-slate-100'
               }`}
             >
               {activeLogoDataUrl ? (
@@ -321,7 +323,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             </div>
           </div>
 
-          <hr className="border-slate-100" />
+          <div className="h-px bg-slate-100" />
 
           {/* Placement Selector */}
           <div className="space-y-3">
@@ -340,10 +342,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <button
                 type="button"
                 onClick={() => setPlacement('top-left')}
-                className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
+                className={`p-2.5 text-xs font-semibold rounded-xl text-left flex items-center justify-between transition-all ${
                   placement === 'top-left'
-                    ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
-                    : 'border-slate-200 text-slate-700 hover:border-slate-300'
+                    ? 'bg-[#0076BD]/10 text-[#0076BD] font-bold shadow-xs ring-2 ring-[#0076BD]'
+                    : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 <span>Top Left</span>
@@ -353,10 +355,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <button
                 type="button"
                 onClick={() => setPlacement('top-right')}
-                className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
+                className={`p-2.5 text-xs font-semibold rounded-xl text-left flex items-center justify-between transition-all ${
                   placement === 'top-right'
-                    ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
-                    : 'border-slate-200 text-slate-700 hover:border-slate-300'
+                    ? 'bg-[#0076BD]/10 text-[#0076BD] font-bold shadow-xs ring-2 ring-[#0076BD]'
+                    : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 <span>Top Right</span>
@@ -366,10 +368,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <button
                 type="button"
                 onClick={() => setPlacement('bottom-left')}
-                className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
+                className={`p-2.5 text-xs font-semibold rounded-xl text-left flex items-center justify-between transition-all ${
                   placement === 'bottom-left'
-                    ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
-                    : 'border-slate-200 text-slate-700 hover:border-slate-300'
+                    ? 'bg-[#0076BD]/10 text-[#0076BD] font-bold shadow-xs ring-2 ring-[#0076BD]'
+                    : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 <span>Bottom Left</span>
@@ -379,10 +381,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <button
                 type="button"
                 onClick={() => setPlacement('bottom-right')}
-                className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
+                className={`p-2.5 text-xs font-semibold rounded-xl text-left flex items-center justify-between transition-all ${
                   placement === 'bottom-right'
-                    ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
-                    : 'border-slate-200 text-slate-700 hover:border-slate-300'
+                    ? 'bg-[#0076BD]/10 text-[#0076BD] font-bold shadow-xs ring-2 ring-[#0076BD]'
+                    : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 <span>Bottom Right</span>
@@ -391,7 +393,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             </div>
           </div>
 
-          <hr className="border-slate-100" />
+          <div className="h-px bg-slate-100" />
 
           {/* Logo Size Scale Slider */}
           <div className="space-y-2">
@@ -426,7 +428,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             </div>
           </div>
 
-          <hr className="border-slate-100" />
+          <div className="h-px bg-slate-100" />
 
           {/* Download Actions */}
           <div className="space-y-3 pt-1">
@@ -434,7 +436,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                 4. Export
               </span>
-              <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
+              <div className="inline-flex rounded-lg p-0.5 bg-slate-100">
                 <button
                   type="button"
                   onClick={() => setDownloadFormat('jpg')}
@@ -473,7 +475,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               type="button"
               onClick={handleBatchDownloadAll}
               disabled={isBatchDownloading}
-              className="w-full inline-flex items-center justify-center px-4 py-2 text-xs font-semibold rounded-xl text-[#004372] bg-[#004372]/10 hover:bg-[#004372]/20 border border-[#004372]/20 transition-all"
+              className="w-full inline-flex items-center justify-center px-4 py-2 text-xs font-semibold rounded-xl text-[#004372] bg-[#004372]/10 hover:bg-[#004372]/20 transition-all"
             >
               <Download className="w-3.5 h-3.5 mr-1.5" />
               {isBatchDownloading
@@ -484,10 +486,10 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
         </div>
 
         {/* RIGHT COLUMN: Live Interactive Real-Time Preview (7 cols) */}
-        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-7 bg-white rounded-2xl shadow-sm overflow-hidden flex flex-col">
           
           {/* Preview Navigation Tabs */}
-          <div className="border-b border-slate-200 px-4 py-3 bg-slate-50/70 flex items-center justify-between">
+          <div className="px-4 py-3 bg-slate-50/70 flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Eye className="w-4 h-4 text-[#0076BD]" />
               <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
@@ -501,7 +503,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
           </div>
 
           {/* Post Selection Tabs */}
-          <div className="px-4 py-2.5 border-b border-slate-100 bg-white flex items-center gap-1.5 overflow-x-auto scrollbar-thin">
+          <div className="px-4 py-2.5 bg-white flex items-center gap-1.5 overflow-x-auto scrollbar-thin">
             {allPosts.map((post, idx) => (
               <button
                 key={post.id}
@@ -521,7 +523,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
           {/* Canvas Preview Area */}
           <div className="p-4 sm:p-6 bg-slate-100/80 flex items-center justify-center min-h-[460px] sm:min-h-[540px]">
-            <div className="relative max-w-[500px] w-full aspect-square bg-slate-900 rounded-xl overflow-hidden shadow-xl border border-slate-300">
+            <div className="relative max-w-[500px] w-full aspect-square bg-slate-900 rounded-xl overflow-hidden shadow-2xl">
               <canvas
                 ref={canvasRef}
                 className="w-full h-full object-contain block"
@@ -536,7 +538,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
           </div>
 
           {/* Caption & Post Details */}
-          <div className="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-slate-800">
                 {activePost.title}
@@ -596,14 +598,14 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
                   handleSelectPost(post);
                   window.scrollTo({ top: 320, behavior: 'smooth' });
                 }}
-                className={`bg-white rounded-xl border p-3 flex flex-col justify-between cursor-pointer transition-all hover:shadow-md ${
+                className={`bg-white rounded-xl p-3 flex flex-col justify-between cursor-pointer transition-all shadow-xs hover:shadow-md ${
                   isSelected
-                    ? 'border-[#0076BD] ring-2 ring-[#0076BD]/20 shadow-sm'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'ring-2 ring-[#0076BD]'
+                    : ''
                 }`}
               >
                 <div>
-                  <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-slate-900 mb-2.5 border border-slate-200">
+                  <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-slate-900 mb-2.5">
                     <img
                       src={`${import.meta.env.BASE_URL}social-posts/${post.filename}`}
                       alt={post.title}
@@ -622,7 +624,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
                   </h4>
                 </div>
 
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                <div className="mt-3 pt-2.5 flex items-center justify-between">
                   <span className="text-[11px] font-medium text-slate-500">
                     {isSelected ? 'Editing' : 'Click to Edit'}
                   </span>
@@ -649,6 +651,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
           })}
         </div>
       </section>
+      </div>
     </div>
   );
 };

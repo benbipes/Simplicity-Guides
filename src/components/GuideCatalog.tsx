@@ -69,7 +69,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
   return (
     <div className="space-y-5">
       {/* Top Filter and Search Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xs">
+      <div className="bg-white rounded-2xl p-4 shadow-sm">
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           
           {/* Search Box */}
@@ -122,7 +122,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex items-center gap-1.5 mt-3 overflow-x-auto pb-1 pt-1 border-t border-slate-100">
+        <div className="flex items-center gap-1.5 mt-3 overflow-x-auto pb-1 pt-1">
           <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1 shrink-0 flex items-center">
             <Filter className="w-3 h-3 mr-1 text-[#0076BD]" />
             Topic:
@@ -148,7 +148,7 @@ export const GuideCatalog: React.FC<GuideCatalogProps> = ({
 
       {/* Guide Cards Grid */}
       {filteredGuides.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
+        <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
           <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
           <h3 className="text-base font-bold text-slate-800">No guides found</h3>
           <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
