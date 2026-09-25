@@ -27,6 +27,7 @@ export interface AgentProfile {
   };
   teamMembers?: TeamMemberBio[];
   workshopEvent?: {
+    title?: string;
     date: string;
     time: string;
     locationName: string;

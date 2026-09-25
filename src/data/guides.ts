@@ -141,5 +141,12 @@ export const DEMO_PROFILE = {
     youtube: 'https://youtube.com/@custominsurancebranding',
     instagram: 'https://instagram.com/custominsurancebranding'
   },
-  teamMembers: DEFAULT_TEAM_MEMBERS
+  teamMembers: DEFAULT_TEAM_MEMBERS,
+  workshopEvent: {
+    title: 'Simplifying College Planning',
+    date: 'Tuesday, October 20, 2026',
+    time: '6:00 PM - 7:30 PM',
+    locationName: "Piattino's Italian Restaurant",
+    locationAddress: '900 Summit Avenue\nSummit, New Jersey 07901',
+  },
 };

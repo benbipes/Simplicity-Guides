@@ -154,19 +154,18 @@ export async function brandCollegeDocument(
   // 1. WORKSHOP OVERVIEW & INVITATION FLYER
   if (material.id === 'scp-workshop-overview-flyer' && totalPages >= 1) {
     const page = doc.getPage(0);
-    const { width, height } = page.getSize();
+    const { width } = page.getSize();
 
-    // Bottom Left Details Box: Whiteout existing placeholder text & draw custom event details
-    // Box area: X: 50, Y: 110, W: 330, H: 65
+    // Entire Event Details & Logo Row: Seamless whiteout covering X: 30 to 585, Y: 105 to 183
     page.drawRectangle({
-      x: 48,
-      y: 110,
-      width: 325,
-      height: 65,
+      x: 30,
+      y: 105,
+      width: 555,
+      height: 78,
       color: rgb(1, 1, 1),
     });
 
-    const eventTitle = 'Simplifying College Planning';
+    const eventTitle = profile.workshopEvent?.title || 'Simplifying College Planning';
     const eventDateTime = profile.workshopEvent?.date
       ? `${profile.workshopEvent.date}${profile.workshopEvent.time ? ` at ${profile.workshopEvent.time}` : ''}`
       : 'October 20, 2026 at 6:00pm';
@@ -174,16 +173,16 @@ export async function brandCollegeDocument(
     const locationAddress = profile.workshopEvent?.locationAddress || '900 Summit Avenue\nSummit, New Jersey 07901';
 
     page.drawText(eventTitle, {
-      x: 50,
-      y: 156,
+      x: 36,
+      y: 158,
       size: 13,
       font: fontHelveticaBold,
       color: rgb(0.05, 0.1, 0.2),
     });
 
     page.drawText(eventDateTime, {
-      x: 50,
-      y: 140,
+      x: 36,
+      y: 142,
       size: 10,
       font: fontHelvetica,
       color: rgb(0.3, 0.35, 0.4),
@@ -191,26 +190,26 @@ export async function brandCollegeDocument(
 
     // Divider line inside details box
     page.drawLine({
-      start: { x: 220, y: 120 },
-      end: { x: 220, y: 165 },
+      start: { x: 220, y: 115 },
+      end: { x: 220, y: 170 },
       thickness: 1,
       color: rgb(0.85, 0.85, 0.85),
     });
 
     // Location text
     page.drawText(locationName, {
-      x: 232,
-      y: 156,
-      size: 9.5,
+      x: 235,
+      y: 158,
+      size: 10,
       font: fontHelveticaBold,
       color: rgb(0.2, 0.25, 0.3),
     });
 
     const locLines = locationAddress.split('\n');
-    let locY = 142;
+    let locY = 143;
     for (const l of locLines) {
       page.drawText(l, {
-        x: 232,
+        x: 235,
         y: locY,
         size: 9,
         font: fontHelvetica,
@@ -219,18 +218,10 @@ export async function brandCollegeDocument(
       locY -= 12;
     }
 
-    // Bottom Right Logo Area: X: 395, Y: 115, W: 175, H: 55
-    page.drawRectangle({
-      x: 395,
-      y: 110,
-      width: 175,
-      height: 65,
-      color: rgb(1, 1, 1),
-    });
-
+    // Logo Area on right side: X: 410 to 575
     if (embeddedLogo) {
       const maxW = 165;
-      const maxH = 50;
+      const maxH = 55;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -238,28 +229,28 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      const lx = 395 + (maxW - w) / 2;
-      const ly = 118 + (maxH - h) / 2;
+      const lx = 410 + (maxW - w) / 2;
+      const ly = 115 + (maxH - h) / 2;
       page.drawImage(embeddedLogo, { x: lx, y: ly, width: w, height: h });
       if (profile.website) {
         addClickableLink(doc, page, lx, ly, w, h, profile.website);
       }
     } else if (profile.company) {
       page.drawText(profile.company, {
-        x: 405,
-        y: 140,
+        x: 410,
+        y: 145,
         size: 13,
         font: fontHelveticaBold,
         color: rgb(0, 0.26, 0.45),
       });
     }
 
-    // Bottom Blue Contact Banner: X: 0, Y: 45, W: width, H: 45
+    // Bottom Royal Blue Contact Banner: covers Y: 65 to 105 (height 42)
     page.drawRectangle({
       x: 0,
-      y: 50,
+      y: 65,
       width: width,
-      height: 40,
+      height: 42,
       color: rgb(0.0, 0.46, 0.74), // #0076BD
     });
 
@@ -267,12 +258,12 @@ export async function brandCollegeDocument(
     const advisorContactPhone = profile.phone || '800-555-5555';
     const contactLine = `For additional information please contact ${advisorContactName} at ${advisorContactPhone}.`;
 
-    const textWidth = fontHelveticaBold.widthOfTextAtSize(contactLine, 12);
+    const textWidth = fontHelveticaBold.widthOfTextAtSize(contactLine, 11);
     const textX = Math.max(20, (width - textWidth) / 2);
     page.drawText(contactLine, {
       x: textX,
-      y: 65,
-      size: 12,
+      y: 80,
+      size: 11,
       font: fontHelveticaBold,
       color: rgb(1, 1, 1),
     });
@@ -283,18 +274,18 @@ export async function brandCollegeDocument(
     const page = doc.getPage(0);
     const { width } = page.getSize();
 
-    // Top Logo: X: 35, Y: 680, W: 200, H: 65
+    // Top Header: Whiteout entire top row from X: 30 to 585, Y: 635 to 735 (height 100)
     page.drawRectangle({
-      x: 35,
-      y: 680,
-      width: 200,
-      height: 65,
+      x: 30,
+      y: 635,
+      width: 555,
+      height: 100,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 185;
-      const maxH = 55;
+      const maxW = 195;
+      const maxH = 65;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -302,79 +293,70 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      page.drawImage(embeddedLogo, { x: 35, y: 685, width: w, height: h });
+      page.drawImage(embeddedLogo, { x: 35, y: 650, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, 35, 685, w, h, profile.website);
+        addClickableLink(doc, page, 35, 650, w, h, profile.website);
       }
     } else if (profile.company) {
       page.drawText(profile.company, {
         x: 35,
-        y: 705,
+        y: 685,
         size: 16,
         font: fontHelveticaBold,
         color: rgb(0, 0.26, 0.45),
       });
     }
 
-    // Top Right Contact Block: X: 270, Y: 680, W: 310, H: 65
-    page.drawRectangle({
-      x: 270,
-      y: 680,
-      width: 310,
-      height: 65,
-      color: rgb(1, 1, 1),
-    });
-
-    let topContactY = 730;
+    let topContactY = 715;
     if (profile.address) {
       const addrLines = profile.address.split('\n');
       for (const al of addrLines.slice(0, 2)) {
         page.drawText(al, {
-          x: 280,
+          x: 260,
           y: topContactY,
           size: 9.5,
           font: fontHelvetica,
           color: rgb(0.2, 0.25, 0.3),
         });
-        topContactY -= 12;
+        topContactY -= 13;
       }
     }
     if (profile.phone) {
       page.drawText(profile.phone, {
-        x: 280,
+        x: 260,
         y: topContactY,
         size: 9.5,
         font: fontHelveticaBold,
         color: rgb(0.1, 0.15, 0.2),
       });
-      topContactY -= 12;
+      topContactY -= 13;
     }
     if (profile.website) {
       page.drawText(profile.website, {
-        x: 280,
+        x: 260,
         y: topContactY,
         size: 9.5,
         font: fontHelvetica,
         color: rgb(0.0, 0.46, 0.74),
       });
-      addClickableLink(doc, page, 280, topContactY - 2, 200, 12, profile.website);
+      addClickableLink(doc, page, 260, topContactY - 2, 200, 12, profile.website);
     }
 
     // Advisor 1 Section: Presenter
-    // Whiteout Advisor 1 photo & bio area: X: 35, Y: 370, W: 540, H: 250
+    // Whiteout Advisor 1 photo & bio area: X: 30, Y: 310, width: 555, height: 285
     page.drawRectangle({
-      x: 35,
-      y: 370,
-      width: 540,
-      height: 250,
+      x: 30,
+      y: 310,
+      width: 555,
+      height: 285,
       color: rgb(1, 1, 1),
     });
 
-    // Draw Headshot 1 (or rounded frame)
+    // Draw Headshot 1
     if (embeddedHeadshot1) {
       page.drawImage(embeddedHeadshot1, {
         x: 35,
-        y: 490,
+        y: 465,
         width: 110,
         height: 120,
       });
@@ -385,16 +367,16 @@ export async function brandCollegeDocument(
     const adv1Title = primaryAdvisor?.title || profile.title || 'Founder and President';
 
     page.drawText(adv1Name, {
-      x: 160,
-      y: 595,
+      x: embeddedHeadshot1 ? 160 : 35,
+      y: 575,
       size: 15,
       font: fontHelveticaBold,
       color: rgb(0.0, 0.26, 0.45),
     });
 
     page.drawText(adv1Title, {
-      x: 160,
-      y: 578,
+      x: embeddedHeadshot1 ? 160 : 35,
+      y: 558,
       size: 11,
       font: fontHelveticaBold,
       color: rgb(0.2, 0.25, 0.3),
@@ -403,11 +385,12 @@ export async function brandCollegeDocument(
     // Bio text
     const defaultBio = `${adv1Name} is an experienced financial educator dedicated to guiding families through critical college and retirement planning decisions. With comprehensive experience in financial planning and college cost optimization, ${adv1Name} helps families maximize eligibility for financial aid while protecting core family retirement assets.`;
     const adv1Bio = primaryAdvisor?.bio || defaultBio;
-    const bioLines = wrapText(adv1Bio, 82);
-    let bioY = 555;
-    for (const line of bioLines.slice(0, 10)) {
+    const bioLines = wrapText(adv1Bio, embeddedHeadshot1 ? 75 : 88);
+    let bioY = 535;
+    for (const line of bioLines.slice(0, 12)) {
+      const lineX = (embeddedHeadshot1 && bioY > 450) ? 160 : 35;
       page.drawText(line, {
-        x: 35 + (bioY > 480 ? 125 : 0),
+        x: lineX,
         y: bioY,
         size: 9.5,
         font: fontHelvetica,
@@ -417,100 +400,103 @@ export async function brandCollegeDocument(
     }
 
     // Advisor 2 Section: Team Member
-    // Whiteout Advisor 2 photo & bio area: X: 35, Y: 110, W: 540, H: 240
+    // Whiteout Advisor 2 photo & bio area: X: 30, Y: 90, width: 555, height: 215
     page.drawRectangle({
-      x: 35,
-      y: 110,
-      width: 540,
-      height: 240,
+      x: 30,
+      y: 90,
+      width: 555,
+      height: 215,
       color: rgb(1, 1, 1),
     });
 
-    if (embeddedHeadshot2) {
-      page.drawImage(embeddedHeadshot2, {
-        x: 35,
-        y: 220,
-        width: 110,
-        height: 120,
-      });
-    }
+    if (secondaryAdvisor && (secondaryAdvisor.name || secondaryAdvisor.headshotDataUrl)) {
+      if (embeddedHeadshot2) {
+        page.drawImage(embeddedHeadshot2, {
+          x: 35,
+          y: 180,
+          width: 110,
+          height: 120,
+        });
+      }
 
-    const adv2Name = secondaryAdvisor?.name || 'Caroline Jensen';
-    const adv2Title = secondaryAdvisor?.title || 'Office Manager';
+      const adv2Name = secondaryAdvisor.name || 'Associate Wealth Advisor';
+      const adv2Title = secondaryAdvisor.title || 'Client Advisory Services';
 
-    page.drawText(adv2Name, {
-      x: 160,
-      y: 325,
-      size: 14,
-      font: fontHelveticaBold,
-      color: rgb(0.0, 0.26, 0.45),
-    });
-
-    page.drawText(adv2Title, {
-      x: 160,
-      y: 310,
-      size: 10.5,
-      font: fontHelveticaBold,
-      color: rgb(0.2, 0.25, 0.3),
-    });
-
-    const defaultBio2 = `${adv2Name} oversees client services and event operations, ensuring attendees and families receive personalized planning communications and workshop scheduling assistance.`;
-    const adv2Bio = secondaryAdvisor?.bio || defaultBio2;
-    const bioLines2 = wrapText(adv2Bio, 82);
-    let bio2Y = 290;
-    for (const line of bioLines2.slice(0, 8)) {
-      page.drawText(line, {
-        x: 35 + (bio2Y > 210 ? 125 : 0),
-        y: bio2Y,
-        size: 9.5,
-        font: fontHelvetica,
-        color: rgb(0.25, 0.28, 0.32),
-      });
-      bio2Y -= 13.5;
-    }
-
-    // Bottom Footer Disclosure
-    if (profile.disclaimer) {
-      // Whiteout existing footer text
-      page.drawRectangle({
-        x: 0,
-        y: 0,
-        width: width,
-        height: 48,
+      page.drawText(adv2Name, {
+        x: embeddedHeadshot2 ? 160 : 35,
+        y: 285,
+        size: 14,
+        font: fontHelveticaBold,
         color: rgb(0.0, 0.26, 0.45),
       });
 
-      const discLines = wrapText(profile.disclaimer, 110);
-      let discY = Math.min(30, 15 + discLines.length * 5);
-      for (const dl of discLines.slice(0, 3)) {
-        const dWidth = fontHelvetica.widthOfTextAtSize(dl, 7.5);
-        page.drawText(dl, {
-          x: Math.max(20, (width - dWidth) / 2),
-          y: discY,
-          size: 7.5,
+      page.drawText(adv2Title, {
+        x: embeddedHeadshot2 ? 160 : 35,
+        y: 270,
+        size: 10.5,
+        font: fontHelveticaBold,
+        color: rgb(0.2, 0.25, 0.3),
+      });
+
+      const defaultBio2 = `${adv2Name} oversees client services and event operations, ensuring attendees and families receive personalized planning communications and workshop scheduling assistance.`;
+      const adv2Bio = secondaryAdvisor.bio || defaultBio2;
+      const bioLines2 = wrapText(adv2Bio, embeddedHeadshot2 ? 75 : 88);
+      let bio2Y = 250;
+      for (const line of bioLines2.slice(0, 9)) {
+        const lineX = (embeddedHeadshot2 && bio2Y > 165) ? 160 : 35;
+        page.drawText(line, {
+          x: lineX,
+          y: bio2Y,
+          size: 9.5,
           font: fontHelvetica,
-          color: rgb(0.85, 0.9, 0.95),
+          color: rgb(0.25, 0.28, 0.32),
         });
-        discY -= 9;
+        bio2Y -= 13.5;
       }
+    }
+
+    // Bottom Footer Disclosure: X: 0 to width, Y: 0 to 52
+    page.drawRectangle({
+      x: 0,
+      y: 0,
+      width: width,
+      height: 52,
+      color: rgb(0.0, 0.26, 0.45),
+    });
+
+    const discLines = wrapText(
+      profile.disclaimer || 'Investment advisory services offered through custom registered investment advisory firms.',
+      115
+    );
+    let discY = Math.min(35, 15 + discLines.length * 5);
+    for (const dl of discLines.slice(0, 3)) {
+      const dWidth = fontHelvetica.widthOfTextAtSize(dl, 7.5);
+      page.drawText(dl, {
+        x: Math.max(20, (width - dWidth) / 2),
+        y: discY,
+        size: 7.5,
+        font: fontHelvetica,
+        color: rgb(0.85, 0.9, 0.95),
+      });
+      discY -= 9.5;
     }
   }
 
   // 3. FINANCIAL QUESTIONNAIRE
   else if (material.id === 'scp-financial-questionnaire' && totalPages >= 1) {
     const page = doc.getPage(0);
-    // Top Left Logo Area: X: 35, Y: 710, W: 180, H: 55
+    // Top Left Logo Area: X: 30, Y: 690, W: 240, H: 80
     page.drawRectangle({
-      x: 35,
-      y: 710,
-      width: 180,
-      height: 55,
+      x: 30,
+      y: 690,
+      width: 240,
+      height: 80,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 160;
-      const maxH = 48;
+      const maxW = 200;
+      const maxH = 58;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -518,14 +504,14 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      page.drawImage(embeddedLogo, { x: 35, y: 715, width: w, height: h });
+      page.drawImage(embeddedLogo, { x: 35, y: 705, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, 35, 715, w, h, profile.website);
+        addClickableLink(doc, page, 35, 705, w, h, profile.website);
       }
     } else if (profile.company) {
       page.drawText(profile.company, {
         x: 35,
-        y: 730,
+        y: 725,
         size: 14,
         font: fontHelveticaBold,
         color: rgb(0, 0.26, 0.45),
@@ -536,18 +522,18 @@ export async function brandCollegeDocument(
   // 4. VALUE PIECE / WHITE PAPER (Cover Page)
   else if (material.id === 'scp-value-piece' && totalPages >= 1) {
     const page = doc.getPage(0);
-    // Lower left branding block: X: 40, Y: 75, W: 280, H: 80
+    // Lower left branding block: X: 30, Y: 65, W: 335, H: 100
     page.drawRectangle({
-      x: 40,
-      y: 75,
-      width: 280,
-      height: 80,
+      x: 30,
+      y: 65,
+      width: 335,
+      height: 100,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 140;
-      const maxH = 50;
+      const maxW = 145;
+      const maxH = 55;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -555,24 +541,24 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      page.drawImage(embeddedLogo, { x: 42, y: 90, width: w, height: h });
+      page.drawImage(embeddedLogo, { x: 35, y: 85, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, 42, 90, w, h, profile.website);
+        addClickableLink(doc, page, 35, 85, w, h, profile.website);
       }
     }
 
     // Text details adjacent to logo
-    const textStartX = embeddedLogo ? 190 : 45;
-    let valY = 135;
+    const textStartX = embeddedLogo ? 190 : 40;
+    let valY = 140;
     if (profile.name) {
       page.drawText(profile.name, {
         x: textStartX,
         y: valY,
-        size: 9,
+        size: 9.5,
         font: fontHelveticaBold,
         color: rgb(0.15, 0.2, 0.25),
       });
-      valY -= 11;
+      valY -= 12;
     }
     if (profile.company) {
       page.drawText(profile.company, {
@@ -582,7 +568,7 @@ export async function brandCollegeDocument(
         font: fontHelvetica,
         color: rgb(0.3, 0.35, 0.4),
       });
-      valY -= 11;
+      valY -= 12;
     }
     if (profile.phone) {
       page.drawText(profile.phone, {
@@ -592,7 +578,7 @@ export async function brandCollegeDocument(
         font: fontHelvetica,
         color: rgb(0.3, 0.35, 0.4),
       });
-      valY -= 11;
+      valY -= 12;
     }
     if (profile.website) {
       page.drawText(profile.website, {
@@ -602,7 +588,7 @@ export async function brandCollegeDocument(
         font: fontHelvetica,
         color: rgb(0.0, 0.46, 0.74),
       });
-      addClickableLink(doc, page, textStartX, valY - 2, 120, 11, profile.website);
+      addClickableLink(doc, page, textStartX, valY - 2, 130, 11, profile.website);
     }
   }
 
@@ -612,17 +598,17 @@ export async function brandCollegeDocument(
     const { width } = page.getSize();
 
     // Card 1: Logo & Footer
-    // Logo 1: X: 220, Y: 615, W: 175, H: 55
+    // Logo 1: X: 180, Y: 585, W: 260, H: 75
     page.drawRectangle({
-      x: 210,
-      y: 610,
-      width: 195,
-      height: 60,
+      x: 180,
+      y: 585,
+      width: 260,
+      height: 75,
       color: rgb(1, 1, 1),
     });
     if (embeddedLogo) {
-      const maxW = 160;
-      const maxH = 48;
+      const maxW = 180;
+      const maxH = 52;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -630,16 +616,16 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      const lx = 210 + (195 - w) / 2;
-      page.drawImage(embeddedLogo, { x: lx, y: 616, width: w, height: h });
+      const lx = 180 + (260 - w) / 2;
+      page.drawImage(embeddedLogo, { x: lx, y: 595, width: w, height: h });
     }
 
-    // Footer 1: X: 70, Y: 430, W: 470, H: 140
+    // Footer 1: X: 50, Y: 415, W: 510, H: 50 (leaves Date, Time, Location labels untouched!)
     page.drawRectangle({
-      x: 65,
-      y: 430,
-      width: 480,
-      height: 140,
+      x: 50,
+      y: 415,
+      width: 510,
+      height: 50,
       color: rgb(0.0, 0.26, 0.45),
     });
     const contactLine1 = [
@@ -651,25 +637,25 @@ export async function brandCollegeDocument(
 
     const c1Width = fontHelvetica.widthOfTextAtSize(contactLine1, 8.5);
     page.drawText(contactLine1, {
-      x: Math.max(75, (width - c1Width) / 2),
-      y: 495,
+      x: Math.max(55, (width - c1Width) / 2),
+      y: 438,
       size: 8.5,
       font: fontHelvetica,
       color: rgb(1, 1, 1),
     });
 
     // Card 2: Logo & Footer
-    // Logo 2: X: 210, Y: 250, W: 195, H: 60
+    // Logo 2: X: 180, Y: 260, W: 260, H: 75
     page.drawRectangle({
-      x: 210,
-      y: 250,
-      width: 195,
-      height: 60,
+      x: 180,
+      y: 260,
+      width: 260,
+      height: 75,
       color: rgb(1, 1, 1),
     });
     if (embeddedLogo) {
-      const maxW = 160;
-      const maxH = 48;
+      const maxW = 180;
+      const maxH = 52;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -677,22 +663,22 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      const lx = 210 + (195 - w) / 2;
-      page.drawImage(embeddedLogo, { x: lx, y: 256, width: w, height: h });
+      const lx = 180 + (260 - w) / 2;
+      page.drawImage(embeddedLogo, { x: lx, y: 270, width: w, height: h });
     }
 
-    // Footer 2: X: 65, Y: 70, W: 480, H: 140
+    // Footer 2: X: 50, Y: 90, W: 510, H: 50
     page.drawRectangle({
-      x: 65,
-      y: 70,
-      width: 480,
-      height: 140,
+      x: 50,
+      y: 90,
+      width: 510,
+      height: 50,
       color: rgb(0.0, 0.26, 0.45),
     });
     const c2Width = fontHelvetica.widthOfTextAtSize(contactLine1, 8.5);
     page.drawText(contactLine1, {
-      x: Math.max(75, (width - c2Width) / 2),
-      y: 135,
+      x: Math.max(55, (width - c2Width) / 2),
+      y: 114,
       size: 8.5,
       font: fontHelvetica,
       color: rgb(1, 1, 1),
@@ -702,27 +688,28 @@ export async function brandCollegeDocument(
   // 6. OFFICE DIRECTIONS SHEET
   else if (material.id === 'scp-office-directions' && totalPages >= 1) {
     const page = doc.getPage(0);
+    const { width } = page.getSize();
 
-    // Callout Box on Map: X: 35, Y: 430, W: 270, H: 85
+    // Callout Box on Map: X: 35, Y: 430, W: 280, H: 95
     page.drawRectangle({
       x: 35,
       y: 430,
-      width: 270,
-      height: 85,
+      width: 280,
+      height: 95,
       color: rgb(0.0, 0.26, 0.45),
     });
 
     const companyName = profile.company || profile.name || 'Custom Insurance Branding';
     page.drawText(companyName, {
       x: 48,
-      y: 490,
+      y: 495,
       size: 13,
       font: fontHelveticaBold,
       color: rgb(1, 1, 1),
     });
 
-    const addr = profile.address || '86 Summit Avenue, Suite 303\nSummit, New Jersey 07901';
-    let dirY = 468;
+    const addr = profile.workshopEvent?.locationAddress || profile.address || '86 Summit Avenue, Suite 303\nSummit, New Jersey 07901';
+    let dirY = 472;
     for (const al of addr.split('\n')) {
       page.drawText(al, {
         x: 48,
@@ -734,18 +721,18 @@ export async function brandCollegeDocument(
       dirY -= 13;
     }
 
-    // Bottom Right Logo: X: 320, Y: 170, W: 200, H: 65
+    // Bottom Right Logo: X: 310, Y: 185, W: 245, H: 85
     page.drawRectangle({
-      x: 320,
-      y: 170,
-      width: 200,
-      height: 65,
+      x: 310,
+      y: 185,
+      width: 245,
+      height: 85,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 180;
-      const maxH = 55;
+      const maxW = 200;
+      const maxH = 65;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -753,27 +740,28 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      page.drawImage(embeddedLogo, { x: 320, y: 175, width: w, height: h });
+      const lx = 310 + (245 - w) / 2;
+      const ly = 185 + (85 - h) / 2;
+      page.drawImage(embeddedLogo, { x: lx, y: ly, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, 320, 175, w, h, profile.website);
+        addClickableLink(doc, page, lx, ly, w, h, profile.website);
       }
     }
 
-    // Bottom strip phone number: X: 0, Y: 0, W: width, H: 45
+    // Bottom strip phone number: X: 0, Y: 0, W: width, H: 48
     if (profile.phone) {
-      const pageW = page.getSize().width;
       page.drawRectangle({
         x: 0,
         y: 0,
-        width: pageW,
-        height: 45,
+        width: width,
+        height: 48,
         color: rgb(0.0, 0.26, 0.45),
       });
       const phoneLine = `For directions or parking questions, please call ${profile.phone}.`;
       const pWidth = fontHelveticaBold.widthOfTextAtSize(phoneLine, 11);
       page.drawText(phoneLine, {
-        x: Math.max(20, (pageW - pWidth) / 2),
-        y: 18,
+        x: Math.max(20, (width - pWidth) / 2),
+        y: 20,
         size: 11,
         font: fontHelveticaBold,
         color: rgb(1, 1, 1),
@@ -786,18 +774,18 @@ export async function brandCollegeDocument(
     const page = doc.getPage(0);
     const { width } = page.getSize();
 
-    // Top Logo: X: 200, Y: 680, W: 215, H: 65
+    // Top Logo: X: 170, Y: 645, W: 275, H: 85
     page.drawRectangle({
-      x: 200,
-      y: 680,
-      width: 215,
-      height: 65,
+      x: 170,
+      y: 645,
+      width: 275,
+      height: 85,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 185;
-      const maxH = 55;
+      const maxW = 220;
+      const maxH = 65;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -805,19 +793,20 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      const lx = 200 + (215 - w) / 2;
-      page.drawImage(embeddedLogo, { x: lx, y: 685, width: w, height: h });
+      const lx = 170 + (275 - w) / 2;
+      const ly = 645 + (85 - h) / 2;
+      page.drawImage(embeddedLogo, { x: lx, y: ly, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, lx, 685, w, h, profile.website);
+        addClickableLink(doc, page, lx, ly, w, h, profile.website);
       }
     }
 
-    // Footer navy strip: X: 0, Y: 0, W: width, H: 48
+    // Footer navy strip: X: 0, Y: 0, W: width, H: 55
     page.drawRectangle({
       x: 0,
       y: 0,
       width: width,
-      height: 48,
+      height: 55,
       color: rgb(0.0, 0.26, 0.45),
     });
 
@@ -831,7 +820,7 @@ export async function brandCollegeDocument(
     const ftWidth = fontHelvetica.widthOfTextAtSize(footerText, 9);
     page.drawText(footerText, {
       x: Math.max(20, (width - ftWidth) / 2),
-      y: 20,
+      y: 26,
       size: 9,
       font: fontHelvetica,
       color: rgb(1, 1, 1),
@@ -841,18 +830,19 @@ export async function brandCollegeDocument(
   // 8. WORKSHOP RESPONSE FORM
   else if (material.id === 'scp-workshop-response-form' && totalPages >= 1) {
     const page = doc.getPage(0);
-    // Top Left Logo: X: 35, Y: 620, W: 195, H: 65
+    const { width } = page.getSize();
+    // Top Left Logo: X: 30, Y: 600, W: 245, H: 85
     page.drawRectangle({
-      x: 35,
-      y: 620,
-      width: 195,
-      height: 65,
+      x: 30,
+      y: 600,
+      width: 245,
+      height: 85,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedLogo) {
-      const maxW = 175;
-      const maxH = 55;
+      const maxW = 200;
+      const maxH = 65;
       const aspect = embeddedLogo.width / embeddedLogo.height;
       let w = maxW;
       let h = w / aspect;
@@ -860,32 +850,36 @@ export async function brandCollegeDocument(
         h = maxH;
         w = h * aspect;
       }
-      page.drawImage(embeddedLogo, { x: 35, y: 625, width: w, height: h });
+      const lx = 30 + (245 - w) / 2;
+      const ly = 600 + (85 - h) / 2;
+      page.drawImage(embeddedLogo, { x: lx, y: ly, width: w, height: h });
       if (profile.website) {
-        addClickableLink(doc, page, 35, 625, w, h, profile.website);
+        addClickableLink(doc, page, lx, ly, w, h, profile.website);
       }
     }
 
-    // Bottom Disclosure placeholder replacement
-    if (profile.disclaimer) {
-      const { width } = page.getSize();
-      page.drawRectangle({
-        x: 0,
-        y: 12,
-        width: width,
-        height: 25,
-        color: rgb(0.0, 0.26, 0.45),
-      });
+    // Bottom Disclosure placeholder replacement: covers Y: 25 to 60 (covers "ADD DISCLOSURE FOR SECURITIES LICENSED ADVISOR")
+    page.drawRectangle({
+      x: 0,
+      y: 25,
+      width: width,
+      height: 35,
+      color: rgb(0.0, 0.26, 0.45),
+    });
 
-      const discText = profile.disclaimer;
-      const dWidth = fontHelvetica.widthOfTextAtSize(discText, 8);
-      page.drawText(discText, {
+    const discText = profile.disclaimer || 'Investment advisory services offered through licensed registered representatives and advisory firms.';
+    const discLines = wrapText(discText, 115);
+    let rDiscY = 44;
+    for (const dl of discLines.slice(0, 2)) {
+      const dWidth = fontHelvetica.widthOfTextAtSize(dl, 7.5);
+      page.drawText(dl, {
         x: Math.max(20, (width - dWidth) / 2),
-        y: 20,
-        size: 8,
+        y: rDiscY,
+        size: 7.5,
         font: fontHelvetica,
         color: rgb(1, 1, 1),
       });
+      rDiscY -= 9;
     }
   }
 
@@ -894,12 +888,12 @@ export async function brandCollegeDocument(
     const page = doc.getPage(18); // 0-indexed Page 19
     const { width } = page.getSize();
 
-    // Whiteout lower contact block: X: 35, Y: 70, W: 400, H: 140
+    // Whiteout lower contact block: X: 30, Y: 60, W: 555, H: 170
     page.drawRectangle({
-      x: 35,
-      y: 70,
-      width: 400,
-      height: 140,
+      x: 30,
+      y: 60,
+      width: 555,
+      height: 170,
       color: rgb(1, 1, 1),
     });
 
@@ -907,7 +901,7 @@ export async function brandCollegeDocument(
       ? 'If you have any questions regarding college planning and your individual\nfinancial situation, please contact your AFES instructor.'
       : 'If you have any questions regarding college planning and your individual\nfinancial situation, please contact your financial professional.';
 
-    let wbY = 195;
+    let wbY = 210;
     for (const cl of callout.split('\n')) {
       page.drawText(cl, {
         x: 35,
@@ -916,7 +910,7 @@ export async function brandCollegeDocument(
         font: fontHelveticaBold,
         color: rgb(0.0, 0.26, 0.45),
       });
-      wbY -= 14;
+      wbY -= 15;
     }
 
     wbY -= 6;
@@ -970,19 +964,19 @@ export async function brandCollegeDocument(
   else if (material.id === 'afes-syllabus' && totalPages >= 2) {
     const page = doc.getPage(1); // Page 2
 
-    // Whiteout Instructor Headshot & Contact Area: X: 150, Y: 280, W: 380, H: 140
+    // Whiteout Instructor Headshot & Contact Area: X: 140, Y: 260, W: 400, H: 165
     page.drawRectangle({
-      x: 150,
-      y: 280,
-      width: 380,
-      height: 140,
+      x: 140,
+      y: 260,
+      width: 400,
+      height: 165,
       color: rgb(1, 1, 1),
     });
 
     if (embeddedHeadshot1) {
       page.drawImage(embeddedHeadshot1, {
-        x: 150,
-        y: 290,
+        x: 145,
+        y: 285,
         width: 100,
         height: 115,
       });
@@ -992,7 +986,7 @@ export async function brandCollegeDocument(
     const sylTitle = primaryAdvisor?.title || 'AFES Instructor';
 
     page.drawText(sylName, {
-      x: 270,
+      x: embeddedHeadshot1 ? 265 : 150,
       y: 385,
       size: 14,
       font: fontHelveticaBold,
@@ -1000,7 +994,7 @@ export async function brandCollegeDocument(
     });
 
     page.drawText(sylTitle, {
-      x: 270,
+      x: embeddedHeadshot1 ? 265 : 150,
       y: 368,
       size: 10.5,
       font: fontHelveticaBold,
@@ -1010,7 +1004,7 @@ export async function brandCollegeDocument(
     let sylContactY = 345;
     if (profile.phone) {
       page.drawText(`Phone: ${profile.phone}`, {
-        x: 270,
+        x: embeddedHeadshot1 ? 265 : 150,
         y: sylContactY,
         size: 10,
         font: fontHelvetica,
@@ -1020,7 +1014,7 @@ export async function brandCollegeDocument(
     }
     if (profile.email) {
       page.drawText(`Email: ${profile.email}`, {
-        x: 270,
+        x: embeddedHeadshot1 ? 265 : 150,
         y: sylContactY,
         size: 10,
         font: fontHelvetica,
@@ -1033,12 +1027,12 @@ export async function brandCollegeDocument(
   else if (material.id === 'afes-course-evaluation' && totalPages >= 3) {
     const page = doc.getPage(2); // Page 3
 
-    // Whiteout disclaimer text area: X: 35, Y: 430, W: 540, H: 75
+    // Whiteout disclaimer text area: X: 30, Y: 410, W: 555, H: 100
     page.drawRectangle({
-      x: 35,
-      y: 430,
-      width: 540,
-      height: 75,
+      x: 30,
+      y: 410,
+      width: 555,
+      height: 100,
       color: rgb(1, 1, 1),
     });
 

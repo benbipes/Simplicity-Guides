@@ -166,6 +166,7 @@ export const CollegePlanningStudio: React.FC<CollegePlanningStudioProps> = ({
     profile.logoDataUrl,
     profile.logoWhiteDataUrl,
     profile.disclaimer,
+    profile.workshopEvent?.title,
     profile.workshopEvent?.date,
     profile.workshopEvent?.time,
     profile.workshopEvent?.locationName,
@@ -303,7 +304,7 @@ export const CollegePlanningStudio: React.FC<CollegePlanningStudioProps> = ({
                 onSave={onSaveProfile}
                 onReset={onResetProfile}
                 saveStatus={saveStatus}
-                initialTab="team"
+                initialTab="event"
               />
             </div>
           </div>

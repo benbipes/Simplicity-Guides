@@ -36,7 +36,7 @@ interface AgentProfileFormProps {
   onSave: () => void;
   onReset: () => void;
   saveStatus: string | null;
-  initialTab?: 'profile' | 'social' | 'disclosure' | 'team';
+  initialTab?: 'profile' | 'social' | 'disclosure' | 'team' | 'event';
 }
 
 export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
@@ -54,7 +54,13 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
   const disclosureInputRef = useRef<HTMLInputElement>(null);
   const headshotInputRef1 = useRef<HTMLInputElement>(null);
   const headshotInputRef2 = useRef<HTMLInputElement>(null);
-  const [activeTab, setActiveTab] = useState<'profile' | 'social' | 'disclosure' | 'team'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'profile' | 'social' | 'disclosure' | 'team' | 'event'>(initialTab);
+
+  React.useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
 
   const handleFieldChange = (field: keyof AgentProfile, value: any) => {
     onChange({
@@ -69,6 +75,23 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
       socialLinks: {
         ...profile.socialLinks,
         [network]: value,
+      },
+    });
+  };
+
+  const handleWorkshopEventChange = (
+    field: 'title' | 'date' | 'time' | 'locationName' | 'locationAddress',
+    value: string
+  ) => {
+    onChange({
+      ...profile,
+      workshopEvent: {
+        title: profile.workshopEvent?.title || '',
+        date: profile.workshopEvent?.date || '',
+        time: profile.workshopEvent?.time || '',
+        locationName: profile.workshopEvent?.locationName || '',
+        locationAddress: profile.workshopEvent?.locationAddress || '',
+        [field]: value,
       },
     });
   };
@@ -275,6 +298,17 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
           }`}
         >
           <span>4. Wealth Team & Bios</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('event')}
+          className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-1.5 ${
+            activeTab === 'event'
+              ? 'border-[#0076BD] text-[#0076BD]'
+              : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'
+          }`}
+        >
+          <Calendar className="w-3.5 h-3.5 text-[#0076BD]" />
+          <span>5. Workshop Event</span>
         </button>
       </div>
 
@@ -1017,6 +1051,91 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                 <span>+ Add Second Advisor / Team Member to Page 5</span>
               </button>
             )}
+          </div>
+        )}
+
+        {/* TAB 5: WORKSHOP EVENT DETAILS */}
+        {activeTab === 'event' && (
+          <div className="space-y-5">
+            <div className="bg-sky-50/60 rounded-xl p-4 border border-sky-100/80">
+              <h3 className="text-xs font-bold text-[#004372] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-[#0076BD]" />
+                Workshop & Presentation Details
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Configure your upcoming seminar or client workshop details. These dynamically co-brand the Workshop Overview Flyer, Office Directions, Notes Sheets, and Response Forms with zero overlap.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                Workshop / Event Title
+              </label>
+              <input
+                type="text"
+                value={profile.workshopEvent?.title || ''}
+                onChange={(e) => handleWorkshopEventChange('title', e.target.value)}
+                placeholder="e.g. Simplifying College Planning"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  Event Date
+                </label>
+                <input
+                  type="text"
+                  value={profile.workshopEvent?.date || ''}
+                  onChange={(e) => handleWorkshopEventChange('date', e.target.value)}
+                  placeholder="e.g. Tuesday, October 20, 2026"
+                  className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  Event Time
+                </label>
+                <input
+                  type="text"
+                  value={profile.workshopEvent?.time || ''}
+                  onChange={(e) => handleWorkshopEventChange('time', e.target.value)}
+                  placeholder="e.g. 6:00 PM - 7:30 PM"
+                  className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                Venue / Location Name
+              </label>
+              <input
+                type="text"
+                value={profile.workshopEvent?.locationName || ''}
+                onChange={(e) => handleWorkshopEventChange('locationName', e.target.value)}
+                placeholder="e.g. Piattino's Italian Restaurant or Compass Wealth Training Center"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                Venue Address & Location Details
+              </label>
+              <textarea
+                rows={3}
+                value={profile.workshopEvent?.locationAddress || ''}
+                onChange={(e) => handleWorkshopEventChange('locationAddress', e.target.value)}
+                placeholder="e.g. 900 Summit Avenue&#10;Summit, New Jersey 07901"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none leading-relaxed"
+              />
+              <p className="text-[10px] text-slate-400 mt-1">
+                Enter the street address, suite, and city/state/zip. Used for event flyers and office directions.
+              </p>
+            </div>
           </div>
         )}
 
