@@ -6,6 +6,9 @@ import { GuideCatalog } from './components/GuideCatalog';
 import { MasterGuideUploader } from './components/MasterGuideUploader';
 import { BatchDownloadModal } from './components/BatchDownloadModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
+import { SocialMediaStudio } from './components/SocialMediaStudio';
+import { SOCIAL_POSTS } from './data/socialPosts';
+import { downloadAllSocialPostsZip } from './utils/socialBrander';
 import {
   AgentProfile,
   FinancialGuide,
@@ -104,6 +107,22 @@ export const App: React.FC = () => {
     totalSteps: 0,
     currentGuideTitle: '',
   });
+
+  // 7. Active Studio Tab ('guides' | 'social')
+  const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social'>('guides');
+
+  const handleSocialBatchDownload = async () => {
+    try {
+      const logo = profile.logoWhiteDataUrl || profile.logoDataUrl || '';
+      await downloadAllSocialPostsZip(SOCIAL_POSTS, logo, {
+        position: 'top-center',
+        scale: 1.0,
+        replaceTopLogo: true,
+      });
+    } catch (err: any) {
+      alert(`Social batch download failed: ${err.message}`);
+    }
+  };
 
   // Auto-save profile and options to browser storage
   useEffect(() => {
@@ -279,13 +298,56 @@ export const App: React.FC = () => {
         isAdmin={isAdmin}
         onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
         onAdminLogout={handleAdminLogout}
+        activeStudioTab={activeStudioTab}
+        onChangeStudioTab={setActiveStudioTab}
+        onSocialBatchDownload={handleSocialBatchDownload}
       />
 
       {/* Main Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
         
-        {/* Simplicity Group Branded Hero Banner */}
-        <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
+        {/* Studio Switcher Pill Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
+          <div className="flex items-center space-x-2 bg-slate-200/80 p-1.5 rounded-2xl w-fit">
+            <button
+              type="button"
+              onClick={() => setActiveStudioTab('guides')}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeStudioTab === 'guides'
+                  ? 'bg-white text-[#004372] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <BookOpen className="w-4 h-4 text-[#0076BD]" />
+              <span>1. Financial Guides (6 Master PDFs)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveStudioTab('social')}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeStudioTab === 'social'
+                  ? 'bg-white text-[#004372] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Share2 className="w-4 h-4 text-[#0076BD]" />
+              <span>2. Social Media Posts (5 Graphics)</span>
+            </button>
+          </div>
+
+          <div className="text-xs text-slate-500 font-medium">
+            {activeStudioTab === 'guides' ? (
+              <span>Personalize client-facing PDF guides with contact info & disclosures</span>
+            ) : (
+              <span>Stamp your logo directly onto ready-to-share social graphics</span>
+            )}
+          </div>
+        </div>
+
+        {activeStudioTab === 'guides' ? (
+          <>
+            {/* Simplicity Group Branded Hero Banner */}
+            <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
           <div className="relative z-10 space-y-4">
             <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
               Welcome to the Complimentary Financial Guides Co-Branding Studio
@@ -397,7 +459,18 @@ export const App: React.FC = () => {
             isAdmin={isAdmin}
           />
         </section>
-      </main>
+      </>
+    ) : (
+      <SocialMediaStudio
+        profile={profile}
+        onUpdateProfile={(updated) => {
+          setProfile(updated);
+          saveProfileToStorage(updated);
+        }}
+        brandColor={profile.brandColor}
+      />
+    )}
+  </main>
 
       {/* Footer with Simplicity Group Branding & 10% black background accent */}
       <footer className="mt-16 border-t border-[#E6E6E6] bg-[#E6E6E6]/40 py-8 text-xs text-slate-600">
