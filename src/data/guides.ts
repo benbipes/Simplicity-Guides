@@ -12,6 +12,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 13,
     contactPageNumber: 11,
     disclosurePageNumber: 13,
+    standardDisclosureBottomY: 575,
     themeColor: '#1d4ed8',
     topics: [
       'Age 50 Catch-Up Contributions & SECURE 2.0 Limits',
@@ -31,6 +32,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 20,
     contactPageNumber: 18,
     disclosurePageNumber: 20,
+    standardDisclosureBottomY: 546,
     themeColor: '#059669',
     topics: [
       'Average Long-Term Care Costs: Home, Assisted Living, & Nursing Homes',
@@ -50,6 +52,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 16,
     contactPageNumber: 14,
     disclosurePageNumber: 16,
+    standardDisclosureBottomY: 615,
     themeColor: '#0369a1',
     topics: [
       'Ages 5-13: Teaching Delayed Gratification, Chores & Banking Basics',
@@ -69,6 +72,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 15,
     contactPageNumber: 13,
     disclosurePageNumber: 15,
+    standardDisclosureBottomY: 457,
     themeColor: '#6d28d9',
     topics: [
       'The $124 Trillion Generational Wealth Transfer to Gen X & Millennials',
@@ -88,6 +92,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 17,
     contactPageNumber: 15,
     disclosurePageNumber: 17,
+    standardDisclosureBottomY: 297,
     themeColor: '#0f766e',
     topics: [
       'Recent History of Pensions & Defined-Benefit vs. 401(k) Differences',
@@ -107,6 +112,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 17,
     contactPageNumber: 15,
     disclosurePageNumber: 17,
+    standardDisclosureBottomY: 397,
     themeColor: '#78350f',
     topics: [
       'Business Succession Planning: Identifying Successors & Roles',
@@ -126,6 +132,7 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
     pages: 13,
     contactPageNumber: 11,
     disclosurePageNumber: 13,
+    standardDisclosureBottomY: 595,
     themeColor: '#ea580c',
     topics: [
       'Tips to Help Avoid Market Panic Reaction & Emotional Decisions',

@@ -1,6 +1,6 @@
 import { PDFDocument, PDFName, PDFString, rgb, StandardFonts, PDFImage } from 'pdf-lib';
 import { AgentProfile, BrandingOptions, FinancialGuide } from '../types/index';
-import { sanitizeProfile, wrapSanitizedText } from './pdfSanitizer';
+import { sanitizeProfile, wrapSanitizedText, wrapTextToWidth } from './pdfSanitizer';
 
 export function addClickableLink(
   doc: PDFDocument,
@@ -333,9 +333,11 @@ export async function brandFinancialGuidePdf(
       if (customText || hasLogo) {
         const discPage = doc.getPage(disclosurePageIndex);
         const { width } = discPage.getSize();
+        const maxWidth = width - 108; // Exactly 504 pt (X: 54 to X: 558), matching standard disclosure margin
 
-        // Safe placement below standard disclosure text (Y = 460)
-        const startY = 460;
+        // Safe placement below standard disclosure text
+        const baseBottomY = guide.standardDisclosureBottomY || 460;
+        const startY = baseBottomY - 24;
 
         discPage.drawLine({
           start: { x: 54, y: startY },
@@ -344,12 +346,12 @@ export async function brandFinancialGuidePdf(
           thickness: 1,
         });
 
-        let curY = startY - 20;
+        let curY = startY - 22;
 
         // Draw Agent Logo on Disclosure Page if present
         if (lightBgLogo) {
-          const maxLogoW = 120;
-          const maxLogoH = 34;
+          const maxLogoW = 140;
+          const maxLogoH = 40;
           const scale = Math.min(maxLogoW / lightBgLogo.width, maxLogoH / lightBgLogo.height, 1);
           const lw = lightBgLogo.width * scale;
           const lh = lightBgLogo.height * scale;
@@ -366,12 +368,17 @@ export async function brandFinancialGuidePdf(
             addClickableLink(doc, discPage, 54, curY - lh, lw, lh, cleanProfile.website);
           }
 
-          curY -= (lh + 16);
+          curY -= (lh + 20);
         }
 
         // Render custom disclosure text if provided
         if (customText) {
-          const lines = wrapSanitizedText(customText, 110);
+          // Exactly matches the standard disclosure font scale, dark tone (#1f1f1f), and line leading
+          const fontSize = 13;
+          const lineHeight = 20;
+
+          // Wrap text dynamically according to exact Helvetica point width across full margin
+          const lines = wrapTextToWidth(customText, fontRegular, fontSize, maxWidth);
 
           let lineIdx = 0;
           while (lineIdx < lines.length && curY >= 95) {
@@ -380,33 +387,54 @@ export async function brandFinancialGuidePdf(
               discPage.drawText(line, {
                 x: 54,
                 y: curY,
-                size: 7.2,
+                size: fontSize,
                 font: fontRegular,
-                color: pdfGrayColor,
+                color: rgb(0.12, 0.12, 0.12),
               });
+              curY -= lineHeight;
+            } else {
+              // Paragraph spacing
+              curY -= lineHeight * 0.65;
             }
-            curY -= 11.5;
             lineIdx++;
           }
 
-          // If text overflows, add continuation page
-          if (lineIdx < lines.length) {
+          // If text overflows, add continuation page(s)
+          while (lineIdx < lines.length) {
             const contPage = doc.addPage([612, 792]);
             const { height: contH } = contPage.getSize();
 
-            let contY = contH - 60;
+            // Continuation page title
+            contPage.drawText('Disclosure (Continued)', {
+              x: 54,
+              y: contH - 60,
+              size: 20,
+              font: fontBold,
+              color: rgb(0.0, 0.263, 0.447),
+            });
+
+            contPage.drawLine({
+              start: { x: 54, y: contH - 74 },
+              end: { x: width - 54, y: contH - 74 },
+              color: rgb(0.85, 0.85, 0.85),
+              thickness: 1,
+            });
+
+            let contY = contH - 100;
             while (lineIdx < lines.length && contY >= 60) {
               const line = lines[lineIdx];
               if (line) {
                 contPage.drawText(line, {
                   x: 54,
                   y: contY,
-                  size: 7.2,
+                  size: fontSize,
                   font: fontRegular,
-                  color: pdfGrayColor,
+                  color: rgb(0.12, 0.12, 0.12),
                 });
+                contY -= lineHeight;
+              } else {
+                contY -= lineHeight * 0.65;
               }
-              contY -= 11.5;
               lineIdx++;
             }
           }

@@ -95,6 +95,7 @@ export interface FinancialGuide {
   themeColor: string;
   customPdfBytes?: Uint8Array;
   isCustom?: boolean;
+  standardDisclosureBottomY?: number; // Y coordinate where standard disclosure ends on disclosure page
 }
 
 export interface BrandingOptions {

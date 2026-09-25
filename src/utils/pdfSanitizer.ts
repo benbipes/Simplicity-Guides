@@ -147,6 +147,70 @@ export function wrapSanitizedText(
 }
 
 /**
+ * Wrap sanitized text into lines that fit within a precise point width (maxWidth),
+ * measuring each line using font.widthOfTextAtSize().
+ *
+ * Each line returned is guaranteed:
+ * 1. Sanitized for WinAnsi
+ * 2. Free of newlines and carriage returns
+ * 3. Formatted to extend all the way across the available width to the right margin
+ * 4. Empty strings for paragraph breaks are preserved
+ */
+export function wrapTextToWidth(
+  text: string | null | undefined,
+  font: { widthOfTextAtSize: (text: string, size: number) => number },
+  fontSize: number,
+  maxWidth: number
+): string[] {
+  const sanitized = sanitizeForPdf(text, { allowNewlines: true });
+  if (!sanitized) return [];
+
+  const paragraphs = sanitized.split('\n');
+  const lines: string[] = [];
+
+  for (const para of paragraphs) {
+    const trimmed = para.trim();
+    if (!trimmed) {
+      lines.push('');
+      continue;
+    }
+
+    const words = trimmed.split(/\s+/);
+    let curLine = '';
+
+    for (const word of words) {
+      const testLine = curLine ? `${curLine} ${word}` : word;
+      if (font.widthOfTextAtSize(testLine, fontSize) <= maxWidth) {
+        curLine = testLine;
+      } else {
+        if (curLine) {
+          lines.push(curLine);
+          curLine = '';
+        }
+        if (font.widthOfTextAtSize(word, fontSize) <= maxWidth) {
+          curLine = word;
+        } else {
+          // Break oversized word character-by-character
+          let sub = '';
+          for (const ch of word) {
+            if (font.widthOfTextAtSize(sub + ch, fontSize) > maxWidth) {
+              lines.push(sub);
+              sub = ch;
+            } else {
+              sub += ch;
+            }
+          }
+          curLine = sub;
+        }
+      }
+    }
+    if (curLine) lines.push(curLine);
+  }
+
+  return lines;
+}
+
+/**
  * Create a sanitized copy of an AgentProfile guaranteed safe for PDF generation.
  */
 export function sanitizeProfile(profile: AgentProfile): AgentProfile {
