@@ -244,32 +244,40 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
   return (
     <div className="flex-1 flex flex-col min-w-0">
       {/* Studio Header Banner - Full Width Background */}
-      <section className="w-full bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+      <section
+        className="w-full bg-[#efefef] shadow-sm relative overflow-hidden"
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/hero-bg.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'right center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-3 relative z-10">
-          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200">
-            <Briefcase className="w-3.5 h-3.5 text-sky-300" />
+          <div className="inline-flex items-center space-x-2 bg-white/90 shadow-xs px-3 py-1 rounded-full text-xs font-semibold text-[#004372]">
+            <Briefcase className="w-3.5 h-3.5 text-[#0076BD]" />
             <span>Simplicity Wealth Institutional Advisor Suite</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-[#004372] leading-tight">
             Co-Brand Simplicity Wealth Materials with Your Logo, Bios & Headshots
           </h1>
 
-          <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
+          <p className="text-black/70 text-xs sm:text-sm leading-relaxed max-w-5xl">
             Customize all {allMaterials.length} institutional materials—including prestige brochures, investment specialization flyers, client questionnaires, and presentation decks. Upload your headshot(s), add personalized advisor biographies, and stamp your firm logo and contact details across every asset.
           </p>
 
-          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-black/70">
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-3 py-1.5 rounded-lg text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               14 Institutional Wealth Assets
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
-              <Users className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-3 py-1.5 rounded-lg text-slate-700">
+              <Users className="w-3.5 h-3.5 text-emerald-600" />
               Advisor Photos & Bios Customization
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-3 py-1.5 rounded-lg text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               1-Click Batch ZIP Export
             </span>
           </div>

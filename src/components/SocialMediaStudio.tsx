@@ -192,30 +192,38 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
   return (
     <div className="flex-1 flex flex-col min-w-0">
       {/* Studio Header Banner - Full Width Background */}
-      <section className="w-full bg-gradient-to-r from-[#004372] via-[#005c99] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+      <section
+        className="w-full bg-[#efefef] shadow-sm relative overflow-hidden"
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/hero-bg.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'right center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-3 relative z-10">
-          <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-sky-200">
-            <Share2 className="w-3.5 h-3.5 text-sky-300" />
+          <div className="inline-flex items-center space-x-2 bg-white/90 shadow-xs px-3 py-1 rounded-full text-xs font-semibold text-[#004372]">
+            <Share2 className="w-3.5 h-3.5 text-[#0076BD]" />
             <span>Client-Facing Social Media Graphics Studio</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-[#004372] leading-tight">
             Brand Social Media Posts with Your Logo
           </h1>
-          <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-4xl">
+          <p className="text-black/70 text-xs sm:text-sm leading-relaxed max-w-4xl">
             Effortlessly stamp your agency logo onto all {allPosts.length} square (1024×1024) social media graphics. No contact forms or complex setups required—just your logo, ready to download and publish to LinkedIn, Facebook, Instagram, or X.
           </p>
 
-          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
-            <span className="flex items-center gap-1.5 bg-black/20 px-2.5 py-1 rounded-md">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-black/70">
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-2.5 py-1 rounded-md text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               1024×1024 Square HD Format
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-2.5 py-1 rounded-md">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-2.5 py-1 rounded-md text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               White Knockout & Color Logo Support
             </span>
-            <span className="flex items-center gap-1.5 bg-black/20 px-2.5 py-1 rounded-md">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="flex items-center gap-1.5 bg-white/90 shadow-xs px-2.5 py-1 rounded-md text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               1-Click Batch ZIP Export
             </span>
           </div>

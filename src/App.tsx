@@ -467,44 +467,52 @@ export const App: React.FC = () => {
         {activeStudioTab === 'guides' && (
           <div className="flex-1 flex flex-col min-w-0">
             {/* Simplicity Group Branded Hero Banner - Full Width Background */}
-            <section className="w-full bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] text-white shadow-md relative overflow-hidden">
+            <section
+              className="w-full bg-[#efefef] shadow-sm relative overflow-hidden"
+              style={{
+                backgroundImage: `url(${import.meta.env.BASE_URL}images/hero-bg.png)`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'right center',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-4 relative z-10">
-                <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
+                <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-[#004372] leading-tight">
                   Welcome to the Complimentary Financial Guides Co-Branding Studio
                 </h1>
-                <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
-                  Upload your business logo, contact details, and social media handles to brand the <strong className="text-white font-bold">Contact Page</strong> of your chosen guide(s). Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong className="text-white font-bold">directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
+                <p className="text-black/70 text-xs sm:text-sm leading-relaxed max-w-5xl">
+                  Upload your business logo, contact details, and social media handles to brand the <strong className="text-black font-semibold">Contact Page</strong> of your chosen guide(s). Upload your compliance disclosure document (PDF, image, or text) to be automatically appended <strong className="text-black font-semibold">directly after the standard disclosure</strong> at the end of the guide. All original guide content remains 100% authentic and untouched.
                 </p>
 
-                {/* 3 Steps - Full width grid */}
+                {/* 3 Steps - Full width grid with unified color */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                  <div className="bg-white/90 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
                     <div className="w-8 h-8 rounded-lg bg-[#0076BD] flex items-center justify-center font-bold text-xs text-white shrink-0">
                       1
                     </div>
                     <div>
-                      <div className="font-bold text-white text-xs sm:text-sm">Contact Page Update</div>
-                      <div className="text-[11px] text-sky-200">Logo, links & socials</div>
+                      <div className="font-bold text-[#004372] text-xs sm:text-sm">Contact Page Update</div>
+                      <div className="text-[11px] text-black/70">Logo, links & socials</div>
                     </div>
                   </div>
 
-                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
-                    <div className="w-8 h-8 rounded-lg bg-[#00355a] flex items-center justify-center font-bold text-xs text-white shrink-0">
+                  <div className="bg-white/90 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#0076BD] flex items-center justify-center font-bold text-xs text-white shrink-0">
                       2
                     </div>
                     <div>
-                      <div className="font-bold text-white text-xs sm:text-sm">Upload Disclosure</div>
-                      <div className="text-[11px] text-sky-200">Appended after standard</div>
+                      <div className="font-bold text-[#004372] text-xs sm:text-sm">Upload Disclosure</div>
+                      <div className="text-[11px] text-black/70">Appended after standard</div>
                     </div>
                   </div>
 
-                  <div className="bg-[#004372]/45 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-xs text-white shrink-0">
+                  <div className="bg-white/90 backdrop-blur-xs rounded-xl p-3.5 shadow-sm flex items-center space-x-3.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#0076BD] flex items-center justify-center font-bold text-xs text-white shrink-0">
                       3
                     </div>
                     <div>
-                      <div className="font-bold text-white text-xs sm:text-sm">Export & Deliver</div>
-                      <div className="text-[11px] text-sky-200">Clickable PDFs / ZIP</div>
+                      <div className="font-bold text-[#004372] text-xs sm:text-sm">Export & Deliver</div>
+                      <div className="text-[11px] text-black/70">Clickable PDFs / ZIP</div>
                     </div>
                   </div>
                 </div>
