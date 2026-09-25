@@ -25,6 +25,33 @@ export interface AgentProfile {
     youtube: string;
     instagram: string;
   };
+  teamMembers?: TeamMemberBio[];
+}
+
+export interface TeamMemberBio {
+  id: string;
+  name: string;
+  title: string;
+  email: string;
+  phone: string;
+  bio: string;
+  headshotDataUrl?: string;
+}
+
+export interface WealthMaterial {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: 'flyer' | 'brochure' | 'questionnaire' | 'presentation' | string;
+  categoryLabel: string;
+  filename: string;
+  pages: number;
+  format: 'pdf' | 'pptx';
+  hasTeamSection?: boolean;
+  teamPageNumber?: number; // e.g. 5 for Our Team brochure
+  contactPages?: number[]; // pages that have contact blocks (e.g. [1, 2] or [1, 8])
+  description: string;
+  badge?: string;
 }
 
 export interface FinancialGuide {

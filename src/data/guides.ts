@@ -1,5 +1,6 @@
-import { FinancialGuide } from '../types';
+import { FinancialGuide } from '../types/index';
 import { SAMPLE_LOGO_COLOR, SAMPLE_LOGO_WHITE } from './sampleLogos';
+import { DEFAULT_TEAM_MEMBERS } from './wealthMaterials';
 
 export const INITIAL_GUIDES: FinancialGuide[] = [
   {
@@ -139,5 +140,6 @@ export const DEMO_PROFILE = {
     twitter: 'https://x.com/custominsbrand',
     youtube: 'https://youtube.com/@custominsurancebranding',
     instagram: 'https://instagram.com/custominsurancebranding'
-  }
+  },
+  teamMembers: DEFAULT_TEAM_MEMBERS
 };

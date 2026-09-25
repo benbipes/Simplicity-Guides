@@ -7,8 +7,11 @@ import { MasterGuideUploader } from './components/MasterGuideUploader';
 import { BatchDownloadModal } from './components/BatchDownloadModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SocialMediaStudio } from './components/SocialMediaStudio';
+import { WealthStudio } from './components/WealthStudio';
 import { SOCIAL_POSTS } from './data/socialPosts';
+import { WEALTH_MATERIALS } from './data/wealthMaterials';
 import { downloadAllSocialPostsZip } from './utils/socialBrander';
+import { downloadAllWealthMaterialsZip } from './utils/wealthBrander';
 import {
   AgentProfile,
   FinancialGuide,
@@ -36,6 +39,7 @@ import {
   CheckCircle2,
   FileCheck2,
   Share2,
+  Briefcase,
   MousePointerClick
 } from 'lucide-react';
 
@@ -108,8 +112,8 @@ export const App: React.FC = () => {
     currentGuideTitle: '',
   });
 
-  // 7. Active Studio Tab ('guides' | 'social')
-  const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social'>('guides');
+  // 7. Active Studio Tab ('guides' | 'social' | 'wealth')
+  const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social' | 'wealth'>('guides');
 
   const handleSocialBatchDownload = async () => {
     try {
@@ -120,6 +124,43 @@ export const App: React.FC = () => {
       });
     } catch (err: any) {
       alert(`Social batch download failed: ${err.message}`);
+    }
+  };
+
+  const handleWealthBatchDownload = async () => {
+    setBatchProgress({
+      isGenerating: true,
+      currentStep: 0,
+      totalSteps: WEALTH_MATERIALS.length,
+      currentGuideTitle: 'Initializing Simplicity Wealth branding engine...',
+    });
+
+    try {
+      await downloadAllWealthMaterialsZip(
+        WEALTH_MATERIALS,
+        profile,
+        (current, total, title) => {
+          setBatchProgress({
+            isGenerating: true,
+            currentStep: current,
+            totalSteps: total,
+            currentGuideTitle: title,
+          });
+        }
+      );
+      setTimeout(() => {
+        setBatchProgress({
+          isGenerating: false,
+          currentStep: 0,
+          totalSteps: 0,
+          currentGuideTitle: '',
+        });
+      }, 800);
+    } catch (err: any) {
+      setBatchProgress((prev) => ({
+        ...prev,
+        error: `Wealth batch generation failed: ${err.message}`,
+      }));
     }
   };
 
@@ -300,6 +341,7 @@ export const App: React.FC = () => {
         activeStudioTab={activeStudioTab}
         onChangeStudioTab={setActiveStudioTab}
         onSocialBatchDownload={handleSocialBatchDownload}
+        onWealthBatchDownload={handleWealthBatchDownload}
       />
 
       {/* Main Workspace */}
@@ -307,43 +349,59 @@ export const App: React.FC = () => {
         
         {/* Studio Switcher Pill Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
-          <div className="flex items-center space-x-2 bg-slate-200/80 p-1.5 rounded-2xl w-fit">
+          <div className="flex items-center space-x-2 bg-slate-200/80 p-1.5 rounded-2xl w-fit flex-wrap">
             <button
               type="button"
               onClick={() => setActiveStudioTab('guides')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeStudioTab === 'guides'
                   ? 'bg-white text-[#004372] shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <BookOpen className="w-4 h-4 text-[#0076BD]" />
-              <span>1. Financial Guides (6 Master PDFs)</span>
+              <span>1. Financial Guides (6)</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveStudioTab('social')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeStudioTab === 'social'
                   ? 'bg-white text-[#004372] shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Share2 className="w-4 h-4 text-[#0076BD]" />
-              <span>2. Social Media Posts (5 Graphics)</span>
+              <span>2. Social Media Posts (10)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveStudioTab('wealth')}
+              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                activeStudioTab === 'wealth'
+                  ? 'bg-white text-[#004372] shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Briefcase className="w-4 h-4 text-[#0076BD]" />
+              <span>3. Simplicity Wealth (14)</span>
             </button>
           </div>
 
           <div className="text-xs text-slate-500 font-medium">
-            {activeStudioTab === 'guides' ? (
+            {activeStudioTab === 'guides' && (
               <span>Personalize client-facing PDF guides with contact info & disclosures</span>
-            ) : (
+            )}
+            {activeStudioTab === 'social' && (
               <span>Stamp your logo directly onto ready-to-share social graphics</span>
+            )}
+            {activeStudioTab === 'wealth' && (
+              <span>Brand 14 institutional wealth assets with your logo, team bios & headshots</span>
             )}
           </div>
         </div>
 
-        {activeStudioTab === 'guides' ? (
+        {activeStudioTab === 'guides' && (
           <>
             {/* Simplicity Group Branded Hero Banner */}
             <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
@@ -459,7 +517,9 @@ export const App: React.FC = () => {
           />
         </section>
       </>
-    ) : (
+    )}
+
+    {activeStudioTab === 'social' && (
       <SocialMediaStudio
         profile={profile}
         onUpdateProfile={(updated) => {
@@ -467,6 +527,23 @@ export const App: React.FC = () => {
           saveProfileToStorage(updated);
         }}
         brandColor={profile.brandColor}
+      />
+    )}
+
+    {activeStudioTab === 'wealth' && (
+      <WealthStudio
+        profile={profile}
+        onUpdateProfile={(updated) => {
+          setProfile(updated);
+          saveProfileToStorage(updated);
+        }}
+        onSaveProfile={handleSaveProfile}
+        onResetProfile={handleResetProfile}
+        saveStatus={saveStatus}
+        options={options}
+        onOptionsChange={setOptions}
+        onBatchDownloadAll={handleWealthBatchDownload}
+        isBatchGenerating={batchProgress.isGenerating}
       />
     )}
   </main>

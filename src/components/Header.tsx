@@ -1,7 +1,8 @@
 import React from 'react';
-import { Download, Sparkles, FolderUp, Lock, ShieldCheck, BookOpen, Share2 } from 'lucide-react';
+import { Download, Sparkles, FolderUp, Lock, ShieldCheck, BookOpen, Share2, Briefcase } from 'lucide-react';
 import { AgentProfile } from '../types';
 import { SOCIAL_POSTS } from '../data/socialPosts';
+import { WEALTH_MATERIALS } from '../data/wealthMaterials';
 
 interface HeaderProps {
   profile: AgentProfile;
@@ -14,9 +15,10 @@ interface HeaderProps {
   isAdmin: boolean;
   onOpenAdminLogin: () => void;
   onAdminLogout: () => void;
-  activeStudioTab: 'guides' | 'social';
-  onChangeStudioTab: (tab: 'guides' | 'social') => void;
+  activeStudioTab: 'guides' | 'social' | 'wealth';
+  onChangeStudioTab: (tab: 'guides' | 'social' | 'wealth') => void;
   onSocialBatchDownload?: () => void;
+  onWealthBatchDownload?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeStudioTab,
   onChangeStudioTab,
   onSocialBatchDownload,
+  onWealthBatchDownload,
 }) => {
   return (
     <header className="bg-[#004372] border-b border-[#00355a] text-white sticky top-0 z-30 shadow-md">
@@ -53,12 +56,14 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="hidden md:block">
               <h1 className="text-sm font-bold tracking-wide text-white uppercase">
-                {activeStudioTab === 'guides' ? 'Guide Co-Branding Studio' : 'Social Media Co-Branding Studio'}
+                {activeStudioTab === 'guides' && 'Guide Co-Branding Studio'}
+                {activeStudioTab === 'social' && 'Social Media Co-Branding Studio'}
+                {activeStudioTab === 'wealth' && 'Simplicity Wealth Studio'}
               </h1>
               <p className="text-[11px] text-sky-200">
-                {activeStudioTab === 'guides'
-                  ? 'Brand up to 6 guides with your business logo, contact information, and disclosures.'
-                  : `Brand ${SOCIAL_POSTS.length} client-facing social graphics with just your logo.`}
+                {activeStudioTab === 'guides' && 'Brand up to 6 guides with your business logo, contact info, and disclosures.'}
+                {activeStudioTab === 'social' && `Brand ${SOCIAL_POSTS.length} client-facing social graphics with just your logo.`}
+                {activeStudioTab === 'wealth' && `Brand all ${WEALTH_MATERIALS.length} brochures, flyers, questionnaires & slides with your bios & logo.`}
               </p>
             </div>
           </div>
@@ -88,6 +93,18 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Share2 className="w-3.5 h-3.5" />
               <span>Social Posts</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeStudioTab('wealth')}
+              className={`flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                activeStudioTab === 'wealth'
+                  ? 'bg-[#0076BD] text-white shadow-xs'
+                  : 'text-sky-200 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Simplicity Wealth</span>
             </button>
           </nav>
 
@@ -140,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
             )}
 
             {/* Contextual Action Button: Download Batch ZIP */}
-            {activeStudioTab === 'guides' ? (
+            {activeStudioTab === 'guides' && (
               <button
                 onClick={onBatchDownload}
                 disabled={selectedCount === 0 || isGenerating}
@@ -153,13 +170,28 @@ export const Header: React.FC<HeaderProps> = ({
                 <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
                 <span>Download {selectedCount} {selectedCount === 1 ? 'Guide' : 'Guides'} (ZIP)</span>
               </button>
-            ) : (
+            )}
+
+            {activeStudioTab === 'social' && (
               <button
                 onClick={onSocialBatchDownload || onBatchDownload}
                 className="inline-flex items-center px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-lg shadow-md bg-[#0076BD] hover:bg-[#00629e] text-white shadow-[#0076BD]/30 active:scale-95 transition-all"
               >
                 <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
                 <span>Download {SOCIAL_POSTS.length} Social Posts (ZIP)</span>
+              </button>
+            )}
+
+            {activeStudioTab === 'wealth' && (
+              <button
+                onClick={onWealthBatchDownload || onBatchDownload}
+                disabled={isGenerating}
+                className={`inline-flex items-center px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-lg shadow-md bg-[#0076BD] hover:bg-[#00629e] text-white shadow-[#0076BD]/30 active:scale-95 transition-all ${
+                  isGenerating ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
+                <span>Download All {WEALTH_MATERIALS.length} Wealth Materials (ZIP)</span>
               </button>
             )}
           </div>

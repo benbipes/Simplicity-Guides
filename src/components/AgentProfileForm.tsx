@@ -20,9 +20,13 @@ import {
   RotateCcw,
   Calendar,
   AlertCircle,
-  FileCheck
+  FileCheck,
+  Users,
+  UserPlus,
+  Camera,
+  Briefcase
 } from 'lucide-react';
-import { AgentProfile, BrandingOptions } from '../types';
+import { AgentProfile, BrandingOptions, TeamMemberBio } from '../types/index';
 
 interface AgentProfileFormProps {
   profile: AgentProfile;
@@ -32,6 +36,7 @@ interface AgentProfileFormProps {
   onSave: () => void;
   onReset: () => void;
   saveStatus: string | null;
+  initialTab?: 'profile' | 'social' | 'disclosure' | 'team';
 }
 
 export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
@@ -42,11 +47,14 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
   onSave,
   onReset,
   saveStatus,
+  initialTab = 'profile',
 }) => {
   const colorLogoInputRef = useRef<HTMLInputElement>(null);
   const whiteLogoInputRef = useRef<HTMLInputElement>(null);
   const disclosureInputRef = useRef<HTMLInputElement>(null);
-  const [activeTab, setActiveTab] = useState<'profile' | 'social' | 'disclosure'>('profile');
+  const headshotInputRef1 = useRef<HTMLInputElement>(null);
+  const headshotInputRef2 = useRef<HTMLInputElement>(null);
+  const [activeTab, setActiveTab] = useState<'profile' | 'social' | 'disclosure' | 'team'>(initialTab);
 
   const handleFieldChange = (field: keyof AgentProfile, value: any) => {
     onChange({
@@ -158,10 +166,76 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
     }
   };
 
+  const teamMembers: TeamMemberBio[] = profile.teamMembers && profile.teamMembers.length > 0
+    ? profile.teamMembers
+    : [
+        {
+          id: 'advisor-1',
+          name: profile.name || '',
+          title: profile.title || '',
+          email: profile.email || '',
+          phone: profile.phone || '',
+          bio: '',
+        },
+      ];
+
+  const handleUpdateTeamMember = (index: number, field: keyof TeamMemberBio, value: any) => {
+    const updated = [...teamMembers];
+    if (!updated[index]) {
+      updated[index] = {
+        id: `advisor-${index + 1}`,
+        name: '',
+        title: '',
+        email: '',
+        phone: '',
+        bio: '',
+      };
+    }
+    updated[index] = { ...updated[index], [field]: value };
+    handleFieldChange('teamMembers', updated);
+  };
+
+  const handleHeadshotUpload = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file (PNG or JPG)');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      handleUpdateTeamMember(index, 'headshotDataUrl', evt.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddSecondAdvisor = () => {
+    const updated = [...teamMembers];
+    if (updated.length < 2) {
+      updated.push({
+        id: 'advisor-2',
+        name: '',
+        title: 'Associate Wealth Advisor',
+        email: profile.email || '',
+        phone: profile.phone || '',
+        bio: '',
+      });
+      handleFieldChange('teamMembers', updated);
+    }
+  };
+
+  const handleRemoveSecondAdvisor = () => {
+    const updated = [teamMembers[0]];
+    handleFieldChange('teamMembers', updated);
+    if (headshotInputRef2.current) {
+      headshotInputRef2.current.value = '';
+    }
+  };
+
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col h-full">
       {/* Top Tab Navigation */}
-      <div className="border-b border-slate-200 px-4 sm:px-6 pt-3 flex space-x-2 sm:space-x-6">
+      <div className="border-b border-slate-200 px-4 sm:px-6 pt-3 flex space-x-2 sm:space-x-5 overflow-x-auto scrollbar-thin">
         <button
           onClick={() => setActiveTab('profile')}
           className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all ${
@@ -191,6 +265,16 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
           }`}
         >
           3. Upload Disclosure
+        </button>
+        <button
+          onClick={() => setActiveTab('team')}
+          className={`pb-3 px-1 text-xs sm:text-sm font-bold border-b-2 whitespace-nowrap transition-all flex items-center gap-1.5 ${
+            activeTab === 'team'
+              ? 'border-[#0076BD] text-[#0076BD]'
+              : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'
+          }`}
+        >
+          <span>4. Wealth Team & Bios</span>
         </button>
       </div>
 
@@ -642,6 +726,298 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
                 Rendered below the standard disclosure with a divider line and your agency logo.
               </p>
             </div>
+          </div>
+        )}
+
+        {/* TAB 4: WEALTH TEAM & BIOS */}
+        {activeTab === 'team' && (
+          <div className="space-y-6">
+            <div className="bg-[#004372]/5 border border-[#004372]/15 rounded-xl p-3.5 text-xs text-[#004372] flex items-start space-x-2">
+              <Users className="w-4 h-4 text-[#0076BD] shrink-0 mt-0.5" />
+              <div>
+                <strong>Simplicity Wealth Co-Branded Materials:</strong> Custom headshot(s) and biography text will be stamped directly on <strong>Page 5 (&quot;Wealth Manager&quot;)</strong> of the <em>Our Team Prestige Brochure</em>, replacing the placeholder photos and Latin text.
+              </div>
+            </div>
+
+            {/* ADVISOR 1 (PRIMARY) */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-[#0076BD]" />
+                  Advisor 1 (Primary Advisor)
+                </span>
+                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full">
+                  Featured on Page 5
+                </span>
+              </div>
+
+              {/* Headshot Upload Tile */}
+              <div className="flex items-center gap-4">
+                <div className="relative w-20 h-20 rounded-xl border border-slate-300 bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+                  {teamMembers[0]?.headshotDataUrl ? (
+                    <img
+                      src={teamMembers[0].headshotDataUrl}
+                      alt={teamMembers[0].name || 'Advisor 1'}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Camera className="w-6 h-6 text-slate-400" />
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-700 block">
+                    Advisor 1 Headshot Photo
+                  </label>
+                  <p className="text-[11px] text-slate-500">
+                    Square JPG/PNG portrait recommended (minimum 400×400px).
+                  </p>
+                  <input
+                    ref={headshotInputRef1}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    onChange={(e) => handleHeadshotUpload(0, e)}
+                    className="hidden"
+                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => headshotInputRef1.current?.click()}
+                      className="inline-flex items-center px-3 py-1.5 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 shadow-xs transition-colors"
+                    >
+                      <Upload className="w-3.5 h-3.5 mr-1 text-slate-500" />
+                      {teamMembers[0]?.headshotDataUrl ? 'Replace Photo' : 'Upload Headshot'}
+                    </button>
+                    {teamMembers[0]?.headshotDataUrl && (
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateTeamMember(0, 'headshotDataUrl', undefined)}
+                        className="p-1.5 text-slate-400 hover:text-red-600 transition-colors"
+                        title="Remove photo"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Form fields for Advisor 1 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                    Advisor Name & Credentials
+                  </label>
+                  <input
+                    type="text"
+                    value={teamMembers[0]?.name || ''}
+                    onChange={(e) => handleUpdateTeamMember(0, 'name', e.target.value)}
+                    placeholder="e.g. John Smith, CFP®, ChFC®"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                    Title / Position
+                  </label>
+                  <input
+                    type="text"
+                    value={teamMembers[0]?.title || ''}
+                    onChange={(e) => handleUpdateTeamMember(0, 'title', e.target.value)}
+                    placeholder="e.g. Founder & Managing Director"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                    Direct Email
+                  </label>
+                  <input
+                    type="email"
+                    value={teamMembers[0]?.email || ''}
+                    onChange={(e) => handleUpdateTeamMember(0, 'email', e.target.value)}
+                    placeholder="e.g. jsmith@compassadvisors.com"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                    Direct Phone
+                  </label>
+                  <input
+                    type="text"
+                    value={teamMembers[0]?.phone || ''}
+                    onChange={(e) => handleUpdateTeamMember(0, 'phone', e.target.value)}
+                    placeholder="e.g. (800) 866-8666"
+                    className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  Advisor Biography
+                </label>
+                <textarea
+                  rows={4}
+                  value={teamMembers[0]?.bio || ''}
+                  onChange={(e) => handleUpdateTeamMember(0, 'bio', e.target.value)}
+                  placeholder="Enter 1-2 paragraphs detailing your educational background, fiduciary philosophy, and wealth management experience..."
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none leading-relaxed"
+                />
+              </div>
+            </div>
+
+            {/* ADVISOR 2 (OPTIONAL) */}
+            {teamMembers.length > 1 ? (
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-[#0076BD]" />
+                    Advisor 2 (Associate / Co-Advisor)
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleRemoveSecondAdvisor}
+                    className="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1 cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Remove Advisor 2
+                  </button>
+                </div>
+
+                {/* Headshot Upload Tile */}
+                <div className="flex items-center gap-4">
+                  <div className="relative w-20 h-20 rounded-xl border border-slate-300 bg-white overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
+                    {teamMembers[1]?.headshotDataUrl ? (
+                      <img
+                        src={teamMembers[1].headshotDataUrl}
+                        alt={teamMembers[1].name || 'Advisor 2'}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Camera className="w-6 h-6 text-slate-400" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700 block">
+                      Advisor 2 Headshot Photo
+                    </label>
+                    <p className="text-[11px] text-slate-500">
+                      Square JPG/PNG portrait recommended (minimum 400×400px).
+                    </p>
+                    <input
+                      ref={headshotInputRef2}
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      onChange={(e) => handleHeadshotUpload(1, e)}
+                      className="hidden"
+                    />
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => headshotInputRef2.current?.click()}
+                        className="inline-flex items-center px-3 py-1.5 text-xs font-bold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 shadow-xs transition-colors"
+                      >
+                        <Upload className="w-3.5 h-3.5 mr-1 text-slate-500" />
+                        {teamMembers[1]?.headshotDataUrl ? 'Replace Photo' : 'Upload Headshot'}
+                      </button>
+                      {teamMembers[1]?.headshotDataUrl && (
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateTeamMember(1, 'headshotDataUrl', undefined)}
+                          className="p-1.5 text-slate-400 hover:text-red-600 transition-colors"
+                          title="Remove photo"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Form fields for Advisor 2 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Advisor Name & Credentials
+                    </label>
+                    <input
+                      type="text"
+                      value={teamMembers[1]?.name || ''}
+                      onChange={(e) => handleUpdateTeamMember(1, 'name', e.target.value)}
+                      placeholder="e.g. Caroline Jensen, ChFC®"
+                      className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Title / Position
+                    </label>
+                    <input
+                      type="text"
+                      value={teamMembers[1]?.title || ''}
+                      onChange={(e) => handleUpdateTeamMember(1, 'title', e.target.value)}
+                      placeholder="e.g. Associate Wealth Advisor"
+                      className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Direct Email
+                    </label>
+                    <input
+                      type="email"
+                      value={teamMembers[1]?.email || ''}
+                      onChange={(e) => handleUpdateTeamMember(1, 'email', e.target.value)}
+                      placeholder="e.g. cjensen@compassadvisors.com"
+                      className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                      Direct Phone
+                    </label>
+                    <input
+                      type="text"
+                      value={teamMembers[1]?.phone || ''}
+                      onChange={(e) => handleUpdateTeamMember(1, 'phone', e.target.value)}
+                      placeholder="e.g. (800) 866-8666"
+                      className="w-full px-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                    Advisor Biography
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={teamMembers[1]?.bio || ''}
+                    onChange={(e) => handleUpdateTeamMember(1, 'bio', e.target.value)}
+                    placeholder="Enter 1-2 paragraphs detailing their background, areas of focus, and client advisory experience..."
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#0076BD] outline-none leading-relaxed"
+                  />
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleAddSecondAdvisor}
+                className="w-full py-3.5 border-2 border-dashed border-slate-300 hover:border-[#0076BD] rounded-xl text-xs font-bold text-[#0076BD] hover:bg-sky-50/50 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>+ Add Second Advisor / Team Member to Page 5</span>
+              </button>
+            )}
           </div>
         )}
 
