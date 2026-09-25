@@ -50,7 +50,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
       : profile.logoDataUrl || profile.logoWhiteDataUrl || '';
 
   // Branding options
-  const [placement, setPlacement] = useState<'top-center' | 'bottom-right' | 'bottom-left' | 'top-right'>(
+  const [placement, setPlacement] = useState<'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'>(
     SOCIAL_POSTS[0].defaultPlacement.position
   );
   const [logoScale, setLogoScale] = useState<number>(1.0);
@@ -327,28 +327,28 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => setPlacement('top-center')}
+                onClick={() => setPlacement('top-left')}
                 className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
-                  placement === 'top-center'
+                  placement === 'top-left'
                     ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
                     : 'border-slate-200 text-slate-700 hover:border-slate-300'
                 }`}
               >
-                <span>Top Center (Header)</span>
-                {placement === 'top-center' && <Check className="w-4 h-4 text-[#0076BD]" />}
+                <span>Top Left</span>
+                {placement === 'top-left' && <Check className="w-4 h-4 text-[#0076BD]" />}
               </button>
 
               <button
                 type="button"
-                onClick={() => setPlacement('bottom-right')}
+                onClick={() => setPlacement('top-right')}
                 className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
-                  placement === 'bottom-right'
+                  placement === 'top-right'
                     ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
                     : 'border-slate-200 text-slate-700 hover:border-slate-300'
                 }`}
               >
-                <span>Bottom Right</span>
-                {placement === 'bottom-right' && <Check className="w-4 h-4 text-[#0076BD]" />}
+                <span>Top Right</span>
+                {placement === 'top-right' && <Check className="w-4 h-4 text-[#0076BD]" />}
               </button>
 
               <button
@@ -366,30 +366,17 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
               <button
                 type="button"
-                onClick={() => setPlacement('top-right')}
+                onClick={() => setPlacement('bottom-right')}
                 className={`p-2.5 text-xs font-semibold rounded-xl border text-left flex items-center justify-between transition-all ${
-                  placement === 'top-right'
+                  placement === 'bottom-right'
                     ? 'border-[#0076BD] bg-[#0076BD]/5 text-[#0076BD] font-bold shadow-xs'
                     : 'border-slate-200 text-slate-700 hover:border-slate-300'
                 }`}
               >
-                <span>Top Right</span>
-                {placement === 'top-right' && <Check className="w-4 h-4 text-[#0076BD]" />}
+                <span>Bottom Right</span>
+                {placement === 'bottom-right' && <Check className="w-4 h-4 text-[#0076BD]" />}
               </button>
             </div>
-
-            {/* Replace Top Logo toggle if applicable */}
-            {activePost.hasExistingTopLogo && placement === 'top-center' && (
-              <label className="flex items-center space-x-2 text-xs text-slate-700 cursor-pointer pt-1">
-                <input
-                  type="checkbox"
-                  checked={replaceTopLogo}
-                  onChange={(e) => setReplaceTopLogo(e.target.checked)}
-                  className="rounded text-[#0076BD] focus:ring-[#0076BD]"
-                />
-                <span>Seamlessly blend & replace top template logo with your logo</span>
-              </label>
-            )}
           </div>
 
           <hr className="border-slate-100" />

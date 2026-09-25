@@ -1,5 +1,5 @@
 export interface SocialPostPlacement {
-  position: 'top-center' | 'bottom-right' | 'bottom-left' | 'top-right';
+  position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
   xPercent: number; // Center X as percentage (0 - 100)
   yPercent: number; // Center Y as percentage (0 - 100)
   maxWidth: number; // Max width in pixels on 1024x1024
@@ -36,7 +36,7 @@ export const SOCIAL_POSTS: SocialPost[] = [
     categoryLabel: 'Cybersecurity & Fraud',
     defaultPlacement: {
       position: 'bottom-right',
-      xPercent: 78,
+      xPercent: 80,
       yPercent: 88,
       maxWidth: 290,
       maxHeight: 75,
@@ -52,11 +52,11 @@ export const SOCIAL_POSTS: SocialPost[] = [
     category: 'guides',
     categoryLabel: 'Financial Guides',
     defaultPlacement: {
-      position: 'top-center',
-      xPercent: 50,
-      yPercent: 12.5,
-      maxWidth: 320,
-      maxHeight: 70,
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
     },
     hasExistingTopLogo: true,
     coverPatch: {
@@ -76,11 +76,11 @@ export const SOCIAL_POSTS: SocialPost[] = [
     category: 'guides',
     categoryLabel: 'Client Communication',
     defaultPlacement: {
-      position: 'top-center',
-      xPercent: 50,
-      yPercent: 12.5,
-      maxWidth: 320,
-      maxHeight: 70,
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
     },
     hasExistingTopLogo: true,
     coverPatch: {
@@ -100,11 +100,11 @@ export const SOCIAL_POSTS: SocialPost[] = [
     category: 'life-insurance',
     categoryLabel: 'Life Insurance',
     defaultPlacement: {
-      position: 'top-center',
-      xPercent: 50,
-      yPercent: 12.5,
-      maxWidth: 320,
-      maxHeight: 70,
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
     },
     hasExistingTopLogo: true,
     coverPatch: {
@@ -124,11 +124,11 @@ export const SOCIAL_POSTS: SocialPost[] = [
     category: 'healthcare',
     categoryLabel: 'Healthcare & Retirement',
     defaultPlacement: {
-      position: 'top-center',
-      xPercent: 50,
-      yPercent: 12.5,
-      maxWidth: 320,
-      maxHeight: 70,
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
     },
     hasExistingTopLogo: true,
     coverPatch: {

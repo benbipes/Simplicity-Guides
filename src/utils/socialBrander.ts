@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 import { SocialPost } from '../data/socialPosts';
 
 export interface SocialBrandOptions {
-  position?: 'top-center' | 'bottom-right' | 'bottom-left' | 'top-right' | 'custom';
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'top-center' | 'custom';
   customX?: number; // 0 - 100%
   customY?: number; // 0 - 100%
   scale?: number; // 0.6 - 1.6, default 1.0
@@ -51,28 +51,47 @@ export async function renderSocialPostCanvas(
   const position = options.position ?? post.defaultPlacement.position;
   const replaceTopLogo = options.replaceTopLogo ?? true;
 
+  // 3. Calculate logo dimensions preserving aspect ratio
+  const baseMaxW = (post.defaultPlacement.maxWidth || 280) * scale;
+  const baseMaxH = (post.defaultPlacement.maxHeight || 75) * scale;
+  const logoAspect = logoImg.width / logoImg.height;
+
+  let drawW = baseMaxW;
+  let drawH = drawW / logoAspect;
+  if (drawH > baseMaxH) {
+    drawH = baseMaxH;
+    drawW = drawH * logoAspect;
+  }
+
+  // Margin from canvas borders
+  const marginX = 60;
+  const marginY = 55;
+
   // Calculate center coordinates for logo placement
   let centerX = 512;
   let centerY = 512;
 
-  if (position === 'top-center') {
+  if (position === 'top-left') {
+    centerX = marginX + drawW / 2;
+    centerY = marginY + drawH / 2;
+  } else if (position === 'top-right') {
+    centerX = 1024 - marginX - drawW / 2;
+    centerY = marginY + drawH / 2;
+  } else if (position === 'bottom-left') {
+    centerX = marginX + drawW / 2;
+    centerY = 1024 - marginY - drawH / 2 - 25; // sits safely above bottom copyright
+  } else if (position === 'bottom-right') {
+    centerX = 1024 - marginX - drawW / 2;
+    centerY = 1024 - marginY - drawH / 2 - 25; // sits safely above bottom copyright
+  } else if (position === 'top-center') {
     centerX = 512;
     centerY = 125;
-  } else if (position === 'bottom-right') {
-    centerX = 790;
-    centerY = 890;
-  } else if (position === 'bottom-left') {
-    centerX = 230;
-    centerY = 890;
-  } else if (position === 'top-right') {
-    centerX = 820;
-    centerY = 110;
   } else if (position === 'custom') {
     centerX = (1024 * (options.customX ?? post.defaultPlacement.xPercent)) / 100;
     centerY = (1024 * (options.customY ?? post.defaultPlacement.yPercent)) / 100;
   }
 
-  // 3. If post has an existing top logo and we are replacing it at top-center, cover it smoothly
+  // 4. If post has an existing top logo and we are replacing it at top-center, cover it smoothly
   if (post.hasExistingTopLogo && post.coverPatch && replaceTopLogo && position === 'top-center') {
     ctx.save();
     const patch = post.coverPatch;
@@ -93,18 +112,6 @@ export async function renderSocialPostCanvas(
     ctx.fillStyle = gradient;
     ctx.fillRect(patch.x - 30, patch.y - 15, patch.width + 60, patch.height + 30);
     ctx.restore();
-  }
-
-  // 4. Calculate logo dimensions preserving aspect ratio
-  const baseMaxW = post.defaultPlacement.maxWidth * scale;
-  const baseMaxH = post.defaultPlacement.maxHeight * scale;
-  const logoAspect = logoImg.width / logoImg.height;
-
-  let drawW = baseMaxW;
-  let drawH = drawW / logoAspect;
-  if (drawH > baseMaxH) {
-    drawH = baseMaxH;
-    drawW = drawH * logoAspect;
   }
 
   // 5. Draw Agent Logo
