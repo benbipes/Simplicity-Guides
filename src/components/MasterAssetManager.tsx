@@ -5,7 +5,7 @@ import {
   BookOpen,
   ThumbsUp,
   CandlestickChart,
-  GraduationCap,
+  Presentation,
   CheckCircle2,
   AlertCircle,
   RotateCcw,
@@ -167,8 +167,8 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            <GraduationCap className="w-4 h-4" />
-            <span>College Planning</span>
+            <Presentation className="w-4 h-4" />
+            <span>Workshops & Materials</span>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
                 customCollegeCount > 0
@@ -511,7 +511,7 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
                 className="text-xs text-red-600 hover:text-red-700 font-medium hover:underline inline-flex items-center cursor-pointer"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
-                Reset College Planning Materials to Defaults
+                Reset Workshop Materials to Defaults
               </button>
             )}
           </div>

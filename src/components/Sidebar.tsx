@@ -3,7 +3,7 @@ import {
   BookOpen,
   ThumbsUp,
   CandlestickChart,
-  GraduationCap,
+  Presentation,
   Lock,
   ShieldCheck,
   FolderUp,
@@ -66,9 +66,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'college' as const,
-      label: 'College Planning',
-      subtitle: 'Simplifying College Planning (16)',
-      icon: GraduationCap,
+      label: 'Workshops',
+      subtitle: 'Presentation and Marketing Materials',
+      icon: Presentation,
     },
   ];
 
@@ -235,8 +235,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
-                    <GraduationCap className="w-4 h-4 text-amber-300" />
-                    <span>College Planning</span>
+                    <Presentation className="w-4 h-4 text-amber-300" />
+                    <span>Workshops & Materials</span>
                   </div>
                   <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </button>

@@ -21,7 +21,6 @@ import {
   ArrowUpRight,
   Loader2,
   AlertCircle,
-  GraduationCap,
   Calendar,
   MapPin,
   Clock,
@@ -255,12 +254,12 @@ export const CollegePlanningStudio: React.FC<CollegePlanningStudioProps> = ({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-3 relative z-10">
           <div className="inline-flex items-center space-x-2 bg-white/90 shadow-xs px-3 py-1 rounded-full text-xs font-semibold text-[#004372]">
-            <GraduationCap className="w-3.5 h-3.5 text-[#0076BD]" />
+            <Presentation className="w-3.5 h-3.5 text-[#0076BD]" />
             <span>Simplifying College Planning Consumer Workshop Suite</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-[#004372] leading-tight">
-            Simplifying College Planning Workshop Studio
+            Workshops, Presentation & Marketing Materials Studio
           </h1>
 
           <p className="text-black/70 text-xs sm:text-sm leading-relaxed max-w-5xl">
@@ -555,7 +554,7 @@ export const CollegePlanningStudio: React.FC<CollegePlanningStudioProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
               <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-wider text-[#0076BD] mb-1">
-                <GraduationCap className="w-4 h-4" />
+                <Presentation className="w-4 h-4" />
                 <span>Simplifying College Planning Workshop Toolkit</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900">

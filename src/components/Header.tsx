@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {activeStudioTab === 'guides' && 'Financial Guides Co-Branding Studio'}
                   {activeStudioTab === 'social' && 'Social Media Co-Branding Studio'}
                   {activeStudioTab === 'wealth' && 'Simplicity Wealth Studio'}
-                  {activeStudioTab === 'college' && 'Simplifying College Planning Studio'}
+                  {activeStudioTab === 'college' && 'Workshops, Presentation & Marketing Materials Studio'}
                 </span>
 
                 {isAdmin && (
