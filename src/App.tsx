@@ -11,8 +11,10 @@ import { BatchDownloadModal } from './components/BatchDownloadModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SocialMediaStudio } from './components/SocialMediaStudio';
 import { WealthStudio } from './components/WealthStudio';
+import { CollegePlanningStudio } from './components/CollegePlanningStudio';
 import { SOCIAL_POSTS, SocialPost } from './data/socialPosts';
 import { WEALTH_MATERIALS } from './data/wealthMaterials';
+import { COLLEGE_MATERIALS } from './data/collegeMaterials';
 import {
   loadAdminUsersFromStorage,
   saveAdminUsersToStorage,
@@ -22,10 +24,12 @@ import {
 } from './data/adminUsers';
 import { downloadAllSocialPostsZip } from './utils/socialBrander';
 import { downloadAllWealthMaterialsZip } from './utils/wealthBrander';
+import { downloadAllCollegeMaterialsZip } from './utils/collegeBrander';
 import {
   AgentProfile,
   FinancialGuide,
   WealthMaterial,
+  CollegeMaterial,
   AdminUser,
   BrandingOptions,
   BatchProgress
@@ -94,13 +98,14 @@ export const App: React.FC = () => {
   );
   const [socialPosts, setSocialPosts] = useState<SocialPost[]>(SOCIAL_POSTS);
   const [wealthMaterials, setWealthMaterials] = useState<WealthMaterial[]>(WEALTH_MATERIALS);
+  const [collegeMaterials, setCollegeMaterials] = useState<CollegeMaterial[]>(COLLEGE_MATERIALS);
 
   // 4. Active Preview Guide
   const [activePreviewGuide, setActivePreviewGuide] = useState<FinancialGuide>(INITIAL_GUIDES[0]);
 
   // 5. UI Modals and Status
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
-  const [uploaderInitialTab, setUploaderInitialTab] = useState<'guides' | 'social' | 'wealth'>('guides');
+  const [uploaderInitialTab, setUploaderInitialTab] = useState<'guides' | 'social' | 'wealth' | 'college'>('guides');
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
   // Admin authentication & user management state
@@ -165,8 +170,8 @@ export const App: React.FC = () => {
     currentGuideTitle: '',
   });
 
-  // 7. Active Studio Tab ('guides' | 'social' | 'wealth')
-  const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social' | 'wealth'>('guides');
+  // 7. Active Studio Tab ('guides' | 'social' | 'wealth' | 'college')
+  const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social' | 'wealth' | 'college'>('guides');
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleSocialBatchDownload = async () => {
@@ -214,6 +219,43 @@ export const App: React.FC = () => {
       setBatchProgress((prev) => ({
         ...prev,
         error: `Wealth batch generation failed: ${err.message}`,
+      }));
+    }
+  };
+
+  const handleCollegeBatchDownload = async () => {
+    setBatchProgress({
+      isGenerating: true,
+      currentStep: 0,
+      totalSteps: collegeMaterials.length,
+      currentGuideTitle: 'Initializing Simplifying College Planning branding engine...',
+    });
+
+    try {
+      await downloadAllCollegeMaterialsZip(
+        collegeMaterials,
+        profile,
+        (current, total, title) => {
+          setBatchProgress({
+            isGenerating: true,
+            currentStep: current,
+            totalSteps: total,
+            currentGuideTitle: title,
+          });
+        }
+      );
+      setTimeout(() => {
+        setBatchProgress({
+          isGenerating: false,
+          currentStep: 0,
+          totalSteps: 0,
+          currentGuideTitle: '',
+        });
+      }, 800);
+    } catch (err: any) {
+      setBatchProgress((prev) => ({
+        ...prev,
+        error: `College Planning batch generation failed: ${err.message}`,
       }));
     }
   };
@@ -423,6 +465,30 @@ export const App: React.FC = () => {
     }
   };
 
+  // Custom college material upload (PDF or PPTX)
+  const handleUploadCustomCollegeMaterial = async (materialId: string, file: File) => {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const customBytes = new Uint8Array(arrayBuffer);
+      setCollegeMaterials((prev) =>
+        prev.map((m) =>
+          m.id === materialId
+            ? { ...m, customFileBytes: customBytes, isCustom: true }
+            : m
+        )
+      );
+      alert(`Successfully loaded custom workshop material for ${file.name}!`);
+    } catch (err: any) {
+      alert(`Failed to load file: ${err.message}`);
+    }
+  };
+
+  const handleResetToDefaultCollegeMaterials = () => {
+    if (confirm('Reset all Simplifying College Planning materials to built-in defaults?')) {
+      setCollegeMaterials(COLLEGE_MATERIALS);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans selection:bg-[#0076BD] selection:text-white">
       {/* Left Navigation Sidebar */}
@@ -460,6 +526,7 @@ export const App: React.FC = () => {
           activeStudioTab={activeStudioTab}
           onSocialBatchDownload={handleSocialBatchDownload}
           onWealthBatchDownload={handleWealthBatchDownload}
+          onCollegeBatchDownload={handleCollegeBatchDownload}
           onToggleMobileNav={() => setIsMobileNavOpen((prev) => !prev)}
         />
 
@@ -622,6 +689,24 @@ export const App: React.FC = () => {
           />
         )}
 
+        {activeStudioTab === 'college' && (
+          <CollegePlanningStudio
+            profile={profile}
+            onUpdateProfile={(updated) => {
+              setProfile(updated);
+              saveProfileToStorage(updated);
+            }}
+            onSaveProfile={handleSaveProfile}
+            onResetProfile={handleResetProfile}
+            saveStatus={saveStatus}
+            options={options}
+            onOptionsChange={setOptions}
+            onBatchDownloadAll={handleCollegeBatchDownload}
+            isBatchGenerating={batchProgress.isGenerating}
+            materials={collegeMaterials}
+          />
+        )}
+
       {/* Footer with Simplicity Group Branding */}
       <footer className="mt-16 bg-[#E6E6E6]/40 py-8 text-xs text-slate-600">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -678,6 +763,9 @@ export const App: React.FC = () => {
           wealthMaterials={wealthMaterials}
           onUploadCustomWealthMaterial={handleUploadCustomWealthMaterial}
           onResetWealthMaterials={handleResetToDefaultWealthMaterials}
+          collegeMaterials={collegeMaterials}
+          onUploadCustomCollegeMaterial={handleUploadCustomCollegeMaterial}
+          onResetCollegeMaterials={handleResetToDefaultCollegeMaterials}
         />
       )}
 

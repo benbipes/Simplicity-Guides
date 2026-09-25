@@ -3,6 +3,7 @@ import {
   BookOpen,
   ThumbsUp,
   CandlestickChart,
+  GraduationCap,
   Lock,
   ShieldCheck,
   FolderUp,
@@ -15,15 +16,15 @@ import {
 import { AdminUser } from '../types';
 
 interface SidebarProps {
-  activeStudioTab: 'guides' | 'social' | 'wealth';
-  onChangeStudioTab: (tab: 'guides' | 'social' | 'wealth') => void;
+  activeStudioTab: 'guides' | 'social' | 'wealth' | 'college';
+  onChangeStudioTab: (tab: 'guides' | 'social' | 'wealth' | 'college') => void;
   isAdmin: boolean;
   currentAdmin?: AdminUser | null;
   adminUsersCount?: number;
   onOpenAdminLogin: () => void;
   onAdminLogout: () => void;
   onLoadDemo: () => void;
-  onOpenUploader: (initialTab?: 'guides' | 'social' | 'wealth') => void;
+  onOpenUploader: (initialTab?: 'guides' | 'social' | 'wealth' | 'college') => void;
   onOpenAdminUsers?: () => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
@@ -62,6 +63,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Simplicity Wealth',
       subtitle: 'Materials to market your firm',
       icon: CandlestickChart,
+    },
+    {
+      id: 'college' as const,
+      label: 'College Planning',
+      subtitle: 'Simplifying College Planning (16)',
+      icon: GraduationCap,
     },
   ];
 
@@ -218,6 +225,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <div className="flex items-center space-x-2">
                     <CandlestickChart className="w-4 h-4 text-indigo-300" />
                     <span>Simplicity Wealth</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onOpenUploader('college')}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white transition-all text-left cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2">
+                    <GraduationCap className="w-4 h-4 text-amber-300" />
+                    <span>College Planning</span>
                   </div>
                   <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </button>

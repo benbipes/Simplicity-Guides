@@ -26,6 +26,12 @@ export interface AgentProfile {
     instagram: string;
   };
   teamMembers?: TeamMemberBio[];
+  workshopEvent?: {
+    date: string;
+    time: string;
+    locationName: string;
+    locationAddress: string;
+  };
 }
 
 export interface TeamMemberBio {
@@ -36,6 +42,25 @@ export interface TeamMemberBio {
   phone: string;
   bio: string;
   headshotDataUrl?: string;
+}
+
+export interface CollegeMaterial {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: 'presentation' | 'flyer' | 'workbook' | 'value-piece' | 'packet' | 'social' | 'afes' | string;
+  categoryLabel: string;
+  filename: string;
+  pages: number;
+  format: 'pdf' | 'pptx';
+  hasTeamSection?: boolean;
+  teamPageNumber?: number;
+  contactPages?: number[];
+  hasEventDetails?: boolean;
+  description: string;
+  badge?: string;
+  customFileBytes?: Uint8Array;
+  isCustom?: boolean;
 }
 
 export interface WealthMaterial {

@@ -5,17 +5,18 @@ import {
   BookOpen,
   ThumbsUp,
   CandlestickChart,
+  GraduationCap,
   CheckCircle2,
   AlertCircle,
   RotateCcw,
 } from 'lucide-react';
-import { FinancialGuide, WealthMaterial } from '../types';
+import { FinancialGuide, WealthMaterial, CollegeMaterial } from '../types';
 import { SocialPost } from '../data/socialPosts';
 
 export interface MasterAssetManagerProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab?: 'guides' | 'social' | 'wealth';
+  initialTab?: 'guides' | 'social' | 'wealth' | 'college';
   guides: FinancialGuide[];
   onUploadCustomPdf: (guideId: string, file: File) => void;
   onResetGuides: () => void;
@@ -25,6 +26,9 @@ export interface MasterAssetManagerProps {
   wealthMaterials: WealthMaterial[];
   onUploadCustomWealthMaterial: (materialId: string, file: File) => void;
   onResetWealthMaterials: () => void;
+  collegeMaterials?: CollegeMaterial[];
+  onUploadCustomCollegeMaterial?: (materialId: string, file: File) => void;
+  onResetCollegeMaterials?: () => void;
 }
 
 export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
@@ -40,8 +44,11 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
   wealthMaterials,
   onUploadCustomWealthMaterial,
   onResetWealthMaterials,
+  collegeMaterials = [],
+  onUploadCustomCollegeMaterial,
+  onResetCollegeMaterials,
 }) => {
-  const [activeTab, setActiveTab] = useState<'guides' | 'social' | 'wealth'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'guides' | 'social' | 'wealth' | 'college'>(initialTab);
 
   // Sync activeTab when initialTab changes when opening
   useEffect(() => {
@@ -55,6 +62,7 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
   const customGuidesCount = guides.filter((g) => g.isCustom).length;
   const customSocialCount = socialPosts.filter((s) => s.isCustom).length;
   const customWealthCount = wealthMaterials.filter((w) => w.isCustom).length;
+  const customCollegeCount = collegeMaterials.filter((c) => c.isCustom).length;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
@@ -69,7 +77,7 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
               Master Asset & Template Manager
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Replace built-in master PDFs, social media background graphics, and wealth materials
+              Replace built-in master PDFs, social media graphics, wealth materials, and college planning workshop files
             </p>
           </div>
           <button
@@ -147,6 +155,28 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
               }`}
             >
               {customWealthCount > 0 ? `${customWealthCount} Custom` : wealthMaterials.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('college')}
+            className={`flex items-center space-x-2 py-3 px-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-colors cursor-pointer ${
+              activeTab === 'college'
+                ? 'border-[#0076BD] text-[#0076BD] bg-white rounded-t-lg'
+                : 'border-transparent text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <GraduationCap className="w-4 h-4" />
+            <span>College Planning</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                customCollegeCount > 0
+                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
+                  : 'bg-slate-200 text-slate-700'
+              }`}
+            >
+              {customCollegeCount > 0 ? `${customCollegeCount} Custom` : collegeMaterials.length}
             </span>
           </button>
         </div>
@@ -367,6 +397,78 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
               </div>
             </div>
           )}
+
+          {/* TAB 4: COLLEGE PLANNING */}
+          {activeTab === 'college' && (
+            <div className="space-y-4">
+              <div className="bg-sky-50 border border-sky-200 rounded-xl p-3.5 text-xs text-sky-900 flex items-start space-x-2.5">
+                <AlertCircle className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong>College Planning Workshop Materials:</strong> Replace any master workshop flyer, presentation deck, student workbook, AFES educational syllabus/evaluation, or client handouts. PDF files will receive live advisor contact information and disclosures; PPTX presentation decks are bundled directly into download archives.
+                </div>
+              </div>
+
+              <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden bg-white shadow-xs">
+                {collegeMaterials.map((mat, idx) => (
+                  <div
+                    key={mat.id}
+                    className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 transition-colors"
+                  >
+                    <div className="flex items-center space-x-3 min-w-0 pr-2">
+                      <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center shrink-0 text-xs font-mono font-bold text-amber-800">
+                        {String(idx + 1).padStart(2, '0')}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                          {mat.title}
+                        </div>
+                        <div className="text-[11px] text-slate-400 flex items-center space-x-2">
+                          <span className="truncate">{mat.filename}</span>
+                          <span>•</span>
+                          <span className="uppercase text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                            {mat.format}
+                          </span>
+                          <span>•</span>
+                          <span>{mat.pages} {mat.pages === 1 ? 'page' : 'pages'}</span>
+                          <span>•</span>
+                          <span>{mat.categoryLabel}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3 shrink-0 self-end sm:self-center">
+                      {mat.isCustom ? (
+                        <span className="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-600" />
+                          Custom Uploaded
+                        </span>
+                      ) : (
+                        <span className="text-xs text-slate-400 font-medium">Default Built-in</span>
+                      )}
+
+                      <label className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 cursor-pointer transition-colors shadow-xs hover:border-[#0076BD]">
+                        <Upload className="w-3.5 h-3.5 mr-1 text-slate-500" />
+                        {mat.format === 'pptx' ? 'Replace Deck' : 'Replace PDF'}
+                        <input
+                          type="file"
+                          accept={
+                            mat.format === 'pptx'
+                              ? '.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation'
+                              : 'application/pdf'
+                          }
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file && onUploadCustomCollegeMaterial) onUploadCustomCollegeMaterial(mat.id, file);
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Modal Footer */}
@@ -400,6 +502,16 @@ export const MasterAssetManager: React.FC<MasterAssetManagerProps> = ({
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
                 Reset Wealth Materials to Defaults
+              </button>
+            )}
+            {activeTab === 'college' && onResetCollegeMaterials && (
+              <button
+                type="button"
+                onClick={onResetCollegeMaterials}
+                className="text-xs text-red-600 hover:text-red-700 font-medium hover:underline inline-flex items-center cursor-pointer"
+              >
+                <RotateCcw className="w-3 h-3 mr-1" />
+                Reset College Planning Materials to Defaults
               </button>
             )}
           </div>

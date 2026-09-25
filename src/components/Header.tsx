@@ -2,6 +2,7 @@ import React from 'react';
 import { Download, Menu, ShieldCheck } from 'lucide-react';
 import { SOCIAL_POSTS } from '../data/socialPosts';
 import { WEALTH_MATERIALS } from '../data/wealthMaterials';
+import { COLLEGE_MATERIALS } from '../data/collegeMaterials';
 
 interface HeaderProps {
   selectedCount: number;
@@ -9,9 +10,10 @@ interface HeaderProps {
   onBatchDownload: () => void;
   isGenerating: boolean;
   isAdmin: boolean;
-  activeStudioTab: 'guides' | 'social' | 'wealth';
+  activeStudioTab: 'guides' | 'social' | 'wealth' | 'college';
   onSocialBatchDownload?: () => void;
   onWealthBatchDownload?: () => void;
+  onCollegeBatchDownload?: () => void;
   onToggleMobileNav: () => void;
 }
 
@@ -24,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeStudioTab,
   onSocialBatchDownload,
   onWealthBatchDownload,
+  onCollegeBatchDownload,
   onToggleMobileNav,
 }) => {
   return (
@@ -58,6 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {activeStudioTab === 'guides' && 'Financial Guides Co-Branding Studio'}
                   {activeStudioTab === 'social' && 'Social Media Co-Branding Studio'}
                   {activeStudioTab === 'wealth' && 'Simplicity Wealth Studio'}
+                  {activeStudioTab === 'college' && 'Simplifying College Planning Studio'}
                 </span>
 
                 {isAdmin && (
@@ -72,6 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {activeStudioTab === 'guides' && `Brand up to ${totalCount} guides with your logo, contact info, and disclosures.`}
                 {activeStudioTab === 'social' && `Stamp your agency logo onto all ${SOCIAL_POSTS.length} client-facing square graphics.`}
                 {activeStudioTab === 'wealth' && `Brand all ${WEALTH_MATERIALS.length} institutional brochures, flyers, questionnaires & slides.`}
+                {activeStudioTab === 'college' && `Brand all ${COLLEGE_MATERIALS.length} workshop slides, invitation flyers, workbooks & packets.`}
               </p>
             </div>
           </div>
@@ -116,6 +121,20 @@ export const Header: React.FC<HeaderProps> = ({
                 <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
                 <span className="hidden sm:inline">Download All {WEALTH_MATERIALS.length} Wealth Materials (ZIP)</span>
                 <span className="sm:hidden">ZIP ({WEALTH_MATERIALS.length})</span>
+              </button>
+            )}
+
+            {activeStudioTab === 'college' && (
+              <button
+                onClick={onCollegeBatchDownload || onBatchDownload}
+                disabled={isGenerating}
+                className={`inline-flex items-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-xl shadow-md bg-[#0076BD] hover:bg-[#00629e] text-white shadow-[#0076BD]/30 active:scale-95 transition-all cursor-pointer ${
+                  isGenerating ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
+                <span className="hidden sm:inline">Download All {COLLEGE_MATERIALS.length} College Materials (ZIP)</span>
+                <span className="sm:hidden">ZIP ({COLLEGE_MATERIALS.length})</span>
               </button>
             )}
           </div>
