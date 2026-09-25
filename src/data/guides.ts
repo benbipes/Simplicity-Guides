@@ -116,6 +116,25 @@ export const INITIAL_GUIDES: FinancialGuide[] = [
       'SECURE Act 2.0 Changes: Starter 401(k)s, Auto-Enrollment & Tax Credits',
       'Transitioning from Business Cash Flow to Guaranteed Retirement Income'
     ]
+  },
+  {
+    id: '07-staying-disciplined-volatility',
+    filename: 'staying-disciplined-during-market-volatility.pdf',
+    title: 'Staying Disciplined During Market Volatility',
+    subtitle: 'Have a Plan to Help Protect Your Savings from Market Fluctuations',
+    category: 'Market Volatility & Risk',
+    pages: 13,
+    contactPageNumber: 11,
+    disclosurePageNumber: 13,
+    themeColor: '#ea580c',
+    topics: [
+      'Tips to Help Avoid Market Panic Reaction & Emotional Decisions',
+      'What Are Bear and Bull Markets? Understanding Market Cycles',
+      'The State of the Market When You Retire: Mitigating Sequence Risk',
+      'The Challenges of Timing the Market: The Cost of Missing the 10 Best Days',
+      'Five Ways an Advisor Can Help: Risk Tolerance & Portfolio Diversification',
+      'Longevity Risk Assistance, Strategic Roth Conversions & Tax Planning'
+    ]
   }
 ];
 

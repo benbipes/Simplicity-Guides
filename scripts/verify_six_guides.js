@@ -8,7 +8,8 @@ const guides = [
   { file: 'age-5-to-55-kids-finances.pdf', title: 'Age 5 to 55: What Your Kids Need to Know About Finances', pages: 16, contact: 14, disclosure: 16 },
   { file: 'legacy-and-estate-planning.pdf', title: 'Legacy & Estate Planning: Understanding the Basics', pages: 15, contact: 13, disclosure: 15 },
   { file: 'pensions-buyouts-retirement-income.pdf', title: 'Pensions, Buyouts, & Retirement Income', pages: 17, contact: 15, disclosure: 17 },
-  { file: 'exit-your-business-enter-retirement.pdf', title: 'How to Exit Your Business and Enter Retirement', pages: 17, contact: 15, disclosure: 17 }
+  { file: 'exit-your-business-enter-retirement.pdf', title: 'How to Exit Your Business and Enter Retirement', pages: 17, contact: 15, disclosure: 17 },
+  { file: 'staying-disciplined-during-market-volatility.pdf', title: 'Staying Disciplined During Market Volatility', pages: 13, contact: 11, disclosure: 13 }
 ];
 
 async function verifyAll() {
@@ -31,7 +32,7 @@ async function verifyAll() {
     const discPage = doc.getPage(g.disclosure - 1);
     console.log(`  ✓ ${g.title} (${g.file}) | Total: ${total}, Contact: Pg ${g.contact}, Disclosure: Pg ${g.disclosure}`);
   }
-  console.log("\nALL SIX MASTER GUIDES VERIFIED SUCCESSFULLY!");
+  console.log("\nALL SEVEN MASTER GUIDES VERIFIED SUCCESSFULLY!");
 }
 
 verifyAll().catch(e => {
