@@ -84,3 +84,15 @@ export interface BatchProgress {
   currentGuideTitle: string;
   error?: string;
 }
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: 'Super Admin' | 'Admin';
+  isSuperAdmin?: boolean;
+  createdAt: string;
+  addedBy?: string;
+}
+

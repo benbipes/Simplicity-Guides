@@ -9,17 +9,22 @@ import {
   Sparkles,
   LogOut,
   X,
-  ChevronRight
+  ChevronRight,
+  Users
 } from 'lucide-react';
+import { AdminUser } from '../types';
 
 interface SidebarProps {
   activeStudioTab: 'guides' | 'social' | 'wealth';
   onChangeStudioTab: (tab: 'guides' | 'social' | 'wealth') => void;
   isAdmin: boolean;
+  currentAdmin?: AdminUser | null;
+  adminUsersCount?: number;
   onOpenAdminLogin: () => void;
   onAdminLogout: () => void;
   onLoadDemo: () => void;
   onOpenUploader: (initialTab?: 'guides' | 'social' | 'wealth') => void;
+  onOpenAdminUsers?: () => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
 }
@@ -28,10 +33,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeStudioTab,
   onChangeStudioTab,
   isAdmin,
+  currentAdmin,
+  adminUsersCount = 1,
   onOpenAdminLogin,
   onAdminLogout,
   onLoadDemo,
   onOpenUploader,
+  onOpenAdminUsers,
   isMobileOpen,
   onCloseMobile,
 }) => {
@@ -157,11 +165,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                   <div className="min-w-0">
                     <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <span>Administrator</span>
+                      <span>{currentAdmin?.name || 'Administrator'}</span>
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     </div>
-                    <div className="text-[10px] text-emerald-200 truncate max-w-[140px]">
-                      ben.bipes@simplicitygroup.com
+                    <div className="text-[10px] text-emerald-200 truncate max-w-[150px]">
+                      {currentAdmin?.email || 'ben.bipes@simplicitygroup.com'}
                     </div>
                   </div>
                 </div>
@@ -213,6 +221,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                   <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </button>
+
+                {onOpenAdminUsers && (
+                  <button
+                    type="button"
+                    onClick={onOpenAdminUsers}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-purple-500/20 hover:bg-purple-600/40 text-purple-100 border border-purple-400/30 transition-all text-left cursor-pointer group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Users className="w-4 h-4 text-purple-300" />
+                      <span>Manage Admin Users</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-[10px] bg-purple-400/30 px-1.5 py-0.5 rounded font-bold text-white">
+                        {adminUsersCount}
+                      </span>
+                      <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                    </div>
+                  </button>
+                )}
 
                 <div className="pt-1 border-t border-white/10 mt-1">
                   <button

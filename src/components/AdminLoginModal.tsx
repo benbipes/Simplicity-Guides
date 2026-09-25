@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { Lock, X, ShieldCheck, AlertCircle } from 'lucide-react';
 
+import { AdminUser } from '../types';
+
 interface AdminLoginModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: () => void;
+  onLoginSuccess: (user: AdminUser) => void;
+  adminUsers?: AdminUser[];
 }
 
 export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
   isOpen,
   onClose,
   onLoginSuccess,
+  adminUsers = [],
 }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,8 +27,26 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
     setError(null);
 
     const trimmedUser = username.trim().toLowerCase();
-    if (trimmedUser === 'ben.bipes@simplicitygroup.com' && password === 'dept078LEES') {
-      onLoginSuccess();
+    const matchedUser = adminUsers.find(
+      (u) => u.email.toLowerCase() === trimmedUser && u.password === password
+    );
+
+    if (matchedUser) {
+      onLoginSuccess(matchedUser);
+      setUsername('');
+      setPassword('');
+      onClose();
+    } else if (trimmedUser === 'ben.bipes@simplicitygroup.com' && password === 'dept078LEES') {
+      const defaultBen: AdminUser = {
+        id: 'admin-ben-bipes',
+        name: 'Ben Bipes',
+        email: 'ben.bipes@simplicitygroup.com',
+        password: 'dept078LEES',
+        role: 'Super Admin',
+        isSuperAdmin: true,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      };
+      onLoginSuccess(defaultBen);
       setUsername('');
       setPassword('');
       onClose();

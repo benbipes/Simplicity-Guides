@@ -6,18 +6,27 @@ import { LivePreview } from './components/LivePreview';
 import { GuideCatalog } from './components/GuideCatalog';
 import { MasterGuideUploader } from './components/MasterGuideUploader';
 import { MasterAssetManager } from './components/MasterAssetManager';
+import { AdminUsersModal } from './components/AdminUsersModal';
 import { BatchDownloadModal } from './components/BatchDownloadModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SocialMediaStudio } from './components/SocialMediaStudio';
 import { WealthStudio } from './components/WealthStudio';
 import { SOCIAL_POSTS, SocialPost } from './data/socialPosts';
 import { WEALTH_MATERIALS } from './data/wealthMaterials';
+import {
+  loadAdminUsersFromStorage,
+  saveAdminUsersToStorage,
+  loadCurrentAdminFromStorage,
+  saveCurrentAdminToStorage,
+  PRIMARY_ADMIN_EMAIL
+} from './data/adminUsers';
 import { downloadAllSocialPostsZip } from './utils/socialBrander';
 import { downloadAllWealthMaterialsZip } from './utils/wealthBrander';
 import {
   AgentProfile,
   FinancialGuide,
   WealthMaterial,
+  AdminUser,
   BrandingOptions,
   BatchProgress
 } from './types';
@@ -94,21 +103,58 @@ export const App: React.FC = () => {
   const [uploaderInitialTab, setUploaderInitialTab] = useState<'guides' | 'social' | 'wealth'>('guides');
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
-  // Admin authentication state
+  // Admin authentication & user management state
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>(() =>
+    loadAdminUsersFromStorage()
+  );
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
     return sessionStorage.getItem('simplicity_is_admin') === 'true';
   });
+  const [currentAdmin, setCurrentAdmin] = useState<AdminUser | null>(() => {
+    const loadedUsers = loadAdminUsersFromStorage();
+    const stored = loadCurrentAdminFromStorage(loadedUsers);
+    if (stored) return stored;
+    if (sessionStorage.getItem('simplicity_is_admin') === 'true') {
+      return loadedUsers[0];
+    }
+    return null;
+  });
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+  const [isAdminUsersModalOpen, setIsAdminUsersModalOpen] = useState(false);
 
-  const handleAdminLoginSuccess = () => {
+  const handleAdminLoginSuccess = (user: AdminUser) => {
     setIsAdmin(true);
-    sessionStorage.setItem('simplicity_is_admin', 'true');
+    setCurrentAdmin(user);
+    saveCurrentAdminToStorage(user);
   };
 
   const handleAdminLogout = () => {
     setIsAdmin(false);
-    sessionStorage.removeItem('simplicity_is_admin');
+    setCurrentAdmin(null);
+    saveCurrentAdminToStorage(null);
     setIsUploaderOpen(false);
+    setIsAdminUsersModalOpen(false);
+  };
+
+  const handleAddAdminUser = (newUserData: Omit<AdminUser, 'id' | 'createdAt'>) => {
+    const newUser: AdminUser = {
+      ...newUserData,
+      id: `admin-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    };
+    setAdminUsers((prev) => {
+      const updated = [...prev, newUser];
+      saveAdminUsersToStorage(updated);
+      return updated;
+    });
+  };
+
+  const handleRemoveAdminUser = (userId: string) => {
+    setAdminUsers((prev) => {
+      const updated = prev.filter((u) => u.id !== userId);
+      saveAdminUsersToStorage(updated);
+      return updated;
+    });
   };
 
   // 6. Batch Generation Progress
@@ -384,6 +430,8 @@ export const App: React.FC = () => {
         activeStudioTab={activeStudioTab}
         onChangeStudioTab={setActiveStudioTab}
         isAdmin={isAdmin}
+        currentAdmin={currentAdmin}
+        adminUsersCount={adminUsers.length}
         onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
         onAdminLogout={handleAdminLogout}
         onLoadDemo={handleLoadDemo}
@@ -392,6 +440,9 @@ export const App: React.FC = () => {
             setUploaderInitialTab(tab);
             setIsUploaderOpen(true);
           }
+        }}
+        onOpenAdminUsers={() => {
+          if (isAdmin) setIsAdminUsersModalOpen(true);
         }}
         isMobileOpen={isMobileNavOpen}
         onCloseMobile={() => setIsMobileNavOpen(false)}
@@ -579,12 +630,18 @@ export const App: React.FC = () => {
             <span>100% Client-Side PDF Generation • Simplicity Group Brand Standards Applied</span>
             <span className="text-slate-300">•</span>
             {isAdmin ? (
-              <button
-                onClick={handleAdminLogout}
-                className="text-emerald-700 hover:text-emerald-900 font-semibold underline cursor-pointer"
-              >
-                Admin (Log Out)
-              </button>
+              <span className="flex items-center gap-1.5">
+                <span className="text-emerald-700 font-semibold">
+                  Admin: {currentAdmin?.email || PRIMARY_ADMIN_EMAIL}
+                </span>
+                <span className="text-slate-300">•</span>
+                <button
+                  onClick={handleAdminLogout}
+                  className="text-slate-400 hover:text-slate-600 underline cursor-pointer"
+                >
+                  Log Out
+                </button>
+              </span>
             ) : (
               <button
                 onClick={() => setIsAdminLoginOpen(true)}
@@ -616,11 +673,24 @@ export const App: React.FC = () => {
         />
       )}
 
+      {/* Admin Users Management Modal (Admin Only) */}
+      {isAdmin && (
+        <AdminUsersModal
+          isOpen={isAdminUsersModalOpen}
+          onClose={() => setIsAdminUsersModalOpen(false)}
+          adminUsers={adminUsers}
+          onAddAdminUser={handleAddAdminUser}
+          onRemoveAdminUser={handleRemoveAdminUser}
+          currentAdminEmail={currentAdmin?.email || PRIMARY_ADMIN_EMAIL}
+        />
+      )}
+
       {/* Admin Authentication Modal */}
       <AdminLoginModal
         isOpen={isAdminLoginOpen}
         onClose={() => setIsAdminLoginOpen(false)}
         onLoginSuccess={handleAdminLoginSuccess}
+        adminUsers={adminUsers}
       />
 
       {/* Batch Generation & Download Progress Modal */}
