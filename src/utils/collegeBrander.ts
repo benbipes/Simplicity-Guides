@@ -2,6 +2,7 @@ import { PDFDocument, PDFName, PDFString, rgb, StandardFonts, PDFImage } from 'p
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { AgentProfile, CollegeMaterial } from '../types/index';
+import { sanitizeProfile, wrapSanitizedText } from './pdfSanitizer';
 
 export function addClickableLink(
   doc: PDFDocument,
@@ -80,21 +81,7 @@ async function embedImage(doc: PDFDocument, dataUrl: string | null | undefined):
 }
 
 function wrapText(text: string, maxCharsPerLine: number): string[] {
-  if (!text) return [];
-  const words = text.split(/\s+/);
-  const lines: string[] = [];
-  let currentLine = '';
-
-  for (const word of words) {
-    if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxCharsPerLine) {
-      currentLine += (currentLine ? ' ' : '') + word;
-    } else {
-      if (currentLine) lines.push(currentLine);
-      currentLine = word;
-    }
-  }
-  if (currentLine) lines.push(currentLine);
-  return lines;
+  return wrapSanitizedText(text, maxCharsPerLine);
 }
 
 /**
@@ -102,8 +89,10 @@ function wrapText(text: string, maxCharsPerLine: number): string[] {
  */
 export async function brandCollegeDocument(
   material: CollegeMaterial,
-  profile: AgentProfile
+  rawProfile: AgentProfile
 ): Promise<Uint8Array> {
+  const profile = sanitizeProfile(rawProfile);
+
   if (material.format === 'pptx') {
     if (material.customFileBytes) {
       return material.customFileBytes;

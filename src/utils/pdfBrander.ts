@@ -1,5 +1,6 @@
 import { PDFDocument, PDFName, PDFString, rgb, StandardFonts, PDFImage } from 'pdf-lib';
 import { AgentProfile, BrandingOptions, FinancialGuide } from '../types/index';
+import { sanitizeProfile, wrapSanitizedText } from './pdfSanitizer';
 
 export function addClickableLink(
   doc: PDFDocument,
@@ -95,7 +96,10 @@ export async function brandFinancialGuidePdf(
     pdfBytes = new Uint8Array(arrayBuffer);
   }
 
-  // 2. Load PDF document
+  // 2. Sanitize user profile to ensure complete WinAnsi compatibility
+  const cleanProfile = sanitizeProfile(profile);
+
+  // 3. Load PDF document
   const doc = await PDFDocument.load(pdfBytes);
   const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
   const fontRegular = await doc.embedFont(StandardFonts.Helvetica);
@@ -108,8 +112,8 @@ export async function brandFinancialGuidePdf(
   const pdfNavyColor = rgb(0.0, 0.282, 0.486); // Exact #00487C used for website, phone, email
   const pdfGrayColor = rgb(0.2, 0.2, 0.2);     // Exact dark gray used for address
 
-  const embeddedColorLogo = await embedLogo(doc, profile.logoDataUrl);
-  const embeddedWhiteLogo = await embedLogo(doc, profile.logoWhiteDataUrl);
+  const embeddedColorLogo = await embedLogo(doc, cleanProfile.logoDataUrl);
+  const embeddedWhiteLogo = await embedLogo(doc, cleanProfile.logoWhiteDataUrl);
 
   // Cover Page: Placed on dark color background in lower-left corner -> Prefer White Logo, fallback to Color
   const coverLogo = embeddedWhiteLogo || embeddedColorLogo;
@@ -138,8 +142,8 @@ export async function brandFinancialGuidePdf(
     }
 
     // Make Cover Logo clickable to agent website URL
-    if (profile.website) {
-      addClickableLink(doc, page1, 54, 28.9, 123.3, 36.0, profile.website);
+    if (cleanProfile.website) {
+      addClickableLink(doc, page1, 54, 28.9, 123.3, 36.0, cleanProfile.website);
     }
   }
 
@@ -174,7 +178,7 @@ export async function brandFinancialGuidePdf(
         width: imgW,
         height: imgH,
       });
-    } else if (profile.company || profile.name) {
+    } else if (cleanProfile.company || cleanProfile.name) {
       // If no image uploaded, draw company name centered in exact #00487C
       contactPage.drawRectangle({
         x: 180,
@@ -183,7 +187,7 @@ export async function brandFinancialGuidePdf(
         height: 60,
         color: rgb(1, 1, 1),
       });
-      const compName = (profile.company || profile.name).toUpperCase();
+      const compName = (cleanProfile.company || cleanProfile.name).toUpperCase();
       const compW = fontBold.widthOfTextAtSize(compName, 14);
       contactPage.drawText(compName, {
         x: (width - compW) / 2,
@@ -195,8 +199,8 @@ export async function brandFinancialGuidePdf(
     }
 
     // Make Contact Page Logo clickable to agent website URL
-    if (profile.website) {
-      addClickableLink(doc, contactPage, 200, 245, 212, 70, profile.website);
+    if (cleanProfile.website) {
+      addClickableLink(doc, contactPage, 200, 245, 212, 70, cleanProfile.website);
     }
 
     // B. Website (Y = 206): Replace businessgroup.com
@@ -208,8 +212,8 @@ export async function brandFinancialGuidePdf(
       color: rgb(1, 1, 1),
     });
 
-    const webText = profile.website
-      ? profile.website.replace(/^https?:\/\//, '')
+    const webText = cleanProfile.website
+      ? cleanProfile.website.replace(/^https?:\/\//, '')
       : 'yourcompany.com';
     const webSize = 14;
     const webW = fontBold.widthOfTextAtSize(webText, webSize);
@@ -223,8 +227,8 @@ export async function brandFinancialGuidePdf(
       color: pdfNavyColor,
     });
 
-    if (profile.website) {
-      addClickableLink(doc, contactPage, webX - 4, 204, webW + 8, 20, profile.website);
+    if (cleanProfile.website) {
+      addClickableLink(doc, contactPage, webX - 4, 204, webW + 8, 20, cleanProfile.website);
     }
 
     // C. Phone & Email (Y = 178): Replace (000) 000-0000 | info@businessgroup.com
@@ -236,8 +240,8 @@ export async function brandFinancialGuidePdf(
       color: rgb(1, 1, 1),
     });
 
-    const phoneVal = profile.phone || '(000) 000-0000';
-    const emailVal = profile.email || 'info@yourcompany.com';
+    const phoneVal = cleanProfile.phone || '(000) 000-0000';
+    const emailVal = cleanProfile.email || 'info@yourcompany.com';
     const contactLine = `${phoneVal} | ${emailVal}`;
     const contactSize = 10.5;
     const cLineW = fontRegular.widthOfTextAtSize(contactLine, contactSize);
@@ -251,15 +255,15 @@ export async function brandFinancialGuidePdf(
       color: pdfNavyColor,
     });
 
-    if (profile.phone) {
+    if (cleanProfile.phone) {
       const pW = fontRegular.widthOfTextAtSize(phoneVal, contactSize);
-      addClickableLink(doc, contactPage, cLineX - 2, 176, pW + 4, 16, `tel:${profile.phone}`);
+      addClickableLink(doc, contactPage, cLineX - 2, 176, pW + 4, 16, `tel:${cleanProfile.phone}`);
     }
 
-    if (profile.email) {
+    if (cleanProfile.email) {
       const sepW = fontRegular.widthOfTextAtSize(`${phoneVal} | `, contactSize);
       const eW = fontRegular.widthOfTextAtSize(emailVal, contactSize);
-      addClickableLink(doc, contactPage, cLineX + sepW - 2, 176, eW + 4, 16, `mailto:${profile.email}`);
+      addClickableLink(doc, contactPage, cLineX + sepW - 2, 176, eW + 4, 16, `mailto:${cleanProfile.email}`);
     }
 
     // D. Address (Y = 153): Replace 000 Meeting Street | Suite # | City, ST, 00000
@@ -271,7 +275,7 @@ export async function brandFinancialGuidePdf(
       color: rgb(1, 1, 1),
     });
 
-    const addrVal = profile.address || '000 Meeting Street | Suite # | City, ST, 00000';
+    const addrVal = cleanProfile.address || '000 Meeting Street | Suite # | City, ST, 00000';
     const addrSize = 9.5;
     const addrW = fontRegular.widthOfTextAtSize(addrVal, addrSize);
     const addrX = (width - addrW) / 2;
@@ -286,11 +290,11 @@ export async function brandFinancialGuidePdf(
 
     // E. Social Media Icons (Exact coordinates from PDF: Y = 68.65)
     const socialAnnots = [
-      { url: profile.socialLinks.youtube, rect: [157.04, 68.65, 193.99, 105.6] },
-      { url: profile.socialLinks.instagram, rect: [222.28, 68.65, 259.23, 105.6] },
-      { url: profile.socialLinks.facebook, rect: [287.52, 68.65, 324.47, 105.6] },
-      { url: profile.socialLinks.linkedin, rect: [352.76, 68.65, 389.71, 105.6] },
-      { url: profile.socialLinks.twitter, rect: [418.01, 68.65, 454.96, 105.6] },
+      { url: cleanProfile.socialLinks.youtube, rect: [157.04, 68.65, 193.99, 105.6] },
+      { url: cleanProfile.socialLinks.instagram, rect: [222.28, 68.65, 259.23, 105.6] },
+      { url: cleanProfile.socialLinks.facebook, rect: [287.52, 68.65, 324.47, 105.6] },
+      { url: cleanProfile.socialLinks.linkedin, rect: [352.76, 68.65, 389.71, 105.6] },
+      { url: cleanProfile.socialLinks.twitter, rect: [418.01, 68.65, 454.96, 105.6] },
     ];
 
     for (const s of socialAnnots) {
@@ -301,7 +305,7 @@ export async function brandFinancialGuidePdf(
     }
 
     // F. "Learn More" Button Link (Exact coordinate box: [225, 405, 387, 455])
-    const ctaUrl = profile.bookingUrl || profile.website || options.callToActionUrl;
+    const ctaUrl = cleanProfile.bookingUrl || cleanProfile.website || options.callToActionUrl;
     if (ctaUrl) {
       addClickableLink(doc, contactPage, 225, 405, 162, 50, ctaUrl);
     }
@@ -312,9 +316,9 @@ export async function brandFinancialGuidePdf(
   // ============================================================
   if (options.appendCustomDisclosure && disclosurePageIndex < totalPages) {
     // If agent uploaded a multi-page PDF disclosure document, append it directly
-    if (profile.uploadedDisclosure?.fileType === 'pdf' && profile.uploadedDisclosure?.pdfBytes) {
+    if (cleanProfile.uploadedDisclosure?.fileType === 'pdf' && cleanProfile.uploadedDisclosure?.pdfBytes) {
       try {
-        const customDoc = await PDFDocument.load(profile.uploadedDisclosure.pdfBytes);
+        const customDoc = await PDFDocument.load(cleanProfile.uploadedDisclosure.pdfBytes);
         const copied = await doc.copyPages(customDoc, customDoc.getPageIndices());
         for (const p of copied) {
           doc.addPage(p);
@@ -323,7 +327,7 @@ export async function brandFinancialGuidePdf(
         console.warn('Failed to append custom PDF disclosure:', err);
       }
     } else {
-      const customText = profile.disclaimer?.trim();
+      const customText = cleanProfile.disclaimer?.trim();
       const hasLogo = !!lightBgLogo;
 
       if (customText || hasLogo) {
@@ -358,8 +362,8 @@ export async function brandFinancialGuidePdf(
           });
 
           // Make Disclosure Logo clickable to agent website URL
-          if (profile.website) {
-            addClickableLink(doc, discPage, 54, curY - lh, lw, lh, profile.website);
+          if (cleanProfile.website) {
+            addClickableLink(doc, discPage, 54, curY - lh, lw, lh, cleanProfile.website);
           }
 
           curY -= (lh + 16);
@@ -367,30 +371,20 @@ export async function brandFinancialGuidePdf(
 
         // Render custom disclosure text if provided
         if (customText) {
-          const words = customText.split(' ');
-          const lines: string[] = [];
-          let curLine = '';
-
-          for (const word of words) {
-            const test = curLine ? `${curLine} ${word}` : word;
-            if (test.length > 110) {
-              lines.push(curLine);
-              curLine = word;
-            } else {
-              curLine = test;
-            }
-          }
-          if (curLine) lines.push(curLine);
+          const lines = wrapSanitizedText(customText, 110);
 
           let lineIdx = 0;
           while (lineIdx < lines.length && curY >= 95) {
-            discPage.drawText(lines[lineIdx], {
-              x: 54,
-              y: curY,
-              size: 7.2,
-              font: fontRegular,
-              color: pdfGrayColor,
-            });
+            const line = lines[lineIdx];
+            if (line) {
+              discPage.drawText(line, {
+                x: 54,
+                y: curY,
+                size: 7.2,
+                font: fontRegular,
+                color: pdfGrayColor,
+              });
+            }
             curY -= 11.5;
             lineIdx++;
           }
@@ -402,13 +396,16 @@ export async function brandFinancialGuidePdf(
 
             let contY = contH - 60;
             while (lineIdx < lines.length && contY >= 60) {
-              contPage.drawText(lines[lineIdx], {
-                x: 54,
-                y: contY,
-                size: 7.2,
-                font: fontRegular,
-                color: pdfGrayColor,
-              });
+              const line = lines[lineIdx];
+              if (line) {
+                contPage.drawText(line, {
+                  x: 54,
+                  y: contY,
+                  size: 7.2,
+                  font: fontRegular,
+                  color: pdfGrayColor,
+                });
+              }
               contY -= 11.5;
               lineIdx++;
             }
