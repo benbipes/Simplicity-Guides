@@ -578,7 +578,7 @@ export const AgentProfileForm: React.FC<AgentProfileFormProps> = ({
         {activeTab === 'social' && (
           <div className="space-y-4">
             <div className="bg-[#004372]/5 rounded-xl p-3.5 text-xs text-[#004372]">
-              <strong>Exact PDF Social Icons:</strong> The 5 circular icons at the bottom of the contact page (YouTube, Instagram, Facebook, LinkedIn, X) will be wired directly to your URLs.
+              <strong>Exact PDF Social Icons:</strong> Only the social networks you fill in will appear on your branded contact page. If you only have two or three accounts, unused logos are automatically removed and your active accounts are centered!
             </div>
 
             <div>

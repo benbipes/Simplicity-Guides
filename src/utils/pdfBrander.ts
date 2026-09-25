@@ -1,4 +1,15 @@
-import { PDFDocument, PDFName, PDFString, rgb, StandardFonts, PDFImage } from 'pdf-lib';
+import {
+  PDFDocument,
+  PDFName,
+  PDFString,
+  rgb,
+  StandardFonts,
+  PDFImage,
+  pushGraphicsState,
+  popGraphicsState,
+  concatTransformationMatrix,
+  drawObject,
+} from 'pdf-lib';
 import { AgentProfile, BrandingOptions, FinancialGuide } from '../types/index';
 import { sanitizeProfile, wrapSanitizedText, wrapTextToWidth } from './pdfSanitizer';
 
@@ -289,18 +300,75 @@ export async function brandFinancialGuidePdf(
     });
 
     // E. Social Media Icons (Exact coordinates from PDF: Y = 68.65)
-    const socialAnnots = [
-      { url: cleanProfile.socialLinks.youtube, rect: [157.04, 68.65, 193.99, 105.6] },
-      { url: cleanProfile.socialLinks.instagram, rect: [222.28, 68.65, 259.23, 105.6] },
-      { url: cleanProfile.socialLinks.facebook, rect: [287.52, 68.65, 324.47, 105.6] },
-      { url: cleanProfile.socialLinks.linkedin, rect: [352.76, 68.65, 389.71, 105.6] },
-      { url: cleanProfile.socialLinks.twitter, rect: [418.01, 68.65, 454.96, 105.6] },
+    // If agent only has two or three social accounts (or any subset), remove unused logos and center active ones
+    const hasXObj = (name: string) => {
+      if (!xObjContact || typeof xObjContact.has !== 'function') return false;
+      return xObjContact.has(PDFName.of(name));
+    };
+
+    const hasStandardSocialIcons =
+      hasXObj('Im0') && hasXObj('Im1') && hasXObj('Im2') && hasXObj('Im3') && hasXObj('Im4');
+
+    const SOCIAL_ITEMS = [
+      { key: 'youtube' as const, xObj: 'Im0', url: cleanProfile.socialLinks.youtube?.trim() },
+      { key: 'instagram' as const, xObj: 'Im1', url: cleanProfile.socialLinks.instagram?.trim() },
+      { key: 'facebook' as const, xObj: 'Im2', url: cleanProfile.socialLinks.facebook?.trim() },
+      { key: 'linkedin' as const, xObj: 'Im3', url: cleanProfile.socialLinks.linkedin?.trim() },
+      { key: 'twitter' as const, xObj: 'Im4', url: cleanProfile.socialLinks.twitter?.trim() },
     ];
 
-    for (const s of socialAnnots) {
-      if (s.url && s.url.trim().length > 0) {
-        const [x1, y1, x2, y2] = s.rect;
-        addClickableLink(doc, contactPage, x1, y1, x2 - x1, y2 - y1, s.url);
+    const activeSocial = SOCIAL_ITEMS.filter((s) => s.url && s.url.length > 0);
+    const numActive = activeSocial.length;
+
+    if (hasStandardSocialIcons) {
+      // 1. Cover original 5 social icons with pure white background box
+      contactPage.drawRectangle({
+        x: 130,
+        y: 60,
+        width: 352,
+        height: 55,
+        color: rgb(1, 1, 1),
+      });
+
+      // 2. Draw and link only the active social accounts, perfectly centered
+      if (numActive > 0) {
+        const iconW = 36.954;
+        const iconH = 36.954;
+        const iconY = 68.646;
+        const pitch = 65.2415;
+
+        const totalSpan = (numActive - 1) * pitch + iconW;
+        const startX = (width - totalSpan) / 2;
+
+        for (let i = 0; i < numActive; i++) {
+          const item = activeSocial[i];
+          const iconX = startX + i * pitch;
+
+          contactPage.pushOperators(
+            pushGraphicsState(),
+            concatTransformationMatrix(iconW, 0, 0, iconH, iconX, iconY),
+            drawObject(item.xObj),
+            popGraphicsState()
+          );
+
+          addClickableLink(doc, contactPage, iconX - 2, iconY - 2, iconW + 4, iconH + 4, item.url!);
+        }
+      }
+    } else {
+      // Fallback for custom PDFs that don't have standard Im0-Im4
+      const defaultPositions = [
+        { key: 'youtube', rect: [157.04, 68.65, 193.99, 105.6] },
+        { key: 'instagram', rect: [222.28, 68.65, 259.23, 105.6] },
+        { key: 'facebook', rect: [287.52, 68.65, 324.47, 105.6] },
+        { key: 'linkedin', rect: [352.76, 68.65, 389.71, 105.6] },
+        { key: 'twitter', rect: [418.01, 68.65, 454.96, 105.6] },
+      ];
+      for (const d of defaultPositions) {
+        const url = (cleanProfile.socialLinks as any)[d.key]?.trim();
+        if (url) {
+          const [x1, y1, x2, y2] = d.rect;
+          addClickableLink(doc, contactPage, x1, y1, x2 - x1, y2 - y1, url);
+        }
       }
     }
 
