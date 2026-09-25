@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { Sidebar } from './components/Sidebar';
 import { AgentProfileForm } from './components/AgentProfileForm';
 import { LivePreview } from './components/LivePreview';
 import { GuideCatalog } from './components/GuideCatalog';
@@ -114,6 +115,7 @@ export const App: React.FC = () => {
 
   // 7. Active Studio Tab ('guides' | 'social' | 'wealth')
   const [activeStudioTab, setActiveStudioTab] = useState<'guides' | 'social' | 'wealth'>('guides');
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleSocialBatchDownload = async () => {
     try {
@@ -323,87 +325,42 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans selection:bg-[#0076BD] selection:text-white">
-      {/* Platform Header with Simplicity Branding */}
-      <Header
-        profile={profile}
-        selectedCount={selectedGuideIds.length}
-        totalCount={guides.length}
-        onBatchDownload={handleBatchDownload}
+    <div className="min-h-screen bg-slate-50 flex font-sans selection:bg-[#0076BD] selection:text-white">
+      {/* Left Navigation Sidebar */}
+      <Sidebar
+        activeStudioTab={activeStudioTab}
+        onChangeStudioTab={setActiveStudioTab}
+        isAdmin={isAdmin}
+        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
+        onAdminLogout={handleAdminLogout}
         onLoadDemo={handleLoadDemo}
         onOpenUploader={() => {
           if (isAdmin) setIsUploaderOpen(true);
         }}
-        isGenerating={batchProgress.isGenerating}
-        isAdmin={isAdmin}
-        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
-        onAdminLogout={handleAdminLogout}
-        activeStudioTab={activeStudioTab}
-        onChangeStudioTab={setActiveStudioTab}
-        onSocialBatchDownload={handleSocialBatchDownload}
-        onWealthBatchDownload={handleWealthBatchDownload}
+        isMobileOpen={isMobileNavOpen}
+        onCloseMobile={() => setIsMobileNavOpen(false)}
       />
 
-      {/* Main Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
-        
-        {/* Studio Switcher Pill Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 gap-3">
-          <div className="flex items-center space-x-2 bg-slate-200/80 p-1.5 rounded-2xl w-fit flex-wrap">
-            <button
-              type="button"
-              onClick={() => setActiveStudioTab('guides')}
-              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeStudioTab === 'guides'
-                  ? 'bg-white text-[#004372] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <BookOpen className="w-4 h-4 text-[#0076BD]" />
-              <span>1. Financial Guides (6)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveStudioTab('social')}
-              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeStudioTab === 'social'
-                  ? 'bg-white text-[#004372] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Share2 className="w-4 h-4 text-[#0076BD]" />
-              <span>2. Social Media Posts (10)</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveStudioTab('wealth')}
-              className={`flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeStudioTab === 'wealth'
-                  ? 'bg-white text-[#004372] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Briefcase className="w-4 h-4 text-[#0076BD]" />
-              <span>3. Simplicity Wealth (14)</span>
-            </button>
-          </div>
+      {/* Right Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Streamlined Top Action Bar */}
+        <Header
+          selectedCount={selectedGuideIds.length}
+          totalCount={guides.length}
+          onBatchDownload={handleBatchDownload}
+          isGenerating={batchProgress.isGenerating}
+          isAdmin={isAdmin}
+          activeStudioTab={activeStudioTab}
+          onSocialBatchDownload={handleSocialBatchDownload}
+          onWealthBatchDownload={handleWealthBatchDownload}
+          onToggleMobileNav={() => setIsMobileNavOpen((prev) => !prev)}
+        />
 
-          <div className="text-xs text-slate-500 font-medium">
-            {activeStudioTab === 'guides' && (
-              <span>Personalize client-facing PDF guides with contact info & disclosures</span>
-            )}
-            {activeStudioTab === 'social' && (
-              <span>Stamp your logo directly onto ready-to-share social graphics</span>
-            )}
-            {activeStudioTab === 'wealth' && (
-              <span>Brand 14 institutional wealth assets with your logo, team bios & headshots</span>
-            )}
-          </div>
-        </div>
-
-        {activeStudioTab === 'guides' && (
-          <>
-            {/* Simplicity Group Branded Hero Banner */}
+        {/* Main Workspace */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+          {activeStudioTab === 'guides' && (
+            <>
+              {/* Simplicity Group Branded Hero Banner */}
             <section className="bg-gradient-to-r from-[#00558f] via-[#006cae] to-[#0076BD] rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-[#00355a] relative overflow-hidden">
           <div className="relative z-10 space-y-4">
             <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-bold tracking-tight text-white leading-tight">
@@ -558,7 +515,7 @@ export const App: React.FC = () => {
               className="h-6 w-auto object-contain"
             />
             <span className="text-slate-400">|</span>
-            <span className="font-semibold text-slate-700">Financial Guide Co-Branding Studio</span>
+            <span className="font-semibold text-slate-700">Advisor Marketing & Co-Branding Studio</span>
           </div>
           <div className="flex items-center space-x-3 text-slate-500 text-[11px]">
             <span>100% Client-Side PDF Generation • Simplicity Group Brand Standards Applied</span>
@@ -581,6 +538,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       </footer>
+    </div>
 
       {/* Custom Master PDFs Manager Modal (Admin Only) */}
       {isAdmin && (
