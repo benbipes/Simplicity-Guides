@@ -115,7 +115,6 @@ export const App: React.FC = () => {
     try {
       const logo = profile.logoWhiteDataUrl || profile.logoDataUrl || '';
       await downloadAllSocialPostsZip(SOCIAL_POSTS, logo, {
-        position: 'top-center',
         scale: 1.0,
         replaceTopLogo: true,
       });

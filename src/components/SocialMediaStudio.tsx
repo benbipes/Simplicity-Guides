@@ -190,7 +190,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             Brand Social Media Posts with Your Logo
           </h1>
           <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-4xl">
-            Effortlessly stamp your agency logo onto all 5 square (1024×1024) social media graphics. No contact forms or complex setups required—just your logo, ready to download and publish to LinkedIn, Facebook, Instagram, or X.
+            Effortlessly stamp your agency logo onto all {SOCIAL_POSTS.length} square (1024×1024) social media graphics. No contact forms or complex setups required—just your logo, ready to download and publish to LinkedIn, Facebook, Instagram, or X.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
@@ -466,7 +466,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <Download className="w-3.5 h-3.5 mr-1.5" />
               {isBatchDownloading
                 ? `Creating ZIP (${batchProgress?.current || 0}/${SOCIAL_POSTS.length})...`
-                : 'Download All 5 Graphics (ZIP)'}
+                : `Download All ${SOCIAL_POSTS.length} Graphics (ZIP)`}
             </button>
           </div>
         </div>
@@ -547,7 +547,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
       </div>
 
-      {/* BOTTOM SECTION: Gallery of All 5 Social Graphics */}
+      {/* BOTTOM SECTION: Gallery of All Social Graphics */}
       <section className="pt-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
           <div>
@@ -556,7 +556,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <span>Full Social Media Post Catalog</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-              All 5 Client-Ready Social Media Graphics
+              All {SOCIAL_POSTS.length} Client-Ready Social Media Graphics
             </h2>
             <p className="text-xs text-slate-500">
               Click any graphic to load it into the live editor above, or download directly.
@@ -570,7 +570,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             className="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg bg-[#0076BD] hover:bg-[#00629e] text-white shadow-xs transition-colors self-start sm:self-auto"
           >
             <Download className="w-3.5 h-3.5 mr-1.5" />
-            Download All 5 (ZIP)
+            Download All {SOCIAL_POSTS.length} (ZIP)
           </button>
         </div>
 

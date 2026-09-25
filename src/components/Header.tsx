@@ -1,6 +1,7 @@
 import React from 'react';
 import { Download, Sparkles, FolderUp, Lock, ShieldCheck, BookOpen, Share2 } from 'lucide-react';
 import { AgentProfile } from '../types';
+import { SOCIAL_POSTS } from '../data/socialPosts';
 
 interface HeaderProps {
   profile: AgentProfile;
@@ -57,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
               <p className="text-[11px] text-sky-200">
                 {activeStudioTab === 'guides'
                   ? 'Brand up to 6 guides with your business logo, contact information, and disclosures.'
-                  : 'Brand 5 client-facing social graphics with just your logo.'}
+                  : `Brand ${SOCIAL_POSTS.length} client-facing social graphics with just your logo.`}
               </p>
             </div>
           </div>
@@ -158,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="inline-flex items-center px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-lg shadow-md bg-[#0076BD] hover:bg-[#00629e] text-white shadow-[#0076BD]/30 active:scale-95 transition-all"
               >
                 <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
-                <span>Download 5 Social Posts (ZIP)</span>
+                <span>Download {SOCIAL_POSTS.length} Social Posts (ZIP)</span>
               </button>
             )}
           </div>

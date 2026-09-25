@@ -12,7 +12,7 @@ export interface SocialPost {
   headline: string;
   description: string;
   filename: string;
-  category: 'fraud-awareness' | 'guides' | 'life-insurance' | 'healthcare';
+  category: string;
   categoryLabel: string;
   defaultPlacement: SocialPostPlacement;
   hasExistingTopLogo: boolean;
@@ -137,6 +137,112 @@ export const SOCIAL_POSTS: SocialPost[] = [
       width: 384,
       height: 95,
       color: '#023456', // Matching dark blue background
+    },
+  },
+  {
+    id: 'thanksgiving-pumpkin-leaves',
+    title: 'Thanksgiving Wishes (Warm Gathering)',
+    headline: 'Wishing you a warm, wonderful Thanksgiving.',
+    description: 'Share heartfelt holiday gratitude with clients, colleagues, and families.',
+    filename: 'thanksgiving-pumpkin-leaves.jpg',
+    category: 'holiday',
+    categoryLabel: 'Holiday & Seasonal',
+    defaultPlacement: {
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
+    },
+    hasExistingTopLogo: false,
+  },
+  {
+    id: 'thanksgiving-autumn-orange',
+    title: 'Thanksgiving Gratitude (Autumn Harvest)',
+    headline: 'Gratitude turns what we have into enough.',
+    description: 'Celebrate Thanksgiving with a message of gratitude and appreciation for your clients.',
+    filename: 'thanksgiving-autumn-orange.jpg',
+    category: 'holiday',
+    categoryLabel: 'Holiday & Seasonal',
+    defaultPlacement: {
+      position: 'bottom-right',
+      xPercent: 80,
+      yPercent: 88,
+      maxWidth: 290,
+      maxHeight: 75,
+    },
+    hasExistingTopLogo: false,
+  },
+  {
+    id: 'align-people-tech-process',
+    title: 'Align People, Technology & Process',
+    headline: 'Align your people, technology, and process.',
+    description: 'Empower modern advisory operations with streamlined workflow integration.',
+    filename: 'align-people-tech-process.jpg',
+    category: 'practice-management',
+    categoryLabel: 'Practice Growth',
+    defaultPlacement: {
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
+    },
+    hasExistingTopLogo: true,
+    coverPatch: {
+      x: 320,
+      y: 75,
+      width: 384,
+      height: 95,
+      color: '#002848',
+    },
+  },
+  {
+    id: 'price-of-independence',
+    title: 'The Price of Independence',
+    headline: 'Frustration shouldn\'t be the price of independence.',
+    description: 'Inspire independent financial professionals to achieve autonomy without operational friction.',
+    filename: 'price-of-independence.jpg',
+    category: 'advisory-independence',
+    categoryLabel: 'Advisory Independence',
+    defaultPlacement: {
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
+    },
+    hasExistingTopLogo: true,
+    coverPatch: {
+      x: 320,
+      y: 75,
+      width: 384,
+      height: 95,
+      color: '#002848',
+    },
+  },
+  {
+    id: 'higher-production-less-time',
+    title: 'Higher Production in Less Time',
+    headline: 'Higher level of production in less time.',
+    description: 'Highlight growth, efficiency, and scaled advisor performance.',
+    filename: 'higher-production-less-time.jpg',
+    category: 'practice-management',
+    categoryLabel: 'Practice Growth',
+    defaultPlacement: {
+      position: 'top-right',
+      xPercent: 80,
+      yPercent: 12,
+      maxWidth: 290,
+      maxHeight: 75,
+    },
+    hasExistingTopLogo: true,
+    coverPatch: {
+      x: 320,
+      y: 75,
+      width: 384,
+      height: 95,
+      color: '#002848',
     },
   },
 ];
