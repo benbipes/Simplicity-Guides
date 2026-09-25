@@ -42,6 +42,7 @@ interface WealthStudioProps {
   onOptionsChange: (updated: BrandingOptions) => void;
   onBatchDownloadAll: () => void;
   isBatchGenerating: boolean;
+  materials?: WealthMaterial[];
 }
 
 export const WealthStudio: React.FC<WealthStudioProps> = ({
@@ -54,9 +55,21 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
   onOptionsChange,
   onBatchDownloadAll,
   isBatchGenerating,
+  materials,
 }) => {
+  const allMaterials = materials || WEALTH_MATERIALS;
+
   // Active material state
-  const [activeMaterial, setActiveMaterial] = useState<WealthMaterial>(WEALTH_MATERIALS[0]);
+  const [activeMaterial, setActiveMaterial] = useState<WealthMaterial>(allMaterials[0]);
+
+  // Keep activeMaterial updated if materials state changes (e.g. admin custom upload)
+  useEffect(() => {
+    if (materials) {
+      const match = materials.find((m) => m.id === activeMaterial.id);
+      if (match) setActiveMaterial(match);
+    }
+  }, [materials]);
+
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Preview & Pagination State
@@ -218,7 +231,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
   };
 
   // Filtered materials for bottom gallery
-  const filteredMaterials = WEALTH_MATERIALS.filter((mat) => {
+  const filteredMaterials = allMaterials.filter((mat) => {
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'brochure') return mat.category === 'brochure';
     if (selectedCategory === 'specialization') return mat.categoryLabel === 'Investment Specializations';
@@ -243,7 +256,7 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
           </h1>
 
           <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-5xl">
-            Customize all {WEALTH_MATERIALS.length} institutional materials—including prestige brochures, investment specialization flyers, client questionnaires, and presentation decks. Upload your headshot(s), add personalized advisor biographies, and stamp your firm logo and contact details across every asset.
+            Customize all {allMaterials.length} institutional materials—including prestige brochures, investment specialization flyers, client questionnaires, and presentation decks. Upload your headshot(s), add personalized advisor biographies, and stamp your firm logo and contact details across every asset.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
@@ -535,14 +548,14 @@ export const WealthStudio: React.FC<WealthStudioProps> = ({
           </div>
 
           <div className="text-xs text-slate-600 font-medium">
-            Showing <strong className="text-slate-900">{filteredMaterials.length}</strong> of {WEALTH_MATERIALS.length} materials
+            Showing <strong className="text-slate-900">{filteredMaterials.length}</strong> of {allMaterials.length} materials
           </div>
         </div>
 
         {/* Category Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1">
           {[
-            { id: 'all', label: `All (${WEALTH_MATERIALS.length})` },
+            { id: 'all', label: `All (${allMaterials.length})` },
             { id: 'brochure', label: 'Brochures (3)' },
             { id: 'specialization', label: 'Investment Specializations (5)' },
             { id: 'flyer', label: 'Flyers & FAQs (2)' },

@@ -52,6 +52,8 @@ export interface WealthMaterial {
   contactPages?: number[]; // pages that have contact blocks (e.g. [1, 2] or [1, 8])
   description: string;
   badge?: string;
+  customFileBytes?: Uint8Array;
+  isCustom?: boolean;
 }
 
 export interface FinancialGuide {

@@ -5,17 +5,19 @@ import { AgentProfileForm } from './components/AgentProfileForm';
 import { LivePreview } from './components/LivePreview';
 import { GuideCatalog } from './components/GuideCatalog';
 import { MasterGuideUploader } from './components/MasterGuideUploader';
+import { MasterAssetManager } from './components/MasterAssetManager';
 import { BatchDownloadModal } from './components/BatchDownloadModal';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { SocialMediaStudio } from './components/SocialMediaStudio';
 import { WealthStudio } from './components/WealthStudio';
-import { SOCIAL_POSTS } from './data/socialPosts';
+import { SOCIAL_POSTS, SocialPost } from './data/socialPosts';
 import { WEALTH_MATERIALS } from './data/wealthMaterials';
 import { downloadAllSocialPostsZip } from './utils/socialBrander';
 import { downloadAllWealthMaterialsZip } from './utils/wealthBrander';
 import {
   AgentProfile,
   FinancialGuide,
+  WealthMaterial,
   BrandingOptions,
   BatchProgress
 } from './types';
@@ -76,16 +78,20 @@ export const App: React.FC = () => {
   );
 
   // 3. Financial Guides State
+  // 3. Financial Guides, Social Posts & Wealth Materials State
   const [guides, setGuides] = useState<FinancialGuide[]>(INITIAL_GUIDES);
   const [selectedGuideIds, setSelectedGuideIds] = useState<string[]>(() =>
     INITIAL_GUIDES.map((g) => g.id)
   );
+  const [socialPosts, setSocialPosts] = useState<SocialPost[]>(SOCIAL_POSTS);
+  const [wealthMaterials, setWealthMaterials] = useState<WealthMaterial[]>(WEALTH_MATERIALS);
 
   // 4. Active Preview Guide
   const [activePreviewGuide, setActivePreviewGuide] = useState<FinancialGuide>(INITIAL_GUIDES[0]);
 
   // 5. UI Modals and Status
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
+  const [uploaderInitialTab, setUploaderInitialTab] = useState<'guides' | 'social' | 'wealth'>('guides');
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
   // Admin authentication state
@@ -120,7 +126,7 @@ export const App: React.FC = () => {
   const handleSocialBatchDownload = async () => {
     try {
       const logo = profile.logoWhiteDataUrl || profile.logoDataUrl || '';
-      await downloadAllSocialPostsZip(SOCIAL_POSTS, logo, {
+      await downloadAllSocialPostsZip(socialPosts, logo, {
         scale: 1.0,
         replaceTopLogo: true,
       });
@@ -133,13 +139,13 @@ export const App: React.FC = () => {
     setBatchProgress({
       isGenerating: true,
       currentStep: 0,
-      totalSteps: WEALTH_MATERIALS.length,
+      totalSteps: wealthMaterials.length,
       currentGuideTitle: 'Initializing Simplicity Wealth branding engine...',
     });
 
     try {
       await downloadAllWealthMaterialsZip(
-        WEALTH_MATERIALS,
+        wealthMaterials,
         profile,
         (current, total, title) => {
           setBatchProgress({
@@ -324,6 +330,53 @@ export const App: React.FC = () => {
     }
   };
 
+  // Custom social graphic upload
+  const handleUploadCustomSocialGraphic = (postId: string, file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      setSocialPosts((prev) =>
+        prev.map((p) =>
+          p.id === postId
+            ? { ...p, customImageDataUrl: dataUrl, isCustom: true }
+            : p
+        )
+      );
+      alert(`Successfully loaded custom graphic for ${file.name}!`);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleResetToDefaultSocialPosts = () => {
+    if (confirm('Reset all social graphics to built-in defaults?')) {
+      setSocialPosts(SOCIAL_POSTS);
+    }
+  };
+
+  // Custom wealth material upload (PDF or PPTX)
+  const handleUploadCustomWealthMaterial = async (materialId: string, file: File) => {
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const customBytes = new Uint8Array(arrayBuffer);
+      setWealthMaterials((prev) =>
+        prev.map((m) =>
+          m.id === materialId
+            ? { ...m, customFileBytes: customBytes, isCustom: true }
+            : m
+        )
+      );
+      alert(`Successfully loaded custom material for ${file.name}!`);
+    } catch (err: any) {
+      alert(`Failed to load file: ${err.message}`);
+    }
+  };
+
+  const handleResetToDefaultWealthMaterials = () => {
+    if (confirm('Reset all Simplicity Wealth materials to built-in defaults?')) {
+      setWealthMaterials(WEALTH_MATERIALS);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex font-sans selection:bg-[#0076BD] selection:text-white">
       {/* Left Navigation Sidebar */}
@@ -334,8 +387,11 @@ export const App: React.FC = () => {
         onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
         onAdminLogout={handleAdminLogout}
         onLoadDemo={handleLoadDemo}
-        onOpenUploader={() => {
-          if (isAdmin) setIsUploaderOpen(true);
+        onOpenUploader={(tab = 'guides') => {
+          if (isAdmin) {
+            setUploaderInitialTab(tab);
+            setIsUploaderOpen(true);
+          }
         }}
         isMobileOpen={isMobileNavOpen}
         onCloseMobile={() => setIsMobileNavOpen(false)}
@@ -484,6 +540,7 @@ export const App: React.FC = () => {
           saveProfileToStorage(updated);
         }}
         brandColor={profile.brandColor}
+        posts={socialPosts}
       />
     )}
 
@@ -501,6 +558,7 @@ export const App: React.FC = () => {
         onOptionsChange={setOptions}
         onBatchDownloadAll={handleWealthBatchDownload}
         isBatchGenerating={batchProgress.isGenerating}
+        materials={wealthMaterials}
       />
     )}
   </main>
@@ -540,14 +598,21 @@ export const App: React.FC = () => {
       </footer>
     </div>
 
-      {/* Custom Master PDFs Manager Modal (Admin Only) */}
+      {/* Custom Master Assets & Templates Manager Modal (Admin Only) */}
       {isAdmin && (
-        <MasterGuideUploader
+        <MasterAssetManager
           isOpen={isUploaderOpen}
           onClose={() => setIsUploaderOpen(false)}
+          initialTab={uploaderInitialTab}
           guides={guides}
           onUploadCustomPdf={handleUploadCustomPdf}
-          onResetToDefaults={handleResetToDefaultGuides}
+          onResetGuides={handleResetToDefaultGuides}
+          socialPosts={socialPosts}
+          onUploadCustomSocialGraphic={handleUploadCustomSocialGraphic}
+          onResetSocialPosts={handleResetToDefaultSocialPosts}
+          wealthMaterials={wealthMaterials}
+          onUploadCustomWealthMaterial={handleUploadCustomWealthMaterial}
+          onResetWealthMaterials={handleResetToDefaultWealthMaterials}
         />
       )}
 

@@ -36,7 +36,7 @@ export async function renderSocialPostCanvas(
   if (!ctx) throw new Error('Could not get 2D canvas context');
 
   // 1. Load base graphic
-  const baseSrc = `${import.meta.env.BASE_URL}social-posts/${post.filename}`;
+  const baseSrc = post.customImageDataUrl || `${import.meta.env.BASE_URL}social-posts/${post.filename}`;
   const baseImg = await loadImage(baseSrc);
   ctx.drawImage(baseImg, 0, 0, 1024, 1024);
 

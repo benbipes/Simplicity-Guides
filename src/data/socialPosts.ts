@@ -23,6 +23,8 @@ export interface SocialPost {
     height: number;
     color: string;
   };
+  customImageDataUrl?: string;
+  isCustom?: boolean;
 }
 
 export const SOCIAL_POSTS: SocialPost[] = [

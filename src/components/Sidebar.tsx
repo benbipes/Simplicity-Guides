@@ -19,7 +19,7 @@ interface SidebarProps {
   onOpenAdminLogin: () => void;
   onAdminLogout: () => void;
   onLoadDemo: () => void;
-  onOpenUploader: () => void;
+  onOpenUploader: (initialTab?: 'guides' | 'social' | 'wealth') => void;
   isMobileOpen: boolean;
   onCloseMobile: () => void;
 }
@@ -180,7 +180,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div className="space-y-1.5 pt-1">
                 <button
                   type="button"
-                  onClick={onOpenUploader}
+                  onClick={() => onOpenUploader('guides')}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
@@ -192,15 +192,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                 <button
                   type="button"
-                  onClick={onLoadDemo}
+                  onClick={() => onOpenUploader('social')}
                   className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
                 >
                   <div className="flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-amber-300" />
-                    <span>Load Demo Advisor</span>
+                    <ThumbsUp className="w-4 h-4 text-sky-300" />
+                    <span>Social Media Graphics</span>
                   </div>
                   <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => onOpenUploader('wealth')}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                >
+                  <div className="flex items-center space-x-2">
+                    <CandlestickChart className="w-4 h-4 text-indigo-300" />
+                    <span>Simplicity Wealth</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                </button>
+
+                <div className="pt-1 border-t border-white/10 mt-1">
+                  <button
+                    type="button"
+                    onClick={onLoadDemo}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-[#0076BD] text-white border border-white/15 transition-all text-left cursor-pointer group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <Sparkles className="w-4 h-4 text-amber-300" />
+                      <span>Load Demo Advisor</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
@@ -214,7 +240,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   Administrator Access
                 </div>
                 <p className="text-[10px] text-sky-200/80 leading-relaxed mt-0.5">
-                  Sign in to manage master guide PDFs & demo profiles.
+                  Sign in to manage master guide PDFs, social graphics & wealth materials.
                 </p>
               </div>
               <button

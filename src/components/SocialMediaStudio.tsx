@@ -28,15 +28,27 @@ interface SocialMediaStudioProps {
   profile: AgentProfile;
   onUpdateProfile: (updated: AgentProfile) => void;
   brandColor?: string;
+  posts?: SocialPost[];
 }
 
 export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
   profile,
   onUpdateProfile,
-  brandColor = '#0076BD'
+  brandColor = '#0076BD',
+  posts
 }) => {
+  const allPosts = posts || SOCIAL_POSTS;
+
   // Active post
-  const [activePost, setActivePost] = useState<SocialPost>(SOCIAL_POSTS[0]);
+  const [activePost, setActivePost] = useState<SocialPost>(allPosts[0]);
+
+  // Keep activePost updated if posts state changes (e.g. admin custom upload)
+  useEffect(() => {
+    if (posts) {
+      const match = posts.find((p) => p.id === activePost.id);
+      if (match) setActivePost(match);
+    }
+  }, [posts]);
 
   // Logo version toggle: prefer white logo on dark backgrounds, but allow color
   const [logoVariant, setLogoVariant] = useState<'white' | 'color'>(() => {
@@ -51,7 +63,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
   // Branding options
   const [placement, setPlacement] = useState<'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'>(
-    SOCIAL_POSTS[0].defaultPlacement.position
+    allPosts[0].defaultPlacement.position
   );
   const [logoScale, setLogoScale] = useState<number>(1.0);
   const [replaceTopLogo, setReplaceTopLogo] = useState<boolean>(true);
@@ -151,7 +163,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
   // Handle batch download
   const handleBatchDownloadAll = async () => {
     setIsBatchDownloading(true);
-    setBatchProgress({ current: 0, total: SOCIAL_POSTS.length, title: 'Initializing...' });
+    setBatchProgress({ current: 0, total: allPosts.length, title: 'Initializing...' });
 
     try {
       const options: SocialBrandOptions = {
@@ -162,7 +174,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
       };
 
       await downloadAllSocialPostsZip(
-        SOCIAL_POSTS,
+        allPosts,
         activeLogoDataUrl,
         options,
         (current, total, title) => {
@@ -190,7 +202,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             Brand Social Media Posts with Your Logo
           </h1>
           <p className="text-sky-100 text-xs sm:text-sm leading-relaxed max-w-4xl">
-            Effortlessly stamp your agency logo onto all {SOCIAL_POSTS.length} square (1024×1024) social media graphics. No contact forms or complex setups required—just your logo, ready to download and publish to LinkedIn, Facebook, Instagram, or X.
+            Effortlessly stamp your agency logo onto all {allPosts.length} square (1024×1024) social media graphics. No contact forms or complex setups required—just your logo, ready to download and publish to LinkedIn, Facebook, Instagram, or X.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-sky-200">
@@ -465,8 +477,8 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             >
               <Download className="w-3.5 h-3.5 mr-1.5" />
               {isBatchDownloading
-                ? `Creating ZIP (${batchProgress?.current || 0}/${SOCIAL_POSTS.length})...`
-                : `Download All ${SOCIAL_POSTS.length} Graphics (ZIP)`}
+                ? `Creating ZIP (${batchProgress?.current || 0}/${allPosts.length})...`
+                : `Download All ${allPosts.length} Graphics (ZIP)`}
             </button>
           </div>
         </div>
@@ -490,7 +502,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
 
           {/* Post Selection Tabs */}
           <div className="px-4 py-2.5 border-b border-slate-100 bg-white flex items-center gap-1.5 overflow-x-auto scrollbar-thin">
-            {SOCIAL_POSTS.map((post, idx) => (
+            {allPosts.map((post, idx) => (
               <button
                 key={post.id}
                 type="button"
@@ -556,7 +568,7 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
               <span>Full Social Media Post Catalog</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-              All {SOCIAL_POSTS.length} Client-Ready Social Media Graphics
+              All {allPosts.length} Client-Ready Social Media Graphics
             </h2>
             <p className="text-xs text-slate-500">
               Click any graphic to load it into the live editor above, or download directly.
@@ -570,12 +582,12 @@ export const SocialMediaStudio: React.FC<SocialMediaStudioProps> = ({
             className="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg bg-[#0076BD] hover:bg-[#00629e] text-white shadow-xs transition-colors self-start sm:self-auto"
           >
             <Download className="w-3.5 h-3.5 mr-1.5" />
-            Download All {SOCIAL_POSTS.length} (ZIP)
+            Download All {allPosts.length} (ZIP)
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {SOCIAL_POSTS.map((post, idx) => {
+          {allPosts.map((post, idx) => {
             const isSelected = activePost.id === post.id;
             return (
               <div

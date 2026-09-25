@@ -104,12 +104,17 @@ export async function brandWealthMaterialPdf(
   material: WealthMaterial,
   profile: AgentProfile
 ): Promise<Uint8Array> {
-  const url = `${import.meta.env.BASE_URL}wealth/${material.filename}`;
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to load wealth master document: ${material.filename}`);
+  let originalBytes: Uint8Array | ArrayBuffer;
+  if (material.customFileBytes) {
+    originalBytes = material.customFileBytes;
+  } else {
+    const url = `${import.meta.env.BASE_URL}wealth/${material.filename}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to load wealth master document: ${material.filename}`);
+    }
+    originalBytes = await response.arrayBuffer();
   }
-  const originalBytes = await response.arrayBuffer();
 
   // If this is PPTX, return bytes directly
   if (material.format === 'pptx') {
@@ -677,9 +682,13 @@ export async function downloadAllWealthMaterialsZip(
       folder?.file(filename, bytes);
     } catch (err) {
       console.warn(`Could not brand ${mat.title}, bundling master file:`, err);
-      const res = await fetch(`${import.meta.env.BASE_URL}wealth/${mat.filename}`);
-      const buf = await res.arrayBuffer();
-      folder?.file(`${String(i + 1).padStart(2, '0')}_${mat.id}.${mat.format}`, buf);
+      if (mat.customFileBytes) {
+        folder?.file(`${String(i + 1).padStart(2, '0')}_${mat.id}.${mat.format}`, mat.customFileBytes);
+      } else {
+        const res = await fetch(`${import.meta.env.BASE_URL}wealth/${mat.filename}`);
+        const buf = await res.arrayBuffer();
+        folder?.file(`${String(i + 1).padStart(2, '0')}_${mat.id}.${mat.format}`, buf);
+      }
     }
   }
 
