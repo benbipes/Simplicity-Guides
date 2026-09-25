@@ -49,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'guides' as const,
       label: 'Financial Guides',
-      subtitle: 'Choose from 6 Master PDFs',
+      subtitle: 'Choose from 7 Master PDFs',
       icon: BookOpen,
     },
     {
